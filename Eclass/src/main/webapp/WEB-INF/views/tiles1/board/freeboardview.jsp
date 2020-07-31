@@ -10,14 +10,14 @@
 <style>
 	
 	#container{
-		background-color: #E5E5E5;
+		background-color: #fafafa;
 	}
 	
 	#wholeNotice{
 		width: 1080px;
 		margin: 0 auto;
 		/* border: solid 1px black; */
-		background-color: #E5E5E5;
+		background-color: #fafafa;
 	}
 	
 	#viewHead{
@@ -39,13 +39,13 @@
 	#addedFile{
 		width: 1000px;
 		margin: 0 auto;
-		background-color: #ccc;		
+		background-color: #f2f2f2;		
 	}
 	
 	#addReply{
 		width: 1000px;
 		margin: 0 auto;
-		background-color: #d1d1e0;	
+		background-color: #f2f2f2;	
 	}
 	
 	#updownView{
@@ -72,7 +72,7 @@
 		width: 100px;
 		height: 100px;
 		line-height: 100px;
-		background-color: gray;
+		background-color: #ccc;
 		color: white;
 		cursor: pointer;
 	}
@@ -143,7 +143,7 @@
 		</table>
 	</div><br>
 	
-	<div id="updownView" style="height: 40px; background-color: #E5E5E5;">
+	<div id="updownView" style="height: 40px; background-color: #fafafa;">
 		<span class="button">글수정</span>
 		<span class="button">글삭제</span>
 		<span class="button">목록</span>
