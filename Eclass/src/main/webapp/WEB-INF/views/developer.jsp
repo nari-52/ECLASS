@@ -10,7 +10,6 @@
 <body>
 <h1>
 	Hello world! developer commit test! change
-	check nari
 </h1>
 
 <P>  The time on the server is ${serverTime}. </P>
