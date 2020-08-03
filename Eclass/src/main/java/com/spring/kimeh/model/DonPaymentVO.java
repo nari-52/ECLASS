@@ -1,23 +1,23 @@
 package com.spring.kimeh.model;
 
-public class DonPayment {
+public class DonPaymentVO {
 
 	private String fk_donSeq;   //글번호(FK_시퀀스)
 	private String fk_userid;   //회원번호(FK_시퀀스)
-	private String fk_name;		//회원명(FK_시퀀스)
+	private String name;		//회원명
 	private String noName;		//이름 비공개(Flag)
 	private String noDonpmt;	//금액 비공개(Flag)
 	private String paymentDate; //결제날짜 
 	private String payment;     //결제금액 	
 	
-	public DonPayment() {};
+	public DonPaymentVO() {};
 	
-	public DonPayment(String fk_donSeq, String fk_userid, String fk_name, String noName, String noDonpmt,
+	public DonPaymentVO(String fk_donSeq, String fk_userid, String name, String noName, String noDonpmt,
 			String paymentDate, String payment) {
 		super();
 		this.fk_donSeq = fk_donSeq;
 		this.fk_userid = fk_userid;
-		this.fk_name = fk_name;
+		this.name = name;
 		this.noName = noName;
 		this.noDonpmt = noDonpmt;
 		this.paymentDate = paymentDate;
@@ -40,12 +40,12 @@ public class DonPayment {
 		this.fk_userid = fk_userid;
 	}
 
-	public String getFk_name() {
-		return fk_name;
+	public String getName() {
+		return name;
 	}
 
-	public void setFk_name(String fk_name) {
-		this.fk_name = fk_name;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getNoName() {

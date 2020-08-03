@@ -1,14 +1,14 @@
 package com.spring.kimeh.model;
 
-public class DonImg {
+public class DonImgVO {
 	
 	private String donImgseq; //후원이미지 번호
 	private String fk_donSeq; //후원글번호 
 	private String donImg;    //후원이미지
 	
-	public DonImg() {};
+	public DonImgVO() {};
 	
-	public DonImg(String donImgseq, String fk_donSeq, String donImg) {
+	public DonImgVO(String donImgseq, String fk_donSeq, String donImg) {
 		super();
 		this.donImgseq = donImgseq;
 		this.fk_donSeq = fk_donSeq;

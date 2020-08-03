@@ -136,9 +136,9 @@
                         	<tr>    
                         	<c:forEach var="don" items="${donstoryList}" varStatus="status">                       
                                 <td class="pricecolor">
-                                    <a href='/eclass/donationList.up?donseq=${don.donseq}'>
+                                    <a href=<%-- '<%= ctxPath%>/donationList.up?donseq=${don.donseq}' --%>>
                                         <div style="width:250px; height:350px;" class="sample_image">
-                                        <img style="width:100%; height:100%;" src="/eclass/images/${don.listMainImg}" /></div>
+                                        <img style="width:100%; height:100%;" src="<%= ctxPath%>/resources/images/${don.listMainImg}" /></div>
 
                                         <br/><span style="font-size:12.5pt; letter-spacing: 0.4px; color:#333; ">
                                         	${don.subject}고아원 아이들을 위한 교육후원!</span>
@@ -154,12 +154,12 @@
                                     </a>
                                 </td> 
                                 
-                                <c:if test="${(status.count)%3 == 0 }">
+                               <c:if test="${(status.count)%3 == 0 }">
                                     </tr>
-                                    <tr>
-                                </c:if>
+                                     <tr>
+                                </c:if> 
 							</c:forEach>
-                        	</tr>
+                        	</tr> 
                     	</c:if>
                 </tbody>
             </table>

@@ -17,11 +17,5 @@ public class EclassDAO implements InterEclassDAO{
 	
 	@Resource
 	private SqlSessionTemplate sqlsession;
-
-	//후원리스트 보여주기 
-	@Override
-	public List<DonStoryVO> donationList() {
-		List<DonStoryVO> donstoryList = sqlsession.selectList("donation.donationList");
-		return donstoryList;
-	}
+	
 }
