@@ -33,14 +33,17 @@
 .dropdown {
   position: relative;
   display: inline-block;
-  border: solid 1px gray; 
-  width: 160px; 
+  /* border: solid 1px gray;  */
+  width: 190px; 
   height: 30px;
-  /* background-color: #00BCD4; */
-  margin-left: 30px;
+  background-color: #00BCD4; 
+  /* margin-left: 30px; */
   line-height: 30px;
   margin-top: 18px;
   cursor: pointer;
+  color: white;
+  font-weight: bold;
+  font-size: 15pt;
 }
 
 .dropdown-content {
@@ -51,6 +54,7 @@
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   padding: 12px 16px;
   cursor: pointer;
+  color: #ccc;
   
 }
 
@@ -71,8 +75,9 @@ a:hover{
 	color:black;
 }
 .moveColor {
-	color: blue; 
+	color: #00BCD4; 
 	font-weight: bold; 
+	background-color: #fafafa;
 }
 
 </style>
@@ -105,7 +110,7 @@ a:hover{
 <span class="minimenu"><a>로그인</a></span>
 <span class="minimenu"><a>회원가입</a></span>
 <span class="minimenu"><a>1:1상담</a></span>
-<span class="minimenu"><a>관리자</a></span>
+<span class="minimenu"><a href="test.up">관리자</a></span>
 	
 	<!-- =====================================================================  -->
 	

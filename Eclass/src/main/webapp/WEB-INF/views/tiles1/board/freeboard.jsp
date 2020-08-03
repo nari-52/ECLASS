@@ -8,14 +8,14 @@
 %>
 <style>
 	#container{
-		background-color: #E5E5E5;
+		background-color: #fafafa;
 	}
 
 	#wholeNotice{
 		width: 1080px;
 		margin: 0 auto;
 		/* border: solid 1px black; */
-		background-color: #E5E5E5;
+		background-color: #fafafa;
 	}
 	
 	tr,th,td{
@@ -37,7 +37,7 @@
 	
 	<div>
 		<table style="margin: 0 auto; width: 1000px; background-color: white;">
-			<tr style="background-color: #ccc">
+			<tr style="background-color: #f2f2f2">
 				<th>번호</th>
 				<th>제목</th>
 				<th>작성자</th>
