@@ -12,7 +12,7 @@
 		width: 1080px;
 		margin: 0 auto;
 		border: solid 1px black;
-		background-color: #5E5E5E;
+		background-color: #fafafa;
 	}
 	
 	tr,th,td{
@@ -25,7 +25,7 @@
 
 <div id="wholeNotice">
 	<div style="text-align: center;">
-		<h3 style="color: white; font-weight: bold;">Q&A</h3>
+		<h3 style="color: #00BCD4; font-weight: bold;">Q&A</h3>
 	</div>	
 	<br>
 	
@@ -33,7 +33,7 @@
 	
 	<div>
 		<table style="margin: 0 auto; width: 1000px; background-color: white;">
-			<tr>
+			<tr style="background-color: #f2f2f2">
 				<th>번호</th>
 				<th>제목</th>
 				<th>작성자</th>
@@ -49,7 +49,7 @@
 			
 			<tr>
 				<td>1</td>
-				<td>Q&A 게시판 테스트</td>
+				<td><a href="<%=ctxPath%>/questionview.up">Q&A 게시판 테스트</a></td>
 				<td>홍길동</td>
 				<td>2020.07.22</td>
 			</tr>
@@ -109,7 +109,7 @@
 	<br>
 	
 	<div style="text-align: center;">
-		<span style="color: white; font-size: 16pt; font-weight: bold;"> 1 2 3 4 5 6 7 8 9 10 다음</span>
+		<span style="color: #00BCD4; font-size: 16pt; font-weight: bold;"> 1 2 3 4 5 6 7 8 9 10 다음</span>
 	</div>
 	<br>
 	
