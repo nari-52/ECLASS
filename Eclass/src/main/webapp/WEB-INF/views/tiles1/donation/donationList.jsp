@@ -18,7 +18,7 @@
         border: solid 1px #ccc;
         width: 1080px;
         margin: 0 auto;
-        /*background-color: #E5E5E5;*/
+        /* background-color: #FAFAFA; */
     }
 	#catefont {
 	    font-size: 14pt;
@@ -93,7 +93,7 @@
 	    transform:scale(1.1);
 	}
 	.sample_image {
-		border: solid 0px yellow;
+		border: solid 1px skyblue;
 		overflow: hidden;
 	}
 	.pricecolor {
@@ -126,23 +126,30 @@
 		<div class="productList" align="center">		
             <table>
                 <tbody id="pList" align="center">
-                        <tr>
-                           
+               		 <%-- 준비중이 후원 스토리가 없을 때 --%>
+						<c:if test="${empty donstoryList}">
+							<tr> 
+								<td colspan = "3">후원 스토리 준비중...</td>
+							</tr>
+						</c:if>
+						<c:if test="${not empty donstoryList}">
+                        	<tr>    
+                        	<c:forEach var="don" items="${donstoryList}" varStatus="status">                       
                                 <td class="pricecolor">
-                                    <a href='#상세스토리 이동'>
+                                    <a href='/eclass/donationList.up?donseq=${don.donseq}'>
                                         <div style="width:250px; height:350px;" class="sample_image">
-                                        <img style="width:100%; height:100%;" src="" /></div>
+                                        <img style="width:100%; height:100%;" src="/eclass/images/${don.listMainImg}" /></div>
 
                                         <br/><span style="font-size:12.5pt; letter-spacing: 0.4px; color:#333; ">
-                                        	고아원 아이들을 위한 교육후원!</span>
+                                        	${don.subject}고아원 아이들을 위한 교육후원!</span>
                                         
                                         <div style="border-bottom: solid 2px #00BCD4; width: 250px; padding: 3px 0 0 0"></div>
                                             
-                                        <c:if test="${pvo.sale != 0}">
+                                        <c:if test="${don.totalPayment != 0}">
                                             <span style="color: #00BCD4; font-weight: bold; font-size: 17px;">
-                                                <fmt:formatNumber value="${pvo.finalPrice}" pattern="###,###" />120%
+                                            <fmt:parseNumber value= "${(don.totalPayment*100)/don.targetAmount}" type="percent" />                                            
                                             </span>
-                                            <span style="color: #ccc; font-weight: bold; font-size: 17px;"><fmt:formatNumber value="${pvo.price}" pattern="###,###"/> 500.000원</span>                                                                                        
+                                            <span style="color: #ccc; font-weight: bold; font-size: 17px;"><fmt:formatNumber value="${don.totalPayment}" pattern="###,###"/> 500.000원</span>                                                                                        
                                         </c:if>
                                     </a>
                                 </td> 
@@ -151,9 +158,9 @@
                                     </tr>
                                     <tr>
                                 </c:if>
-
-                        </tr>
-                    
+							</c:forEach>
+                        	</tr>
+                    	</c:if>
                 </tbody>
             </table>
 			
