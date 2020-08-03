@@ -26,7 +26,7 @@ public class DonationController {
 		private InterDonationService service;
 		
 		// 후원하기 리스트 페이지 
-		@RequestMapping(value="/donationList.up")
+		@RequestMapping(value="/donation/donationList.up")
 		public ModelAndView donationList(ModelAndView mav) {
 			
 			List<DonStoryVO> donstoryList = service.donationList();
