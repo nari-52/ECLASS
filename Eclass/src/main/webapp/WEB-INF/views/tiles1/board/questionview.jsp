@@ -94,12 +94,12 @@
 <div id ="container"><br>
 <div id="wholeNotice">
 	<div style="text-align: center;">
-		<h3 style="color: #00BCD4; font-weight: bold;">자유게시판</h3>
+		<h3 style="color: #00BCD4; font-weight: bold;">Q&A</h3>
 	</div>	
 	<br>
 	
 	<div id="viewHead">
-		<h3>자유게시판 게시판 상세보기 페이지</h3>
+		<h3>Q&A 게시판 상세보기 페이지</h3>
 		<div style="float: right; margin:20px;">
 		<span style="font-weight: bold; font-size: 13pt;">작성자</span> <span>홍길동</span>&nbsp;
 		<span style="font-weight: bold; font-size: 13pt;">작성일</span> <span>2020.07.22</span>&nbsp;
@@ -133,12 +133,12 @@
 		<table>
 			<tr>
 				<th>이전글</th>
-				<td>자유게시판 게시판 테스트</td>
+				<td>Q&A 게시판 테스트</td>
 			</tr>
 			
 			<tr>
 				<th>다음글</th>
-				<td>자유게시판 게시판 테스트</td>
+				<td>Q&A 게시판 테스트</td>
 			</tr>
 		</table>
 	</div><br>
