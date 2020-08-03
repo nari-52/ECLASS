@@ -10,6 +10,5 @@ public class FullBeanNameGenerator implements org.springframework.beans.factory.
 		return definition.getBeanClassName(); 
 	}
 	// 클래스명이 동일해도 충돌하지 않도록 해줌
-	
 
 }

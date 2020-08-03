@@ -104,13 +104,13 @@ public class EclassController {
 			return mav;
 		}
 		
-		// Q&A게시판 글쓰기
-				@RequestMapping(value="/test.up")
-				public ModelAndView test(ModelAndView mav) {
-					
-					mav.setViewName("test");
-					
-					return mav;
+		// 관리자페이지
+		@RequestMapping(value="/admin.up")
+		public ModelAndView test(ModelAndView mav) {
+			
+			mav.setViewName("admin");
+			
+			return mav;
 		}
 				
 		// Q&A게시판 글 상세보기

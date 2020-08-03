@@ -16,6 +16,7 @@
         <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet" crossorigin="anonymous" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js" crossorigin="anonymous"></script>
     </head>
+    
     <body class="sb-nav-fixed"> 
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <a class="navbar-brand" href="test.up">관리자 페이지</a>
@@ -58,6 +59,9 @@
                             </a>
                             <div class="sb-sidenav-menu-heading">분류</div>
                             
+                            
+                            
+                            <div id="accordion" style="border: solid 1px #343a40;">
                             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
                                 <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
                                	 회원관리
@@ -125,7 +129,7 @@
                                     </div>
                                 </nav>
                             </div>
-                            
+                            </div>
                             <!-- <div class="sb-sidenav-menu-heading">Addons</div>
                             <a class="nav-link" href="charts.html">
                                 <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
@@ -212,7 +216,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+                                                          
                         
                         <div class="card mb-4">
                             <div class="card-header">
@@ -730,6 +734,15 @@
         <script src="<c:url value="/resources/assets/demo/chart-bar-demo.js" />"></script> 
         <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
         <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
-        <script src="<c:url value="/resources/assets/demo/datatables-demo.js" />"></script> 
+        <script src="<c:url value="/resources/assets/demo/datatables-demo.js" />"></script>
+        <script>
+		  $( function() {
+		    $( "#accordion" ).accordion();
+		  } );	  
+		</script> 
+		<!-- <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"> -->
+  <!-- <link rel="stylesheet" href="/resources/demos/style.css"> -->
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     </body>
 </html>
