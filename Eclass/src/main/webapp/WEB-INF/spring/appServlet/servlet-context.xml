@@ -135,7 +135,7 @@
 	</beans:bean>   
    
    <!-- ==== #18. bean으로 등록될 @Component 클래스가 위치하는 패키지명 지정하기 ====  -->
-   <!-- 
+   <!--  
    <context:component-scan base-package="com.spring.board" />
     -->
    <context:component-scan base-package="com.spring.*" name-generator="com.spring.common.FullBeanNameGenerator"/>
