@@ -49,6 +49,15 @@ public class EclassController {
 			return mav;
 		}
 		
+		// 공지사항 게시판 글 상세보기
+		@RequestMapping(value="/noticeview.up")
+		public ModelAndView noticeview(ModelAndView mav) {
+			
+			mav.setViewName("board/noticeview.tiles1");
+			
+			return mav;
+		}
+		
 		// 자유게시판 목록
 		@RequestMapping(value="/freeboard.up")
 		public ModelAndView freeboard(ModelAndView mav) {
@@ -94,4 +103,24 @@ public class EclassController {
 			
 			return mav;
 		}
+		
+		// Q&A게시판 글쓰기
+				@RequestMapping(value="/test.up")
+				public ModelAndView test(ModelAndView mav) {
+					
+					mav.setViewName("test");
+					
+					return mav;
+		}
+				
+		// Q&A게시판 글 상세보기
+		@RequestMapping(value="/questionview.up")
+		public ModelAndView questionview(ModelAndView mav) {
+			
+			mav.setViewName("board/questionview.tiles1");
+			
+			return mav;
+		}
+				
+				
 }
