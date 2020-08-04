@@ -57,7 +57,7 @@ public class EclassController {
 		return mav;
 	}
 	
-	// 시험 제출 페이지 보여주기 (학생이 시험 제출하는 것)
+	// 시험 제출 페이지 보여주기 (학생이 시험 제출하는 것)~
 	@RequestMapping(value="/exam/examSubmit.up")
 	public ModelAndView examSubmit(ModelAndView mav) {		
 		mav.setViewName("exam/examSubmit.tiles1");		
