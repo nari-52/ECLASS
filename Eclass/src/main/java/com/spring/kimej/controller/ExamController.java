@@ -27,14 +27,14 @@ public class ExamController {
 	@Autowired
 	private InterExamService service;
 	
-	// 시험 등록 페이지 보여주기 (교수가 시험 게시글 쓰는 것)
+	// 시험 출제 페이지 보여주기 (교수가 시험 게시글 쓰는 것)
 	@RequestMapping(value="/exam/examRegister.up")
 	public ModelAndView examRegister(ModelAndView mav) {		
 		mav.setViewName("exam/examRegister.tiles1");		
 		return mav;
 	}
 	
-	// 시험 등록 페이지 !!완료!! 보여주기 (교수가 시험 게시글 쓰는 것)
+	// 시험 출제 페이지 !!완료!! 보여주기 (교수가 시험 게시글 쓰는 것)
 	@RequestMapping(value="/exam/examRegisterEnd.up")
 	public ModelAndView examRegisterEnd(HttpServletRequest request, ModelAndView mav) {		
 		
@@ -52,7 +52,7 @@ public class ExamController {
 		int n = service.exam_insert(paraMap);
 		
 		if (n>0) {
-			mav.setViewName("main/index.tiles1"); // 교수 마이페이지로 수정
+			mav.setViewName("exam/examWrite.tiles1"); // 교수 마이페이지로 수정
 		}
 		else {
 			mav.setViewName("exam/examRegister.tiles1");

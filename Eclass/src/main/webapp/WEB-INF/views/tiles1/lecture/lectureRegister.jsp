@@ -94,8 +94,7 @@
 	</form>
 	
 	<div id="buttons">
-		<button type="button" onclick="goSubmit();">제출</button>
-		<button type="reset">취소</button>
+		<button type="button" onclick="goSubmit();">다음</button>
 	</div>
 	
 	<div style="clear: both; margin-bottom: 50px;"></div>
