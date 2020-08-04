@@ -6,5 +6,13 @@
 <!-- ==== #29. 루트 엘리먼트 & 네임스페이스 설정(프로젝트 전체내에서 유일해야 한다.) ==== -->
 <mapper namespace="donation">
 
+	<select id="donationList" resultType="com.spring.kimeh.model.DonStoryVO">
+		select donseq, subject, content, listMainImg, storyImg, donCnt
+		     , to_char(donDate,'yyyy-mm-dd hh24:mi:ss') as donDate 
+		     , donDueDate , donStatus
+			 , targetAmount, totalPayment, totalSupporter
+   		from donStory   
+   		order by donDate desc
+	</select>
 
 </mapper>

@@ -1,5 +1,5 @@
 show user;
--- USER이(가) "FINALORAUSER1"입니다.
+-- USER이(가) "FINALPROJECT1"입니다.
 
 drop table login_table;
 drop table subject_tbl;
@@ -46,7 +46,7 @@ create table eclass_member
 
 select *
 from eclass_member;
-
+commit;
 
 -- 로그인 테이블
 create table login_table
@@ -56,6 +56,7 @@ create table login_table
 , constraint FK_login_table_fk_userid foreign key (fk_userid)
                                       references eclass_member (userid)
 );
+
 select *
 from login_table;
     
@@ -360,7 +361,7 @@ create table donStory
 ,listMainImg    varchar2(100)         not null    -- 리스트 메인이미지  
 ,storyImg       varchar2(100)         not null    -- 상세 메인이미지  
 ,donCnt         number default 0      not null    -- 글 조회수 
-,donDate        date default sysdate  not null    -- 후원 등록일자
+,donDate        date default sysdate  not null    -- 후원 등록일자 --,to_date('2020-07-23 10:00:00' , 'yyyy-mm-dd hh24:mi:ss')
 ,donDueDate     date                  not null    -- 후원 종료일자 
 ,donStatus      number default 1      not null    -- 글삭제여부   1:사용가능한 글,  0:삭제된글 
 ,targetAmount   number -- 목표금액   
@@ -369,6 +370,7 @@ create table donStory
 ,constraint PK_donStory_seq primary key(donseq)
 ,constraint CK_donSotry_status check( donStatus in(0,1) )
 );
+
 
 create sequence donStorySeq
 start with 1
@@ -414,5 +416,6 @@ create table donPayment
 
 
 --------------------------------------테이블 끝-----------------------------------------------
+
 
 
