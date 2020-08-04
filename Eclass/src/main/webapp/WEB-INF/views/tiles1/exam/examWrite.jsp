@@ -11,21 +11,24 @@
 
 <script>
 
-	$(document).ready(function(){
-		
+	document.addEventListener("DOMContentLoaded", function(event) { 
+
 		var cnt = 0;
+		var plusQ = document.getElementById("plusQ");
+		var minusQ = document.getElementById("minusQ");
 		
-		$("#plusQ").on("click", function(){
+		plusQ.addEventListener('click', function() {
 			cnt++;
-			makeQ(cnt);
-		})
+			makeQ(cnt);			
+		});
 		
-		$("#minusQ").on("click", function(){
+		minusQ.addEventListener('click', function() {
 			cnt--;
-			makeQ(cnt);
-		})
+			makeQ(cnt);			
+		});
 		
-	}); // end of $(document).ready(function(){}) ---------------------------------------
+	});
+
 
 	function makeQ(cnt) {
 		

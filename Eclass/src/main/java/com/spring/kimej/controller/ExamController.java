@@ -1,12 +1,17 @@
 package com.spring.kimej.controller;
 
+import java.util.HashMap;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.spring.kanghm.service.InterEclassService;
+import com.spring.kimej.service.InterExamService;
+
 
 //=== #30. 컨트롤러 선언 === 
 @Component
@@ -16,25 +21,11 @@ import com.spring.kanghm.service.InterEclassService;
 */
 
 @Controller
-public class EclassController {
+public class ExamController {
 
 	// === #35. 의존객체 주입하기(DI: Dependency Injection) ===
 	@Autowired
-	private InterEclassService service;
-	
-	// 강의 목록 페이지 보여주기 (차수,제목)
-	@RequestMapping(value="/lecture/lectureList.up")
-	public ModelAndView lectureList(ModelAndView mav) {		
-		mav.setViewName("lecture/lectureList.tiles1");		
-		return mav;
-	}
-	
-	// 강의 상세 페이지 보여주기 (유튜브영상, 댓글)
-	@RequestMapping(value="/lecture/lectureDetail.up")
-	public ModelAndView lectureDetail(ModelAndView mav) {		
-		mav.setViewName("lecture/lectureDetail.tiles1");		
-		return mav;
-	}
+	private InterExamService service;
 	
 	// 시험 등록 페이지 보여주기 (교수가 시험 게시글 쓰는 것)
 	@RequestMapping(value="/exam/examRegister.up")
@@ -45,8 +36,28 @@ public class EclassController {
 	
 	// 시험 등록 페이지 !!완료!! 보여주기 (교수가 시험 게시글 쓰는 것)
 	@RequestMapping(value="/exam/examRegisterEnd.up")
-	public ModelAndView examRegisterEnd(ModelAndView mav) {		
-		mav.setViewName("exam/examRegister.tiles1");		
+	public ModelAndView examRegisterEnd(HttpServletRequest request, ModelAndView mav) {		
+		
+		String subSeq = request.getParameter("subSeq");
+		String userid = request.getParameter("userid"); // session에서 loginuser받아오기
+		String examTitle = request.getParameter("examTitle");
+		String examDate = request.getParameter("examDate");
+		
+		HashMap<String,String> paraMap = new HashMap<>();
+		paraMap.put("subSeq", subSeq);
+		paraMap.put("userid", userid);
+		paraMap.put("examTitle", examTitle);
+		paraMap.put("examDate", examDate);
+		
+		int n = service.exam_insert(paraMap);
+		
+		if (n>0) {
+			mav.setViewName("main/index.tiles1"); // 교수 마이페이지로 수정
+		}
+		else {
+			mav.setViewName("exam/examRegister.tiles1");
+		}
+		
 		return mav;
 	}
 	
@@ -57,7 +68,7 @@ public class EclassController {
 		return mav;
 	}
 	
-	// 시험 제출 페이지 보여주기 (학생이 시험 제출하는 것)~
+	// 시험 제출 페이지 보여주기 (학생이 시험 제출하는 것)
 	@RequestMapping(value="/exam/examSubmit.up")
 	public ModelAndView examSubmit(ModelAndView mav) {		
 		mav.setViewName("exam/examSubmit.tiles1");		

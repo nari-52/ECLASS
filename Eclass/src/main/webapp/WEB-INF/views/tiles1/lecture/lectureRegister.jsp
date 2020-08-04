@@ -82,14 +82,14 @@
 
 <div id="contentsWrap">
 
-	<div id="register-title">시험등록</div>
+	<div id="register-title">강의 등록</div>
 	
 	<form id="registerFrm" name="registerFrm">
-		<span id="inputTitle" style="margin-right: 10px;">시험 제목</span><input type="text" name="examTitle" style="height: 40px; width: 1000px;" />
+		<span id="inputTitle" style="margin-right: 10px;">강의영상</span><input type="text" name="lecLink" style="height: 40px; width: 1000px;" />
 		<br><br>
-		<span id="inputDate" style="margin-right: 10px;">시험 날짜</span><input type="text" id="datepicker" name="examDate"/>
+		<span id="inputDate" style="margin-right: 10px;">시청 시작 일자</span><input type="text" id="datepicker" name="lecStartday"/>
+		<span id="inputDate" style="margin-right: 10px;">시청 마감 일자</span><input type="text" id="datepicker" name="lecEndday"/>
 		<br><br><div>--------------------- 여기밑에부터 hidden ---------------------</div><br>
-		<span style="margin-right: 10px;">출제자</span><input type="text" name="userid" />
 		<span style="margin-right: 10px;">교과목시퀀스</span><input type="text" name="subSeq" />
 	</form>
 	
