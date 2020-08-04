@@ -1,5 +1,7 @@
 package com.spring.kimeh.model;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -13,4 +15,11 @@ public class DonationDAO implements InterDonationDAO{
 	
 	@Resource
 	private SqlSessionTemplate sqlsession;
+	
+	//후원리스트 보여주기 
+	@Override
+	public List<DonStoryVO> donationList() {
+		List<DonStoryVO> donstoryList = sqlsession.selectList("donation.donationList");
+		return donstoryList;
+	}
 }
