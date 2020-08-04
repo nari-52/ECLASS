@@ -23,6 +23,13 @@ public class LectureController {
 	private InterEclassService service;
 	
 	// 강의 목록 페이지 보여주기 (차수,제목)
+	@RequestMapping(value="/lecture/lectureRegister.up")
+	public ModelAndView lectureRegister(ModelAndView mav) {		
+		mav.setViewName("lecture/lectureRegister.tiles1");		
+		return mav;
+	}
+	
+	// 강의 목록 페이지 보여주기 (차수,제목)
 	@RequestMapping(value="/lecture/lectureList.up")
 	public ModelAndView lectureList(ModelAndView mav) {		
 		mav.setViewName("lecture/lectureList.tiles1");		
