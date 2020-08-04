@@ -141,15 +141,16 @@
                                         <img style="width:100%; height:100%;" src="<%= ctxPath%>/resources/images/${don.listMainImg}" /></div>
 
                                         <br/><span style="font-size:12.5pt; letter-spacing: 0.4px; color:#333; ">
-                                        	${don.subject}고아원 아이들을 위한 교육후원!</span>
+                                        	${don.subject}</span>
                                         
                                         <div style="border-bottom: solid 2px #00BCD4; width: 250px; padding: 3px 0 0 0"></div>
                                             
                                         <c:if test="${don.totalPayment != 0}">
-                                            <span style="color: #00BCD4; font-weight: bold; font-size: 17px;">
-                                            <fmt:parseNumber value= "${(don.totalPayment*100)/don.targetAmount}" type="percent" />                                            
-                                            </span>
-                                            <span style="color: #ccc; font-weight: bold; font-size: 17px;"><fmt:formatNumber value="${don.totalPayment}" pattern="###,###"/> 500.000원</span>                                                                                        
+                                            <span style="color: #00BCD4; font-weight: bold; font-size: 18px;">
+                                            <%-- <fmt:formatNumber value= "${(don.totalPayment*100)/don.targetAmount}" type="percent" pattern="0.0%"/>     --%>                                                                                      
+                                           ${(don.totalPayment*100)/don.targetAmount}% 
+											</span>
+                                            <span style="float:right; padding-right:33px; color: #bbb; font-weight: bold; font-size: 16px;">목표금액 <fmt:formatNumber value="${don.targetAmount}" pattern="###,###"/>원 </span>                                                                                        
                                         </c:if>
                                     </a>
                                 </td> 

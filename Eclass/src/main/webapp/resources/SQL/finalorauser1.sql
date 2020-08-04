@@ -46,7 +46,7 @@ create table eclass_member
 
 select *
 from eclass_member;
-
+commit;
 
 -- 로그인 테이블
 create table login_table
@@ -371,18 +371,6 @@ create table donStory
 ,constraint CK_donSotry_status check( donStatus in(0,1) )
 );
 
-insert into donStory(donseq, subject, content, listMainImg, storyImg, donCnt, donDate, donDueDate, donStatus, targetAmount,totalPayment,totalSupporter)
-values(donStorySeq.nextval, '고아원 아이들을 위한 교육후원', '고아원 아이들을 위한 교육후원! 지금 당신의 손길이 필요합니다.', 'donMainImg01.png', 'storyImg01,png', default, default, to_date('2020-08-20 17:00:00' , 'yyyy-mm-dd hh24:mi:ss'),default,1000000,300000,10);
-
-select *
-from donStory;
-
-select donseq, subject, content, listMainImg, storyImg, donCnt
-		     , to_char(donDate,'yyyy-mm-dd hh24:mi:ss') as donDate 
-		     , donDueDate , donStatus
-			 , targetAmount, totalPayment, totalSupporter
-from donStory   
-order by donDate desc;
 
 create sequence donStorySeq
 start with 1

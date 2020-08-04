@@ -30,7 +30,7 @@ public class DonationController {
 		public ModelAndView donationList(ModelAndView mav) {
 			
 			List<DonStoryVO> donstoryList = service.donationList();
-						
+			
 			mav.addObject("donstoryList",donstoryList);
 			mav.setViewName("donation/donationList.tiles1");
 			return mav;
