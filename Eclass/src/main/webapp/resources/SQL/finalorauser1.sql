@@ -371,6 +371,42 @@ create table donStory
 ,constraint CK_donSotry_status check( donStatus in(0,1) )
 );
 
+insert into donStory(donseq, subject, content, listMainImg, storyImg, donCnt, donDate, donDueDate, donStatus, targetAmount,totalPayment,totalSupporter)
+values(donStorySeq.nextval, '고아원 아이들을 위한 교육후원', '고아원 아이들을 위한 교육후원! 지금 당신의 손길이 필요합니다.', 'donMainImg01.png', 'storyImg01.png', default, default, to_date('2020-08-20 17:00:00' , 'yyyy-mm-dd hh24:mi:ss'),default,1000000,300000,10);
+
+insert into donStory(donseq, subject, content, listMainImg, storyImg, donCnt, donDate, donDueDate, donStatus, targetAmount,totalPayment,totalSupporter)
+values(donStorySeq.nextval, '인도 아이들에게 새로운 꿈을..!', '모든 아동이 폭력과 학대, 방임, 착취로부터 보호받고 안전한 환경에서 성장하도록 아동보호 사업을 진행합니다.', 'donMainImg02.png', 'storyImg02.png', default, default, to_date('2020-08-25 20:00:00' , 'yyyy-mm-dd hh24:mi:ss'),default,1200000,240000,16);
+
+insert into donStory(donseq, subject, content, listMainImg, storyImg, donCnt, donDate, donDueDate, donStatus, targetAmount,totalPayment,totalSupporter)
+values(donStorySeq.nextval, '아프리카에 일어나는 흔한 일은..', '죽음과 굶주림에 직면한 아프리카 사람들과 함께 해주세요', 'donMainImg03.jpg', 'storyImg03.jpg', default, default, to_date('2020-08-21 18:00:00' , 'yyyy-mm-dd hh24:mi:ss'),default,1000000,650000,30);
+
+insert into donStory(donseq, subject, content, listMainImg, storyImg, donCnt, donDate, donDueDate, donStatus, targetAmount,totalPayment,totalSupporter)
+values(donStorySeq.nextval, '고아원 아이들을 위한 교육후원', '고아원 아이들을 위한 교육후원! 지금 당신의 손길이 필요합니다.', 'donMainImg01.png', 'storyImg01.png', default, default, to_date('2020-08-07 12:00:00' , 'yyyy-mm-dd hh24:mi:ss'),default,1000000,245000,18);
+
+insert into donStory(donseq, subject, content, listMainImg, storyImg, donCnt, donDate, donDueDate, donStatus, targetAmount,totalPayment,totalSupporter)
+values(donStorySeq.nextval, '인도 아이들에게 새로운 꿈을..!', '모든 아동이 폭력과 학대, 방임, 착취로부터 보호받고 안전한 환경에서 성장하도록 아동보호 사업을 진행합니다.', 'donMainImg02.png', 'storyImg02.png', default, default, to_date('2020-08-07 15:00:00' , 'yyyy-mm-dd hh24:mi:ss'),default,1500000,127000,22);
+
+insert into donStory(donseq, subject, content, listMainImg, storyImg, donCnt, donDate, donDueDate, donStatus, targetAmount,totalPayment,totalSupporter)
+values(donStorySeq.nextval, '아프리카에 일어나는 흔한 일은..', '죽음과 굶주림에 직면한 아프리카 사람들과 함께 해주세요', 'donMainImg03.jpg', 'storyImg03.jpg', default, default, to_date('2020-08-30 18:00:00' , 'yyyy-mm-dd hh24:mi:ss'),default,1000000,655500,30);
+
+
+
+COMMIT;
+rollback;
+
+delete from donStory
+where donseq = 6;
+
+update donStory set subject = '인도 아이들에게 새로운 꿈을..!'
+where donseq = 4;
+   
+
+select donseq, subject, content, listMainImg, storyImg, donCnt
+           , to_char(donDate,'yyyy-mm-dd hh24:mi:ss') as donDate 
+           , donDueDate , donStatus
+          , targetAmount, totalPayment, totalSupporter
+from donStory   
+order by donDate desc;
 
 create sequence donStorySeq
 start with 1
@@ -416,6 +452,5 @@ create table donPayment
 
 
 --------------------------------------테이블 끝-----------------------------------------------
-
 
 

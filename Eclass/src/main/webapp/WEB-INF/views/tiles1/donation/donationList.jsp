@@ -18,19 +18,18 @@
         border: solid 1px #ccc;
         width: 1080px;
         margin: 0 auto;
+        margin-top:0px;
         /* background-color: #FAFAFA; */
     }
-	#catefont {
-	    font-size: 14pt;
-	    font-weight: bold;
-	}
+	
     div.contentLine{
-        padding-top: 10px;
+        padding-top: 3px;
+        /* width: 120px; */
         width: 1080px;
-        border-bottom: solid 2px #00BCD4;         
+        border-bottom: solid 3px #00BCD4;       
     }
 	div#smallT, .productList {
-		border: solid 1px #ccc;
+		border: solid 0px #ccc;
 		display: inline-block;
 		margin: 30px;
 		margin-top: 20px;
@@ -55,9 +54,11 @@
 		color: gray;
 	} 
 	#pList {
-		border: solid 0px 00BCD4;
-		display: inline-block;
-		margin: 100px 0 40px 50px !important;
+		border: solid 0px gray;
+		display: inline-block;	
+		margin: 0 auto;
+		margin-top: 30px;
+		/* margin: 50px 0 40px 50px !important; */
 		
 	}
 	tr, td {
@@ -67,7 +68,9 @@
 	td {
 		width: 270px;
 		height: 450px;
-		margin-bottom: 10px;
+		margin-bottom: 10px;		
+		margin-right: 13px;
+		margin-left: 13px;
 	}
 	table {
 		text-align: center;
@@ -93,7 +96,7 @@
 	    transform:scale(1.1);
 	}
 	.sample_image {
-		border: solid 1px skyblue;
+		border: solid 0px skyblue;
 		overflow: hidden;
 	}
 	.pricecolor {
@@ -120,7 +123,7 @@
 </script>
 <body>
 	<div class="Mycontainer">
-        <h2 style="margin-bottom: 1px; color:#00BCD4">후원하기</h2>
+        <h2 style="margin-bottom: 1px; color:#00BCD4; font-weight:500;">후원하기</h2>
         <div class="contentLine" align="center"></div>
 		<div class="section" align="center">			
 		<div class="productList" align="center">		
@@ -129,7 +132,7 @@
                		 <%-- 준비중이 후원 스토리가 없을 때 --%>
 						<c:if test="${empty donstoryList}">
 							<tr> 
-								<td colspan = "3">후원 스토리 준비중...</td>
+								<td colspan = "3" style="color:gray; font-size: 16px;">후원 스토리 준비중입니다...조금만 기다려주세요 :)</td>
 							</tr>
 						</c:if>
 						<c:if test="${not empty donstoryList}">
@@ -143,12 +146,12 @@
                                         <br/><span style="font-size:12.5pt; letter-spacing: 0.4px; color:#333; ">
                                         	${don.subject}</span>
                                         
-                                        <div style="border-bottom: solid 2px #00BCD4; width: 250px; padding: 3px 0 0 0"></div>
+                                        <div style="border-bottom: solid 2px #00BCD4; width: 248px; padding: 3px 0 0 0"></div>
                                             
                                         <c:if test="${don.totalPayment != 0}">
                                             <span style="color: #00BCD4; font-weight: bold; font-size: 18px;">
-                                            <%-- <fmt:formatNumber value= "${(don.totalPayment*100)/don.targetAmount}" type="percent" pattern="0.0%"/>     --%>                                                                                      
-                                           ${(don.totalPayment*100)/don.targetAmount}% 
+                                            <fmt:formatNumber value="${(don.totalPayment)/don.targetAmount}" pattern="0.0%"/>                                                                                
+                                           <%-- ${(don.totalPayment*100)/don.targetAmount}%  --%>
 											</span>
                                             <span style="float:right; padding-right:33px; color: #bbb; font-weight: bold; font-size: 16px;">목표금액 <fmt:formatNumber value="${don.targetAmount}" pattern="###,###"/>원 </span>                                                                                        
                                         </c:if>
@@ -157,7 +160,7 @@
                                 
                                <c:if test="${(status.count)%3 == 0 }">
                                     </tr>
-                                     <tr>
+                                     <tr style="margin-top:40px;">
                                 </c:if> 
 							</c:forEach>
                         	</tr> 
