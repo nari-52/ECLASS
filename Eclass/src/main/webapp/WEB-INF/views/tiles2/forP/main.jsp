@@ -22,7 +22,7 @@
 </head>
 <body>
 	<div id="test">
-	  <h2>학생 OOO 님의 마이페이지 입니다</h2>
+	  <h2>OOO 교수님의 마이페이지 입니다</h2>
 	  	<table>
 			<tr>
 				<td class="sidecss">학교이름</td>
@@ -31,10 +31,6 @@
 			<tr>
 				<td class="sidecss">학과</td>
 				<td>러시아어문학과</td>
-			</tr>
-			<tr>
-				<td class="sidecss">학번</td>
-				<td>201410402</td>
 			</tr>
 			<tr>
 				<td class="sidecss">포인트</td>
@@ -48,7 +44,6 @@
 				</td>
 			</tr>
 		</table>
-		<button type="button">내강의실로 이동</button>
 	</div>  
 </body>
 </html>

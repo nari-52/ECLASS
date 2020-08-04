@@ -1,18 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%
+	String ctxPath = request.getContextPath();
+%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
 <style type="text/css">
 
 	.sidenav {
 	  width: 130px;
-	  position: fixed;
-	  z-index: 1;
-	  top: 100px;
-	  left: 10px;
 	  background: #fafafa;
 	  overflow-x: hidden;
 	  padding: 8px 0;
+	  display: inline-block;
+	  border: solid 0px blue;
+	  float: left;
 	}
 	
 	.sidenav a {
@@ -32,12 +34,20 @@
 		
 	}); // end of ready(); ---------------------------------
 </script>
-
+<!-- 
 	<div class="sidenav">
-	  <a href="#">마이페이지</a>
-	  <a href="#">출석현황</a>
-	  <a href="#">성적관리</a>
-	  <a href="#">정보수정</a>
+	  <a href="<%=ctxPath%>/mypageMainS.up">마이페이지</a>
+	  <a href="<%=ctxPath%>/attandS.up">출석현황</a>
+	  <a href="<%=ctxPath%>/gradeS.up">성적관리</a>
+	  <a href="<%=ctxPath%>/">정보수정</a>
+	</div>
+ -->
+	<div class="sidenav">
+	  <a href="<%=ctxPath%>/mypageMainP.up">마이페이지</a>
+	  <a href="<%=ctxPath%>/studentP.up">학생관리</a>
+	  <a href="<%=ctxPath%>/">시험제출</a>
+	  <a href="<%=ctxPath%>/">강의등록</a>
+	  <a href="<%=ctxPath%>/">정보수정</a>
 	</div>
 
     
