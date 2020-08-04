@@ -50,10 +50,17 @@ public class EclassController {
 		return mav;
 	}
 	
-	// 시험 출제 페이지 보여주기 (교수가 시험 게시글 쓰는 것)
+	// 시험 출제 페이지 보여주기 (교수가 시험 문제랑 정답 출제하는 것)
 	@RequestMapping(value="/exam/examWrite.up")
 	public ModelAndView examWrite(ModelAndView mav) {		
 		mav.setViewName("exam/examWrite.tiles1");		
+		return mav;
+	}
+	
+	// 시험 제출 페이지 보여주기 (학생이 시험 제출하는 것)
+	@RequestMapping(value="/exam/examSubmit.up")
+	public ModelAndView examSubmit(ModelAndView mav) {		
+		mav.setViewName("exam/examSubmit.tiles1");		
 		return mav;
 	}
 	
