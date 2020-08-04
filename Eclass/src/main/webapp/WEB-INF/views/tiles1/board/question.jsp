@@ -8,10 +8,15 @@
 %>
 
 <style>
+
+	#container{
+		background-color: #fafafa;
+	}
+
 	#wholeNotice{
 		width: 1080px;
 		margin: 0 auto;
-		border: solid 1px black;
+		/* border: solid 1px black; */
 		background-color: #fafafa;
 	}
 	
@@ -23,6 +28,7 @@
 	}
 </style>
 
+<div id ="container"><br>
 <div id="wholeNotice">
 	<div style="text-align: center;">
 		<h3 style="color: #00BCD4; font-weight: bold;">Q&A</h3>
@@ -113,4 +119,5 @@
 	</div>
 	<br>
 	
+</div>
 </div>

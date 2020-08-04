@@ -17,11 +17,6 @@ public class EclassService implements InterEclassService {
 	@Autowired
 	private InterEclassDAO dao;
 
-	//후원리스트 보여주기 
-	@Override
-	public List<DonStoryVO> donationList() {
-		List<DonStoryVO> donstoryList = dao.donationList();
-		return donstoryList;
-	}
+	
 	
 }
