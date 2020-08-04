@@ -144,7 +144,7 @@
 			<table id="table" style="margin: 0 auto; width: 1040px; background-color: white;">
 				<tr>
 					<th>제목</th>
-					<td><input type="text" size="40" id="title" name="title"/></td>
+					<td><input type="text" size="50" id="title" name="title"/></td>
 				</tr>
 				
 				<tr>
