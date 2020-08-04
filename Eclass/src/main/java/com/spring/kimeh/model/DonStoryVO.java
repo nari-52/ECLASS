@@ -15,6 +15,10 @@ public class DonStoryVO {
 	private String totalPayment;    //후원총액
 	private String totalSupporter;  //후원총인원
 	
+	private String donImgseq; //후원이미지 번호
+	private String fk_donSeq; //후원글번호 
+	private String donImg; 
+	
 	
 	public DonStoryVO() {};
 	
@@ -108,7 +112,23 @@ public class DonStoryVO {
 	public void setTotalSupporter(String totalSupporter) {
 		this.totalSupporter = totalSupporter;
 	}
-
-	
+	public String getDonImgseq() {
+		return donImgseq;
+	}
+	public void setDonImgseq(String donImgseq) {
+		this.donImgseq = donImgseq;
+	}
+	public String getFk_donSeq() {
+		return fk_donSeq;
+	}
+	public void setFk_donSeq(String fk_donSeq) {
+		this.fk_donSeq = fk_donSeq;
+	}
+	public String getDonImg() {
+		return donImg;
+	}
+	public void setDonImg(String donImg) {
+		this.donImg = donImg;
+	}
 	
 }

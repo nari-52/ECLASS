@@ -117,8 +117,9 @@
 <script type="text/javascript">
 
 	$(document).ready(function(){
+					
 		
-	});
+	});	
 	
 </script>
 <body>
@@ -139,7 +140,7 @@
                         	<tr>    
                         	<c:forEach var="don" items="${donstoryList}" varStatus="status">                       
                                 <td class="pricecolor">
-                                    <a href=<%-- '<%= ctxPath%>/donationList.up?donseq=${don.donseq}' --%>>
+                                    <a href='<%= ctxPath%>/donation/donationStory.up?donseq=${don.donseq}'>
                                         <div style="width:250px; height:350px;" class="sample_image">
                                         <img style="width:100%; height:100%;" src="<%= ctxPath%>/resources/images/${don.listMainImg}" /></div>
 

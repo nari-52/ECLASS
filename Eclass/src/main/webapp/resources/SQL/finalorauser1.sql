@@ -82,11 +82,12 @@ nominvalue
 nocycle
 nocache;
 
-
+commit;
 -- 강의 테이블
 create table lecture_tbl
 (lecSeq number not null -- 강의차수 - 시퀀스
 ,fk_subSeq number not null -- 교과목번호 - 시퀀스
+,lecTitle varchar2(50) not null -- 강의제목
 ,lecLink varchar2(1000) -- 강의영상
 ,lecStartday date  --강의 시작일자
 ,lecEndday date  -- 강의 마감일자
@@ -389,8 +390,6 @@ values(donStorySeq.nextval, '인도 아이들에게 새로운 꿈을..!', '모�
 insert into donStory(donseq, subject, content, listMainImg, storyImg, donCnt, donDate, donDueDate, donStatus, targetAmount,totalPayment,totalSupporter)
 values(donStorySeq.nextval, '아프리카에 일어나는 흔한 일은..', '죽음과 굶주림에 직면한 아프리카 사람들과 함께 해주세요', 'donMainImg03.jpg', 'storyImg03.jpg', default, default, to_date('2020-08-30 18:00:00' , 'yyyy-mm-dd hh24:mi:ss'),default,1000000,655500,30);
 
-
-
 COMMIT;
 rollback;
 
@@ -426,6 +425,16 @@ create table donImg
 ,constraint FK_donImg_fk_donSeq foreign key(fk_donSeq) references donStory(donseq)
 );
 
+
+delete from donImg;
+-->> 상세스토리 DB 이미지 넣어주기  
+insert into donImg(donImgseq, fk_donSeq, donImg) values(donStorySeq.nextval, 4 ,'donStoDe101');
+insert into donImg(donImgseq, fk_donSeq, donImg) values(donStorySeq.nextval, 4 ,'donStoDe102');
+insert into donImg(donImgseq, fk_donSeq, donImg) values(donStorySeq.nextval, 4 ,'donStoDe103');
+insert into donImg(donImgseq, fk_donSeq, donImg) values(donStorySeq.nextval, 4 ,'donStoDe104');
+insert into donImg(donImgseq, fk_donSeq, donImg) values(donStorySeq.nextval, 4 ,'donStoDe105');
+insert into donImg(donImgseq, fk_donSeq, donImg) values(donStorySeq.nextval, 4 ,'donStoDe106');
+
 create sequence donImgSeq
 start with 1
 increment by 1
@@ -433,6 +442,17 @@ nomaxvalue
 nominvalue
 nocycle
 nocache;
+
+select *
+from donImg;
+
+-->> 후원 게시글 보여주는 조인 테이블 
+select S.donseq, S.subject, S.content, S.listMainImg, S.storyImg,
+       to_char(S.donDate,'yyyy-mm-dd hh24:mi:ss') as donDate, S.donDueDate, 
+       S.donStatus, S.targetAmount, S.totalPayment, S.totalSupporter, I.donImg, I.donImgseq 
+from donStory S left join donImg I
+on S.donseq = I.fk_donSeq  
+where S.donseq = 4;
 
 
 --후원결제 테이블 

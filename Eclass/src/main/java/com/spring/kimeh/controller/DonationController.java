@@ -2,6 +2,8 @@ package com.spring.kimeh.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
@@ -36,6 +38,25 @@ public class DonationController {
 			return mav;
 		}
 		
+		// 후원하기 상세페이지(스토리) 
+		@RequestMapping(value="/donation/donationStory.up")
+		public ModelAndView donationStory(ModelAndView mav, HttpServletRequest request) {
+			String donseq = request.getParameter("donseq");
+			DonStoryVO donstoryPage = service.donationStory(donseq);
+			
+			mav.addObject("donstoryPage",donstoryPage);
+			mav.setViewName("donation/donationStory.tiles1");
+			return mav;
+		}
+		
+		// 후원하기 상세페이지(후원하기) 
+		@RequestMapping(value="/donation/donationSupporter.up")
+		public ModelAndView donationSupporter(ModelAndView mav) {
+			
+			
+			mav.setViewName("donation/donationSupporter.tiles1");
+			return mav;
+		}
 		
 		
 		
