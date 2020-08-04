@@ -23,7 +23,7 @@
 	
 	// 강의목록으로 이동
 	function goLectureList() {
-		location.href="<%=ctxPath%>/lectureList.up";
+		location.href="<%=ctxPath%>/lecture/lectureList.up";
 	}
 
 <%--

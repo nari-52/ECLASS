@@ -25,7 +25,7 @@ $(document).ready(function(){
 function goSearch() {
 	var frm = document.searchFrm;
 	frm.method = "GET";
-	frm.action = "<%=ctxPath%>/lectureList.up";
+	frm.action = "<%=ctxPath%>/lecture/lectureList.up";
 	frm.submit();
 } // end of function goSearch()-------------------------
 

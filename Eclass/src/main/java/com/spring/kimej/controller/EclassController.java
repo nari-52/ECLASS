@@ -23,23 +23,37 @@ public class EclassController {
 	private InterEclassService service;
 	
 	// 강의 목록 페이지 보여주기 (차수,제목)
-	@RequestMapping(value="/lectureList.up")
+	@RequestMapping(value="/lecture/lectureList.up")
 	public ModelAndView lectureList(ModelAndView mav) {		
 		mav.setViewName("lecture/lectureList.tiles1");		
 		return mav;
 	}
 	
 	// 강의 상세 페이지 보여주기 (유튜브영상, 댓글)
-	@RequestMapping(value="/lectureDetail.up")
+	@RequestMapping(value="/lecture/lectureDetail.up")
 	public ModelAndView lectureDetail(ModelAndView mav) {		
 		mav.setViewName("lecture/lectureDetail.tiles1");		
 		return mav;
 	}
 	
 	// 시험 등록 페이지 보여주기 (교수가 시험 게시글 쓰는 것)
-	@RequestMapping(value="/examRegister.up")
+	@RequestMapping(value="/exam/examRegister.up")
 	public ModelAndView examRegister(ModelAndView mav) {		
 		mav.setViewName("exam/examRegister.tiles1");		
+		return mav;
+	}
+	
+	// 시험 등록 페이지 !!완료!! 보여주기 (교수가 시험 게시글 쓰는 것)
+	@RequestMapping(value="/exam/examRegisterEnd.up")
+	public ModelAndView examRegisterEnd(ModelAndView mav) {		
+		mav.setViewName("exam/examRegister.tiles1");		
+		return mav;
+	}
+	
+	// 시험 출제 페이지 보여주기 (교수가 시험 게시글 쓰는 것)
+	@RequestMapping(value="/exam/examWrite.up")
+	public ModelAndView examWrite(ModelAndView mav) {		
+		mav.setViewName("exam/examWrite.tiles1");		
 		return mav;
 	}
 	
