@@ -17,7 +17,7 @@
 	$(document).ready(function(){
 		
 		// === jQuery UI 의 datepicker === //
-		$("#datepicker").datepicker({
+		$(".datepicker").datepicker({
 			dateFormat: 'yy-mm-dd'  //Input Display Format 변경
 			,showOtherMonths: true   //빈 공간에 현재월의 앞뒤월의 날짜를 표시
 			,showMonthAfterYear:true //년도 먼저 나오고, 뒤에 월 표시
@@ -35,7 +35,7 @@
 		});                    
             
 		//초기값을 오늘 날짜로 설정
-		$('#datepicker').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)
+		$('.datepicker').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)
 		
 		// === 전체 datepicker 옵션 일괄 설정하기 ===  
 		//     한번의 설정으로 $("#fromDate"), $('#toDate')의 옵션을 모두 설정할 수 있다.
@@ -85,16 +85,22 @@
 	<div id="register-title">강의 등록</div>
 	
 	<form id="registerFrm" name="registerFrm">
-		<span id="inputTitle" style="margin-right: 10px;">강의영상</span><input type="text" name="lecLink" style="height: 40px; width: 1000px;" />
+		<span id="inputTitle" style="margin-right: 10px;">강의 제목</span><input type="text" name="lecTitle" style="width: 930px;">
 		<br><br>
-		<span id="inputDate" style="margin-right: 10px;">시청 시작 일자</span><input type="text" id="datepicker" name="lecStartday"/>
-		<span id="inputDate" style="margin-right: 10px;">시청 마감 일자</span><input type="text" id="datepicker" name="lecEndday"/>
+		<span id="inputTitle" style="margin-right: 10px;">강의 영상 주소</span>
+		<br>
+		<input type="text" name="lecLink" style="height: 200px; width: 1000px;" />
+		<br><br>
+		<span id="inputDate" style="margin-right: 10px;">시청 시작 일자</span><input type="text" class="datepicker" name="lecStartday"/>
+		<br><br>
+		<span id="inputDate" style="margin-right: 10px;">시청 마감 일자</span><input type="text" class="datepicker" name="lecEndday"/>
 		<br><br><div>--------------------- 여기밑에부터 hidden ---------------------</div><br>
 		<span style="margin-right: 10px;">교과목시퀀스</span><input type="text" name="subSeq" />
 	</form>
 	
 	<div id="buttons">
-		<button type="button" onclick="goSubmit();">다음</button>
+		<button type="button" onclick="goSubmit();">등록</button>
+		<button type="reset">취소</button>
 	</div>
 	
 	<div style="clear: both; margin-bottom: 50px;"></div>

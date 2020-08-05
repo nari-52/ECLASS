@@ -30,7 +30,7 @@ public class ExamController {
 	// 시험 출제 페이지 보여주기 (교수가 시험 게시글 쓰는 것)
 	@RequestMapping(value="/exam/examRegister.up")
 	public ModelAndView examRegister(ModelAndView mav) {		
-		mav.setViewName("exam/examRegister.tiles1");		
+		mav.setViewName("exam/examRegister.tiles2");		
 		return mav;
 	}
 	
@@ -52,10 +52,10 @@ public class ExamController {
 		int n = service.exam_insert(paraMap);
 		
 		if (n>0) {
-			mav.setViewName("exam/examWrite.tiles1"); // 교수 마이페이지로 수정
+			mav.setViewName("exam/examWrite.tiles2"); // 교수 마이페이지로 수정
 		}
 		else {
-			mav.setViewName("exam/examRegister.tiles1");
+			mav.setViewName("exam/examRegister.tiles2");
 		}
 		
 		return mav;
@@ -64,7 +64,7 @@ public class ExamController {
 	// 시험 출제 페이지 보여주기 (교수가 시험 문제랑 정답 출제하는 것)
 	@RequestMapping(value="/exam/examWrite.up")
 	public ModelAndView examWrite(ModelAndView mav) {		
-		mav.setViewName("exam/examWrite.tiles1");		
+		mav.setViewName("exam/examWrite.tiles2");		
 		return mav;
 	}
 	

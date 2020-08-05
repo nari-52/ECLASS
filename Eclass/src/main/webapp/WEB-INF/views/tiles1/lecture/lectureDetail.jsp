@@ -13,6 +13,12 @@
 	$(document).ready(function(){
 	
 		counter();
+		
+		var html = "<iframe width='1008' height='567' src='";
+			html += "https://www.youtube.com/embed/bbgdY_Sx3z8'";
+			html += "frameborder='0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen></iframe>";
+		
+		$("#lecture-youtube").html(html);
 	
 	});
 	
@@ -77,7 +83,7 @@ function goReviewListView() {
 		오리엔테이션
 	</div>
 	
-	<div id="lecture-youtube">유튜브 영상 들어온다~~<%-- 유튜브 영상이 들어오는 곳 --%></div>
+	<div id="lecture-youtube"><%-- 유튜브 영상이 들어오는 곳 --%></div>
 	
 	<button id="goList" type="button" onclick="goLectureList();">강의목록</button>
 
