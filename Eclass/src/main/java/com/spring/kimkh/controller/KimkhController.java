@@ -13,14 +13,14 @@ import com.spring.kimkh.service.InterKhService;
 @Controller
 public class KimkhController {
 
-	@Autowired //Type에 따라서 bean을 주입한다
+	@Autowired
 	private InterKhService service;
 	
-	// == #150. 파일업로드 및 다운로드를 해주는 FileManager 클래스 의존객체 주입하기 ===
-		@Autowired  // Type에 따라 알아서 Bean 을 주입해준다.
+
 		private FileManager fileManager;
 	
 	
+	// 강의를 등록하는 페이지 입니다.
 	@RequestMapping(value="/lectureInsert.up")
 	public ModelAndView lecture_insert(ModelAndView mav,HttpServletRequest request) {
 		
@@ -32,4 +32,14 @@ public class KimkhController {
 
 		return mav;
 	}
+	
+	// 교과목 목록을 보여주는 페이지 입니다. (강의 목록은 ★언지★님이 따로 만들었습니다)
+	@RequestMapping(value="/SubjectMatterList.up")
+	public ModelAndView SubjectList(ModelAndView mav,HttpServletRequest request) {
+		
+		mav.setViewName("lecture/SubjectMatterList.tiles1");
+		
+		return mav;
+	}
+	
 }

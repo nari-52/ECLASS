@@ -5,11 +5,12 @@
 
 <style>
    table#tblProdInput {border: solid gray 1px; 
-                       border-collapse: collapse; }
+                       border-collapse: collapse;  }
                        
     table#tblProdInput td {border: solid gray 1px; 
                           padding-left: 10px;
-                          height: 50px; }
+                          height: 50px; 
+                          }
                           
     .prodInputName {background-color: #00BCD4; 
                     font-weight: bold; }                                                 
@@ -119,96 +120,51 @@
 <div align="center" style="margin-bottom: 20px;">
 
 <div style="border: solid green 2px; width: 300px; margin-top: 20px; padding-top: 10px; padding-bottom: 10px; border-left: hidden; border-right: hidden;">       
-   <span style="font-size: 15pt; font-weight: bold;">강의등록</span>   
+   <span style="font-size: 15pt; font-weight: bold;">교과목등록</span>   
 </div>
 <br/>
 
 
 <form name="lectureFm"> 
       
-<table id="tblProdInput" style="width: 80%;">
-<tbody>
-   <tr>
-     
-      <td width="75%" align="left" style="padding-top: 1px;" rowspan="4">
-         
-         
-         <input type="text" style="width: 300px;" name="pname" class="box infoData" /><br/>
-  
-         
-          <textarea name="pcontent" rows="5" cols="60"></textarea>
-          
-          <input type="file" name="limage"/>
-       
-      </td>   
-   </tr>
 
-   <tr style="line-height: 30px;">
-      <td  class="prodInputName">강의제목</td>
-    
-   </tr>
-
-   <tr>
-      <td width="25%" class="prodInputName">강의영상</td>
-
-   <tr>
-      <td width="25%" class="prodInputName">강의이미지</td>
-  
-   </tr>
-
-   <tr style="height: 70px;">
-      <td colspan="2" align="center" style="border-left: hidden; border-bottom: hidden; border-right: hidden;">
-          <input type="button" value="다음단계" id="btnRegister" style="width: 80px;" /> 
-          &nbsp;
-          <input type="reset" value="취소"  style="width: 80px;" /> 
-          <input type="hidden" value=""/> <!-- 교과목번호시퀀스 -->
-	   		<input type="hidden" value=""/> <!-- 교수 아이디 -->  
-      </td>
-   </tr>
-</tbody>
-</table>
 
 <table id="tblProdInput" style="width: 80%;">
 <tbody>
    <tr>
-      <td width="25%" class="prodInputName" style="padding-top: 10px;">강의제목</td>
-      <td width="75%" align="left" style="padding-top: 1px;" rowspan="4">
+      <td width="25%" class="prodInputName" style="padding-top: 10px; color:white;">이수구분</td>
+      
+      <td width="75%" align="left" style="padding-top: 1px;" >
          <select name="pcategory_fk" class="infoData">
             <option value="">:::선택하세요:::</option>
             
                <option value="100000">전공</option>
                <option value="200000">교양</option>
                <option value="300000">일반</option>
-         </select><br/>
+         </select>
          
-         <input type="text" style="width: 300px;" name="pname" class="box infoData" /><br/>
-  
-         
-          <textarea name="pcontent" rows="5" cols="60"></textarea>
-          
-          <input type="file" name="limage"/>
        
       </td>   
    </tr>
 
    <tr style="line-height: 30px;">
-      <td  class="prodInputName">교과목명</td>
-    
+      <td  class="prodInputName" style="color:white;">교과목명</td>
+    	<td><input type="text" style="width: 300px;" name="pname" class="box infoData" /></td>
    </tr>
 
    <tr>
-      <td width="25%" class="prodInputName">과목소개</td>
-
+      <td width="25%" class="prodInputName" style="color:white;">과목소개</td>
+		<td   > <textarea name="pcontent" rows="5" cols="60"></textarea></td>
    <tr>
-      <td width="25%" class="prodInputName">강의이미지</td>
-  
+      <td width="25%" class="prodInputName" style="color:white;">교과목이미지</td>
+  		<td> <input type="file" name="limage"/></td>
    </tr>
 
    <tr style="height: 70px;">
       <td colspan="2" align="center" style="border-left: hidden; border-bottom: hidden; border-right: hidden;">
-          <input type="button" value="다음단계" id="btnRegister" style="width: 80px;" /> 
+          <input type="button" value="다음단계" id="btnRegister" style="width: 80px; color:black; font-weight:bold;" /> 
           &nbsp;
-          <input type="reset" value="취소"  style="width: 80px;" /> 
+          <input type="reset" value="취소"  style="width: 80px; color:black; font-weight:bold;" /> 
           <input type="hidden" value=""/> <!-- 강의차수시퀀스 -->
 	   		<input type="hidden" value=""/> <!-- 교과목번호 시퀀스 -->  
       </td>
