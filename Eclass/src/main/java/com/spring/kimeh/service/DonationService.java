@@ -26,8 +26,8 @@ public class DonationService implements InterDonationService {
 	
 	//후원 스토리 보여주기 
 	@Override
-	public DonStoryVO donationStory(String donseq) {
-		DonStoryVO donstoryPage = dao.donationStory(donseq);
+	public List<DonStoryVO> donationStory(String donseq) {
+		List<DonStoryVO> donstoryPage = dao.donationStory(donseq);
 		return donstoryPage;
 	}
 }

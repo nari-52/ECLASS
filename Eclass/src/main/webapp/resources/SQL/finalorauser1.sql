@@ -21,28 +21,32 @@ drop table eclass_member;
 
 -- 회원정보 테이블
 create table eclass_member
-( userid                    varchar2(50)   not null     -- 아이디
-, name                      varchar2(30)   not null     -- 성명
-, pwd                       varchar2(200)   not null    -- 비밀번호 (SHA-256 암호화 대상)
-, identity                  number(1) default 1         -- 회원 구분 (학생 1, 교수 2, 관리자 3)
-, university                varchar2(100)   not null    -- 대학명
-, major                     varchar2(100)   not null    -- 학과명
-, student_num               varchar2(100)               -- 학번 (학생만 not null)
-, email                     varchar2(300)   not null    -- 이메일 (AES-256 암호화/복호화 대상)
-, mobile                    varchar2(200)     not null    -- 핸드폰
+( userid                    varchar2(50)     not null     -- 아이디
+, name                      varchar2(30)     not null     -- 성명
+, pwd                       varchar2(200)    not null     -- 비밀번호 (SHA-256 암호화 대상)
+, identity                  number(1)        default 1    -- 회원 구분 (학생 1, 교수 2, 관리자 3)
+, university                varchar2(100)    not null     -- 대학명
+, major                     varchar2(100)    not null     -- 학과명
+, student_num               varchar2(100)                 -- 학번 (학생만 not null)
+, email                     varchar2(300)    not null     -- 이메일 (AES-256 암호화/복호화 대상)
+, mobile                    varchar2(200)    not null    -- 핸드폰
 , postcode                  varchar2(5)                 -- 우편번호
 , address                   varchar2(200)               -- 주소
 , detailaddress             varchar2(200)               -- 상세주소
 , extraaddress              varchar2(200)               -- 참고항목
-, point                     number default 0            -- 포인트
+, point                     number default 0            -- 포인트 
 , registerday               date default sysdate        -- 가입일자
-, status                    number(1) default 1         -- 회원상태   1:사용가능(가입중) / 0:사용불능(탈퇴)
+, status                    number(1) default 1         -- 회원상태   1:사용가능(가입중) / 0:사용불능(탈퇴) 
 , last_login_date           date default sysdate        -- 마지막 로그인 날짜
-, pwd_change_date           varchar2(255)               -- 파일이름(WAS 저장용)
+, pwd_change_date           date default sysdate        -- 마지막 비밀번호 변경 날짜
+, filename                  varchar2(255)               -- 파일이름(WAS 저장용)
 , orgfilename               varchar2(255)               -- 파일이름 (진짜이름)
 , constraint PK_eclass_member_userid primary key (userid)
 , constraint CK_eclass_member_status check(status in(0,1))
 );
+
+alter table eclass_member add (filename varchar2(255));
+alter table eclass_member modify (pwd_change_date date default sysdate);
 
 select *
 from eclass_member;
@@ -94,6 +98,9 @@ create table lecture_tbl
 ,constraint PK_lecture_tbl_lecSeq PRIMARY KEY (lecSeq)
 ,constraint FK_lecture_tbl_subSeq foreign key(fk_subSeq) references subject_tbl(subseq)
 );
+
+alter table lecture_tbl add (lecTitle varchar2(50) not null);
+commit;
 
 create sequence seq_lecSeq
 start with 1
@@ -344,6 +351,9 @@ create table question_board
 ,constraint  CK_question_board check( status in(0,1) )
 );
 
+alter table free_board drop COLUMN commentCount;
+alter table question_board add (commentCount number default 0);
+commit;
 -- Q&A게시판 시퀀스
 create sequence question_seq
 start with 1
@@ -390,6 +400,12 @@ values(donStorySeq.nextval, '인도 아이들에게 새로운 꿈을..!', '모�
 insert into donStory(donseq, subject, content, listMainImg, storyImg, donCnt, donDate, donDueDate, donStatus, targetAmount,totalPayment,totalSupporter)
 values(donStorySeq.nextval, '아프리카에 일어나는 흔한 일은..', '죽음과 굶주림에 직면한 아프리카 사람들과 함께 해주세요', 'donMainImg03.jpg', 'storyImg03.jpg', default, default, to_date('2020-08-30 18:00:00' , 'yyyy-mm-dd hh24:mi:ss'),default,1000000,655500,30);
 
+insert into donStory(donseq, subject, content, listMainImg, storyImg, donCnt, donDate, donDueDate, donStatus, targetAmount,totalPayment,totalSupporter)
+values(donStorySeq.nextval, '아프리카에 일어나는 흔한 일은..', '죽음과 굶주림에 직면한 아프리카 사람들과 함께 해주세요', 'donMainImg03.jpg', 'storyImg03.jpg', default, default, to_date('2020-08-05 14:35:00' , 'yyyy-mm-dd hh24:mi:ss'),default,1000,1200,12);
+
+insert into donStory(donseq, subject, content, listMainImg, storyImg, donCnt, donDate, donDueDate, donStatus, targetAmount,totalPayment,totalSupporter)
+values(donStorySeq.nextval, '아프리카에 일어나는 흔한 일은..', '죽음과 굶주림에 직면한 아프리카 사람들과 함께 해주세요', 'donMainImg03.jpg', 'storyImg03.jpg', default, default, to_date('2020-08-04 14:35:00' , 'yyyy-mm-dd hh24:mi:ss'),default,2000,1200,12);
+
 COMMIT;
 rollback;
 
@@ -428,18 +444,18 @@ create table donImg
 
 delete from donImg;
 -->> 상세스토리 DB 이미지 넣어주기  
-insert into donImg(donImgseq, fk_donSeq, donImg) values(donStorySeq.nextval, 4 ,'donStoDe101');
-insert into donImg(donImgseq, fk_donSeq, donImg) values(donStorySeq.nextval, 4 ,'donStoDe102');
-insert into donImg(donImgseq, fk_donSeq, donImg) values(donStorySeq.nextval, 4 ,'donStoDe103');
-insert into donImg(donImgseq, fk_donSeq, donImg) values(donStorySeq.nextval, 4 ,'donStoDe104');
-insert into donImg(donImgseq, fk_donSeq, donImg) values(donStorySeq.nextval, 4 ,'donStoDe105');
-insert into donImg(donImgseq, fk_donSeq, donImg) values(donStorySeq.nextval, 4 ,'donStoDe106');
+insert into donImg(donImgseq, fk_donSeq, donImg) values(donStorySeq.nextval, 4 ,'donStoDe101.jpg');
+insert into donImg(donImgseq, fk_donSeq, donImg) values(donStorySeq.nextval, 4 ,'donStoDe102.jpg');
+insert into donImg(donImgseq, fk_donSeq, donImg) values(donStorySeq.nextval, 4 ,'donStoDe103.jpg');
+insert into donImg(donImgseq, fk_donSeq, donImg) values(donStorySeq.nextval, 4 ,'donStoDe104.jpg');
+insert into donImg(donImgseq, fk_donSeq, donImg) values(donStorySeq.nextval, 4 ,'donStoDe105.jpg');
+insert into donImg(donImgseq, fk_donSeq, donImg) values(donStorySeq.nextval, 4 ,'donStoDe106.jpg');
 
 create sequence donImgSeq
 start with 1
 increment by 1
 nomaxvalue
-nominvalue
+nominvalue 
 nocycle
 nocache;
 
@@ -448,11 +464,33 @@ from donImg;
 
 -->> 후원 게시글 보여주는 조인 테이블 
 select S.donseq, S.subject, S.content, S.listMainImg, S.storyImg,
-       to_char(S.donDate,'yyyy-mm-dd hh24:mi:ss') as donDate, S.donDueDate, 
-       S.donStatus, S.targetAmount, S.totalPayment, S.totalSupporter, I.donImg, I.donImgseq 
+       to_char(S.donDate,'yyyy-mm-dd hh24:mi:ss') as donDate, to_char(S.donDueDate,'yyyy-mm-dd hh24:mi:ss') as donDueDate, 
+       S.donStatus, S.targetAmount, S.totalPayment, S.totalSupporter, I.donImg, I.donImgseq ,
+       ceil(donDueDate - donDate) as dDay
+from donStory S left join donImg I
+on S.donseq = I.fk_donSeq 
+ORDER BY 1;
+
+commit;
+
+select S.donseq, S.subject, S.content, S.listMainImg, S.storyImg, S.donDate, S.donDueDate,
+       S.donStatus, S.targetAmount, S.totalPayment, S.totalSupporter, I.donImg, I.donImgseq,
+       ceil(donDueDate - donDate) as dDay
 from donStory S left join donImg I
 on S.donseq = I.fk_donSeq  
-where S.donseq = 4;
+where S.donseq = 11;
+
+
+-- 몇일 몇시간 남음.
+select donDueDate - donDate
+from donStory;
+
+-- 날짜 - 날짜 = 일수(숫자) // 날짜 - 날짜 (시분초 동일)
+select to_date( to_char(donDueDate, 'yyyy-mm-dd') , 'yyyy-mm-dd' ) - to_date(to_char(donDate,'yyyy-mm-dd'))
+from donStory;
+
+select ceil(donDueDate - donDate)
+from donStory;
 
 
 --후원결제 테이블 
@@ -469,6 +507,14 @@ create table donPayment
 ,constraint CK_donPayment_status check( noName in(0,1) )
 ,constraint CK_noDonpmt_status check( noDonpmt in(0,1) )
 );
+commit;
+
+insert into donPayment(fk_donSeq, fk_userid, name, noName, noDonpmt, paymentDate, payment) 
+values( #{fk_donSeq} , #{fk_userid} ,#{name}, default, default, default,#{payment} ); 
+
+insert into donPayment(fk_donSeq, fk_userid, name, noName, noDonpmt, paymentDate, payment) 
+values( '4' , 'grace', '김은혜', default, default, default, '10000' ); 
+
 
 
 --------------------------------------테이블 끝-----------------------------------------------

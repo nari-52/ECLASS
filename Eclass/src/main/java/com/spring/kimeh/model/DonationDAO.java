@@ -25,8 +25,8 @@ public class DonationDAO implements InterDonationDAO{
 	
 	//후원 스토리 보여주기 
 	@Override
-	public DonStoryVO donationStory(String donseq) {
-		DonStoryVO donstoryPage = sqlsession.selectOne("donation.donationStory", donseq);
+	public List<DonStoryVO> donationStory(String donseq) {
+		List<DonStoryVO> donstoryPage = sqlsession.selectList("donation.donationStory", donseq);
 		return donstoryPage;
 	}
 }

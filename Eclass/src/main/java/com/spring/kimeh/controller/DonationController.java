@@ -1,13 +1,14 @@
 package com.spring.kimeh.controller;
 
 import java.util.List;
-
+import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.kimeh.model.DonStoryVO;
@@ -42,7 +43,7 @@ public class DonationController {
 		@RequestMapping(value="/donation/donationStory.up")
 		public ModelAndView donationStory(ModelAndView mav, HttpServletRequest request) {
 			String donseq = request.getParameter("donseq");
-			DonStoryVO donstoryPage = service.donationStory(donseq);
+			List<DonStoryVO> donstoryPage = service.donationStory(donseq);
 			
 			mav.addObject("donstoryPage",donstoryPage);
 			mav.setViewName("donation/donationStory.tiles1");
@@ -51,15 +52,33 @@ public class DonationController {
 		
 		// 후원하기 상세페이지(후원하기) 
 		@RequestMapping(value="/donation/donationSupporter.up")
-		public ModelAndView donationSupporter(ModelAndView mav) {
+		public ModelAndView donationSupporter(ModelAndView mav, HttpServletRequest request) {
 			
+			String donseq = request.getParameter("donseq");
 			
 			mav.setViewName("donation/donationSupporter.tiles1");
 			return mav;
 		}
 		
+		// 후원하기 결제페이지 (GET)
+		@RequestMapping(value="/donation/donationPayment.up")
+		public ModelAndView donationPayment(ModelAndView mav, HttpServletRequest request) {
+			
+	    	String donseq = request.getParameter("donseq");
+	    	
+	    	mav.addObject("donseq",donseq);
+			mav.setViewName("donation/donationPayment.tiles1");
+			return mav;
+		}
 		
-		
+		// 후원하기 결제페이지 (POST)
+		@RequestMapping(value="/donation/donationPaymentEnd.up" , method= {RequestMethod.POST})
+		public ModelAndView donationPaymentEnd(ModelAndView mav, HttpServletRequest request){
+			
+			
+			mav.setViewName("donation/donationPaymentEnd.tiles1");
+			return mav;
+		}
 		
 		
 		

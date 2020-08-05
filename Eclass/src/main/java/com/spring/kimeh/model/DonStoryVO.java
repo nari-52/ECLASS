@@ -19,12 +19,14 @@ public class DonStoryVO {
 	private String fk_donSeq; //후원글번호 
 	private String donImg; 
 	
+	private String dDay; //후원 종료날짜 
+	
 	
 	public DonStoryVO() {};
 	
 	public DonStoryVO(String donseq, String subject, String content, String listMainImg, String storyImg, String donCnt,
 			String donDate, String donDueDate, String donStatus, String targetAmount, String totalPayment,
-			String totalSupporter) {
+			String totalSupporter, String donImgseq, String fk_donSeq, String donImg, String dDay) {
 		super();
 		this.donseq = donseq;
 		this.subject = subject;
@@ -38,8 +40,21 @@ public class DonStoryVO {
 		this.targetAmount = targetAmount;
 		this.totalPayment = totalPayment;
 		this.totalSupporter = totalSupporter;
+		this.donImgseq = donImgseq;
+		this.fk_donSeq = fk_donSeq;
+		this.donImg = donImg;
+		this.dDay = dDay;
 	}
+
 	
+	public String getdDay() {
+		return dDay;
+	}
+
+	public void setdDay(String dDay) {
+		this.dDay = dDay;
+	}
+
 	public String getDonseq() {
 		return donseq;
 	}

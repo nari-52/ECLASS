@@ -16,9 +16,9 @@
 	</select>
 	
 	<select id="donationStory" resultType="com.spring.kimeh.model.DonStoryVO" parameterType="String">
-		select S.donseq, S.subject, S.content, S.listMainImg, S.storyImg,
-	      	   to_char(S.donDate,'yyyy-mm-dd hh24:mi:ss') as donDate, S.donDueDate, 
-	       	   S.donStatus, S.targetAmount, S.totalPayment, S.totalSupporter, I.donImg, I.donImgseq 
+		select S.donseq, S.subject, S.content, S.listMainImg, S.storyImg, S.donDate, S.donDueDate,
+      		   S.donStatus, S.targetAmount, S.totalPayment, S.totalSupporter, I.donImg, I.donImgseq,
+     		   ceil(donDueDate - donDate) as dDay 
 		from donStory S left join donImg I
 		on S.donseq = I.fk_donSeq  
 		where S.donseq = #{donseq}

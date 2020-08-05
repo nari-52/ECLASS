@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="<%= ctxPath %>/css/style.css" />
-<title>donationSupport.jsp</title>
+<title>donationSupporter</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script> 
 <style type="text/css">
     .Mycontainer{
@@ -173,8 +173,8 @@
         <h2 style="margin-bottom: 1px; color:#00BCD4">후원하기</h2>
         <div class="contentLine" align="center"></div>
         <div class="contentNavi">
-            <span class="contentNaviFont StoryNaviFnt"><a href="#스토리페이지">스토리</a></span>|
-            <span class="contentNaviFont SopportNaviFnt"><a href="#서포터페이지"> 후원자 </a></span>
+            <span class="contentNaviFont StoryNaviFnt"><a href='<%= ctxPath%>/donation/donationSupporter.up?donseq=${donstoryPage[0].donseq}'>스토리</a></span>|            
+            <span class="contentNaviFont SopportNaviFnt"><a href='<%= ctxPath%>/donation/donationSupporter.up?donseq=${donstoryPage[0].donseq}'> 후원자 </a></span>
         </div>
         
 		<div class="section" align="center">
@@ -186,6 +186,7 @@
 						<h3 align="left" style="margin: 30px 0;">현재 이 프로젝트에<br/>27명의 참여가 이루어졌습니다</h3>
                         <div align="left" class="donSopportText">
                             <div class="donSopportName">지코님이 43,000원 후원하였습니다.</div>
+                            
                             <!--<div>현재시간 - DB에 결제한 시간 -> 일수로 나옴 몇초로 바꾸기 (1분전이면 몇초전, 1분이상 분으로)</div>-->
                             <div class="donSopportName">보검님이 43,000원 후원하였습니다.</div>
                             <div class="donSopportName">익명님이 후원하였습니다.</div>
@@ -202,7 +203,7 @@
                     <div class="donInfo-table">
                     <dl style="margin: 20px 0;">
                         <dt>21일 남음</dt>
-                        <div style="border-bottom: solid 4px #00BCD4; width: 120px; padding-bottom: 10px" align="center"></div>
+                        <div style="border-bottom: solid 4px #00BCD4; width: 120px; padding-bottom: 3px" align="center"></div>
                     </dl>
 
                     <dl class="underLine">
