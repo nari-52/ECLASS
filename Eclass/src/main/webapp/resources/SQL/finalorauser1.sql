@@ -46,7 +46,7 @@ create table eclass_member
 
 select *
 from eclass_member;
-commit;
+
 
 -- 로그인 테이블
 create table login_table
@@ -82,11 +82,13 @@ nominvalue
 nocycle
 nocache;
 
+drop table lecture_tbl;
 
 -- 강의 테이블
 create table lecture_tbl
 (lecSeq number not null -- 강의차수 - 시퀀스
 ,fk_subSeq number not null -- 교과목번호 - 시퀀스
+,lecTitle varchar2(50) not null -- 강의제목
 ,lecLink varchar2(1000) -- 강의영상
 ,lecStartday date  --강의 시작일자
 ,lecEndday date  -- 강의 마감일자
@@ -209,7 +211,6 @@ nominvalue
 nocycle
 nocache;
 
-
 ---------------------------- [[ 시험 문제 테이블 ]] ----------------------------
 create table examQuestion -- 시험 문제 테이블
 (question_seq number -- 시험문제번호
@@ -220,6 +221,7 @@ create table examQuestion -- 시험 문제 테이블
 ,constraint FK_exam_exam_seq foreign key(exam_seq)
                            references exam(exam_seq)
 );
+
 
 create sequence seq_question_seq
 start with 1
@@ -417,5 +419,19 @@ create table donPayment
 
 --------------------------------------테이블 끝-----------------------------------------------
 
+drop sequence seq_subseq;
+drop sequence seq_exam_seq;
 
+insert into eclass_member(userid, name, pwd, university, major, email, mobile)
+values ('test', '테스트', 'qwer1234$', '서울대', '수학과', 'test@gmail.com', '010-1234-5678');
 
+insert into subject_tbl(subSeq, fk_userid, status, subName, subContent, subImg, writeday)
+values (seq_subseq.nextval, 'test', default, '수학', '수학', 'math.png', default);
+
+insert into exam(exam_seq, subSeq, userid, examTitle, examDate)
+values(seq_exam_seq.nextval, 1, 'test', '시험 테스트', '2020-08-20');
+
+commit;
+
+select *
+from exam;
