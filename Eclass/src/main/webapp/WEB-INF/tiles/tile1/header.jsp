@@ -74,7 +74,7 @@
 	
 }
 
-a:hover{
+a.logo:hover{
 	text-decoration: none;
 	color:black;
 }
@@ -107,7 +107,7 @@ a:hover{
 <div style=" width: 1080px;  height: 200px; margin: 0 auto; padding-top:10px;"><br>
 
 <!-- header 중앙에 표시되는 로고  -->
-<a href="<%=ctxPath%>/index.up">
+<a class="logo" href="<%=ctxPath%>/index.up">
 	<img style=" width: 250px; margin-left:405px; height: 75px; display: inline-block;" src="<c:url value="/resources/images/logo.png" />">
 </a>
 

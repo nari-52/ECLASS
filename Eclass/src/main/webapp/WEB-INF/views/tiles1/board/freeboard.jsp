@@ -19,7 +19,7 @@
 		background-color: #fafafa;
 	}
 	
-	tr,th,td{
+	table,tr,th,td{
 		border: solid 1px black;
 		border-collapse: collapse;
 		text-align: center;
@@ -57,12 +57,18 @@
 				 goSearch();
 			 }
 		 });
-			
+		
+		// 검색시 검색조건 및 검색어 값 유지시키기 
+		if(${paraMap != null}) {
+			$("#searchType").val("${paraMap.searchType}");
+			$("#searchWord").val("${paraMap.searchWord}");
+		}
+		
 	});// end of $(document).ready() -------------------------------------
 	
 
 	// 글을 보여주는 함수
-	function goView(seq){
+	function goView(free_seq){
 		 
 		 <%-- location.href="<%=ctxPath%>/view.action?seq="+seq; --%>
 
@@ -71,10 +77,10 @@
 	     //          현재 페이지 주소를 뷰단으로 넘겨준다.	 
 		 
 		 var frm = document.goViewFrm;
-		 frm.seq.value = seq;
+		 frm.free_seq.value = free_seq;
 		 
 			frm.method = "GET";
-			frm.action = "view.action";
+			frm.action = "freeboardview.up";
 			frm.submit();
 	     
 	 }// end of goView(seq) ------------------------------------
@@ -84,22 +90,24 @@
 	function goSearch() {
 			var frm = document.searchFrm;
 			frm.method = "GET";
-			frm.action = "<%= request.getContextPath()%>/list.action";
+			frm.action = "<%= request.getContextPath()%>/freeboard.up";
 			frm.submit();
 	}// end of function goSearch()-------------------------
 	 
-
+	
+	
 </script>
 
 
 <div id ="container"><br>
 <div id="wholeNotice">
+
 	<div style="text-align: center;">
-		<h3 style="color: #00BCD4; font-weight: bold;">자유게시판</h3>
+		<h2 style="color: #00BCD4; font-weight: bold;">자유게시판</h2>
 	</div>	
 	<br>
 	
-	<span style="margin-left: 40px; color: black;">Total: 7</span>
+	<span style="margin-left: 40px; color: black;">Total: ${totalCount}</span>
 	
 	<div>
 		<table style="margin: 0 auto; width: 1000px; background-color: white;">
@@ -109,70 +117,37 @@
 				<th>작성자</th>
 				<th>날짜</th>
 				<th>조회수</th>
+				<th>첨부파일</th>
 			</tr>
 			
-			<tr>
-				<td>1</td>
-				<td><a href="<%=ctxPath%>/freeboardview.up">자유게시판 게시판 테스트</a></td>
-				<td>홍길동</td>
-				<td>2020.07.22</td>
-				<td>200</td>
-			</tr>
-			
-			<tr>
-				<td>1</td>
-				<td><span class="title">자유게시판 게시판 테스트</span></td>
-				<td>홍길동</td>
-				<td>2020.07.22</td>
-				<td>200</td>
-			</tr>
-			
-			<tr>
-				<td>1</td>
-				<td><span class="title">자유게시판 게시판 테스트</span></td>
-				<td>홍길동</td>
-				<td>2020.07.22</td>
-				<td>200</td>
-			</tr>
-			
-			<tr>
-				<td>1</td>
-				<td><span class="title">자유게시판 게시판 테스트</span></td>
-				<td>홍길동</td>
-				<td>2020.07.22</td>
-				<td>200</td>
-			</tr>
-			
-			<tr>
-				<td>1</td>
-				<td><span class="title">자유게시판 게시판 테스트</span></td>
-				<td>홍길동</td>
-				<td>2020.07.22</td>
-				<td>200</td>
-			</tr>
-			
-			<tr>
-				<td>1</td>
-				<td><span class="title">자유게시판 게시판 테스트</span></td>
-				<td>홍길동</td>
-				<td>2020.07.22</td>
-				<td>200</td>
-			</tr>
-			
-			<tr>
-				<td>1</td>
-				<td><span class="title">자유게시판 게시판 테스트</span></td>
-				<td>홍길동</td>
-				<td>2020.07.22</td>
-				<td>200</td>
-			</tr>
-			
+				<c:forEach var="boardList" items="${freeboardList}" varStatus="status">
+					<tr>
+						<td align="center">${boardList.free_seq}</td>
+						<td align="left"><span class="title" onclick="goView('${boardList.free_seq}')">${boardList.title}</span></td>
+						<td align="center">${boardList.name}</td>
+						<td align="center">${boardList.writedate}</td>
+						<td align="center">${boardList.viewcount}</td>
+						<c:if test="${not empty boardList.fileName}">
+							<td align="center">파일있음</td>
+						</c:if>
+						
+						<c:if test="${empty boardList.fileName}">
+							<td></td>
+						</c:if>
+				</c:forEach>
+			</tr>	
 		</table>
+		
+		<!-- 페이지바  -->
+		<div align="center" style="width: 60%; margin: 20px auto;">
+			${pageBar}
+		</div>
+			
 	</div>
 	
 	<form name="searchFrm" style="margin-top: 20px; margin-left: 40px;">
 		<select name="searchType" id="searchType" style="height: 26px;">
-			<option value="subject">글제목</option>
+			<option value="title">글제목</option>
 			<option value="name">글쓴이</option>
 		</select>
 		<input type="text" name="searchWord" id="searchWord" size="40" autocomplete="off" /> 
@@ -186,10 +161,12 @@
 	</div>	
 	<br>
 	
-	<div style="text-align: center;">
-		<span style="color: #00BCD4; font-size: 16pt; font-weight: bold;"> 1 2 3 4 5 6 7 8 9 10 다음</span>
-	</div>
-	<br>
+	<form name="goViewFrm">
+		<input type="hidden" name="free_seq"/>
+		<%-- <input type="hidden" name="gobackURL" value="${gobackURL}"/> --%>
+	</form>
+	
+	
 	
 </div>
 </div>
