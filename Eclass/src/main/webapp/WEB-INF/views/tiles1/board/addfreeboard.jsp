@@ -119,7 +119,7 @@
 	         // 폼(form) 을 전송(submit)
 	         var frm = document.addFrm;
 	         frm.method = "POST";
-	         frm.action = "<%= ctxPath%>/addFreeboardEnd.action";
+	         frm.action = "<%= ctxPath%>/addfreeboardEnd.up";
 	         frm.submit();
 	      });
 	   
@@ -149,12 +149,17 @@
 				
 				<tr>
 					<th>작성자</th>
-					<td><input type="text"/></td>
+					<td><input type="text" name="name"/></td>
+				</tr>
+				
+				<tr>
+					<th>유저id</th>
+					<td><input type="text" name="fk_userid"/></td>
 				</tr>
 				
 				<tr>
 					<th>첨부파일</th>
-					<td><input type="file"/></td>
+					<td><input type="file" name="attach"/></td>
 				</tr>
 				
 				<tr>
@@ -165,10 +170,10 @@
 				<tr>
 					<th>암호</th>
 					<td><input type="text" id="password" name="password"/></td>
-				</tr>
-				
+				</tr>			
 			</table>
 		</form>
+		
 		</div>
 		
 		<br>
