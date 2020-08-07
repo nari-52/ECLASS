@@ -13,7 +13,12 @@
 	margin: 0 20px;
 	height: 500px;
 }
-
+#changeG{
+	border: solid 0px red;
+	background-color: #fafafa;
+	margin: 20px;
+	font-weight: bold;
+}
 </style>
 <script type="text/javascript">
 
@@ -23,7 +28,29 @@
 	});
 
 	function func_changeG(){
-		
+		$.ajax({
+			url:"/eclass/studentP.up",
+			success:function(text){
+				
+				var html = "<div id='changeG'>";
+					html +="<span>OOO학생 학점 수정</span><br/>";
+					
+					html +="A&nbsp;&nbsp;&nbsp;B&nbsp;&nbsp;&nbsp;C&nbsp;&nbsp;&nbsp;D&nbsp;&nbsp;&nbsp;F<br/>";
+					html +="<input type='radio' name='grade'/>&nbsp;&nbsp;";
+					html +="<input type='radio' name='grade'/>&nbsp;&nbsp;";
+					html +="<input type='radio' name='grade'/>&nbsp;&nbsp;";
+					html +="<input type='radio' name='grade'/>&nbsp;&nbsp;";
+					html +="<input type='radio' name='grade'/><br/>";
+					
+					html +="<button type='button'>수정하기</button>";
+					html +="</div>";
+				
+				$("#changeG").html(html);		   
+			},
+			error: function(request, status, error){
+				alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+			}
+		});
 	}
 	
 	function go_changeA() {
@@ -67,6 +94,7 @@
 		</table>
 		<button type="button" onclick="go_changeA();">출석관리</button>
 		<button type="button" onclick="func_changeG();">학점수정</button>
-	</div>  
+		<div id="changeG"></div>
+	</div> 
 </body>
 </html>

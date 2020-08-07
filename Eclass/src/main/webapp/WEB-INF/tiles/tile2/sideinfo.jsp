@@ -15,6 +15,7 @@
 	  display: inline-block;
 	  border: solid 0px blue;
 	  float: left;
+	  height: 500px;
 	}
 	
 	.sidenav a {
@@ -45,7 +46,7 @@
 	<div class="sidenav">
 	  <a href="<%=ctxPath%>/mypageMainP.up">마이페이지</a>
 	  <a href="<%=ctxPath%>/studentP.up">학생관리</a>
-	  <a href="<%=ctxPath%>/">시험제출</a>
+	  <a href="<%=ctxPath%>/">시험출제</a>
 	  <a href="<%=ctxPath%>/">강의등록</a>
 	  <a href="<%=ctxPath%>/">정보수정</a>
 	</div>
