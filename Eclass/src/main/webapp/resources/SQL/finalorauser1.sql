@@ -502,6 +502,7 @@ create table donPayment
 ,noDonpmt       number(1) default 0            -- 금액 비공개(Flag)
 ,paymentDate    date default sysdate not null  -- 결제날짜 
 ,payment        number               not null  -- 결제금액 
+,point          number default 0               -- 포인트 사용액             
 ,constraint FK_donPayment_fk_donSeq foreign key(fk_donSeq) references donStory(donseq)
 ,constraint FK_donPayment_fk_member_num foreign key(fk_userid) references eclass_member(userid)
 ,constraint CK_donPayment_status check( noName in(0,1) )
@@ -509,13 +510,83 @@ create table donPayment
 );
 commit;
 
+alter table donPayment add (point number default 0);
+
+select *
+from donPayment;
+
 insert into donPayment(fk_donSeq, fk_userid, name, noName, noDonpmt, paymentDate, payment) 
 values( #{fk_donSeq} , #{fk_userid} ,#{name}, default, default, default,#{payment} ); 
 
-insert into donPayment(fk_donSeq, fk_userid, name, noName, noDonpmt, paymentDate, payment) 
-values( '4' , 'grace', '김은혜', default, default, default, '10000' ); 
+insert into donPayment(fk_donSeq, fk_userid, name, noName, noDonpmt, paymentDate, payment, point) 
+values( '4' , 'Grace', '김은혜', default, default, default, '10000', default ); 
+
+insert into donPayment(fk_donSeq, fk_userid, name, noName, noDonpmt, paymentDate, payment, point) 
+values( '4' , 'kh123', '김건형', default, default, default, '20000', 5000); 
+
+-->> 회원가입 insert 
+insert into eclass_member(userid, name, pwd, university, major, email, mobile)
+values ('Grace', '김은혜', 'asdf1234!', '서울대', '수학과', 'milkim0907@gmail.com', '010-1234-5678');
+
+insert into eclass_member(userid, name, pwd, university, major, email, mobile, point)
+values ('kh123', '김건형', 'asdf1234!', '서울대', '심리학과', 'k2001mik@gmail.com', '010-2083-8287', 2000);
+
+insert into eclass_member(userid, name, pwd, university, major, email, mobile, point)
+values ('kh123', '김건형', 'asdf1234!', '서울대', '심리학과', 'k2001mik@gmail.com', '010-2083-8287', 2000);
 
 
+commit;
+rollback;
+
+select *
+from eclass_member;
+
+-- 포인트 셀렉트(후원 결제시 가능 사용액 보여주기) 
+select point
+from eclass_member
+where userid = #{fk_userid}; 
+
+select point
+from eclass_member
+where userid = 'kh123'; 
+
+-- == 결제 시 == 
+-- 결제금액 (insert) 
+insert into donPayment(fk_donSeq, fk_userid, name, noName, noDonpmt, paymentDate, payment, point) 
+values( #{fk_donSeq} , #{fk_userid} ,#{name}, default, default, default,#{payment}, default ); 
+
+insert into donPayment(fk_donSeq, fk_userid, name, noName, noDonpmt, paymentDate, payment, point) 
+values( '4' , 'Grace', '김은혜', default, default, default, '10000', default ); 
+
+
+-- 포인트 차감 (update)
+update eclass_member set point = point - ? --(사용한 포인트만큼)
+where userid = 'kh123'; 
+
+update eclass_member set point = point - to_number(#{point})
+where userid = #{fk_userid}
+
+
+-- 포인트 업데이트 10%
+update eclass_member set point = point + ? --(결제금액의 10%)
+where userid = 'Grace'; 
+
+update eclass_member set point = point + to_number(#{payment}*0.1) 
+where userid = #{fk_userid}; 
+
+update eclass_member set point = point + (100*0.1)
+where userid = 'Grace'; 
+
+-- 후원상세페이지 보여줄 때 (이름, 금액)
+select fk_donSeq, fk_userid, name, noName, noDonpmt, paymentDate, payment, point,
+      (payment+point) as totalpayment
+from donPayment
+where fk_userid = #{fk_userid}; 
+
+select fk_donSeq, fk_userid, name, noName, noDonpmt, paymentDate, payment, point,
+      (payment+point) as totalpayment
+from donPayment
+where fk_userid = 'kh123'; 
 
 --------------------------------------테이블 끝-----------------------------------------------
 

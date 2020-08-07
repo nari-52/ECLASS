@@ -87,7 +87,7 @@
     	line-height: 23px;
     }
 	.donInfo-div{
-		background-color: white;
+		background-color: #fcfcfc;
 		text-align: left;
 		line-height: 30px;
 		border-top : solid 1px #f4f4f4;
@@ -194,7 +194,7 @@
         <h2 style="margin-bottom: 1px; color:#00BCD4 ">후원하기</h2>
         <div class="contentLine" align="center"></div>
         <div class="contentNavi">
-            <span class="contentNaviFont StoryNaviFnt"><a href='<%= ctxPath%>/donation/donationSupporter.up?donseq=${donstoryPage[0].donseq}'>스토리</a></span>|            
+            <span class="contentNaviFont StoryNaviFnt"><a href='<%= ctxPath%>/donation/donationStory.up?donseq=${donstoryPage[0].donseq}'>스토리</a></span>|            
             <span class="contentNaviFont SopportNaviFnt"><a href='<%= ctxPath%>/donation/donationSupporter.up?donseq=${donstoryPage[0].donseq}'> 후원자 </a></span>
         </div>
 		<div class="section" align="center">
@@ -273,7 +273,7 @@
 					</c:if>
 				</div>
 				<c:if test="${not empty donstoryPage}">
-                <div class="donInfo-div" style="border: solid 1px red; padding: 45px; color:gray" > 
+                <div class="donInfo-div" style="border: solid 0px red; padding: 45px; color:gray" > 
                 	${donstoryPage[0].content} <br/>
 				        서포터분들과 봉사자들의 따뜻한 마음 덕분에 경남 산청 참포도아동센터에서의 벽화활동을 무사히 마칠 수 있었습니다. <br/><br/>
 				        서포터분들의 후원금은 2박 3일간 진행된 벽화봉사에 필요했던 벽화물품을 구입하고, 봉사자분들의 식비에 일부 지원이 되었습니다. <br/>

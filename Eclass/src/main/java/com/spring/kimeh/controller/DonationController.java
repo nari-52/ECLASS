@@ -1,9 +1,13 @@
 package com.spring.kimeh.controller;
 
+import java.util.HashMap;
 import java.util.List;
-import java.util.Date;
-import javax.servlet.http.HttpServletRequest;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.apache.poi.ss.formula.functions.Index;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
@@ -11,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.spring.kimeh.model.DonPaymentVO;
 import com.spring.kimeh.model.DonStoryVO;
 import com.spring.kimeh.service.InterDonationService;
+import com.spring.nari.model.MemberVO;
 
 //=== 컨트롤러 선언 === 
 @Component
@@ -56,16 +62,20 @@ public class DonationController {
 			
 			String donseq = request.getParameter("donseq");
 			
+			mav.addObject("donseq",donseq);
 			mav.setViewName("donation/donationSupporter.tiles1");
 			return mav;
 		}
 		
 		// 후원하기 결제페이지 (GET)
 		@RequestMapping(value="/donation/donationPayment.up")
-		public ModelAndView donationPayment(ModelAndView mav, HttpServletRequest request) {
+		public ModelAndView requiredLogin_donationPayment(HttpServletRequest request,HttpServletResponse response, ModelAndView mav) {
 			
-	    	String donseq = request.getParameter("donseq");
-	    	
+			String donseq = request.getParameter("donseq");	//조회하고자 하는 글번호 
+			HttpSession session = request.getSession();
+			MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
+			request.setAttribute("loginuser", loginuser);
+						
 	    	mav.addObject("donseq",donseq);
 			mav.setViewName("donation/donationPayment.tiles1");
 			return mav;
@@ -73,12 +83,31 @@ public class DonationController {
 		
 		// 후원하기 결제페이지 (POST)
 		@RequestMapping(value="/donation/donationPaymentEnd.up" , method= {RequestMethod.POST})
-		public ModelAndView donationPaymentEnd(ModelAndView mav, HttpServletRequest request){
+		public String pointPlus_donationPaymentEnd(HashMap<String,String> paraMap,HttpServletRequest request, DonPaymentVO donpaymentvo) throws Throwable{
 			
+			HttpSession session = request.getSession();
+			MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
+			request.setAttribute("loginuser", loginuser);	
+								    	
+			//결제하기 (insert) + 포인트 차감 (update)
+			int n = service.donationPayment(donpaymentvo);	
 			
-			mav.setViewName("donation/donationPaymentEnd.tiles1");
-			return mav;
+			//포인트 주기 (update)
+			paraMap.put("userid", donpaymentvo.getFk_userid());	
+	    	if(n==1) { //결제가 성공되어지면 -> 후원서포터 페이지로 이동 
+	    		paraMap.put("pointPlus", String.valueOf(((Integer.parseInt(donpaymentvo.getPayment())*0.1)))); // after Advice용 (글을 작성하면 포인트 100을 주기로 한다)
+	    		return "redirect:/donation/donationSupporter.up";				   		
+	    	}
+	    	else { //글쓰기 실패시 
+	    		paraMap.put("pointPlus", "0");
+	    		return "redirect:/donation/donationPayment.up";
+	    	}				
 		}
+		
+		
+		
+		
+		
 		
 		
 		
