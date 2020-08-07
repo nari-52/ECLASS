@@ -71,12 +71,21 @@
 	/* border: solid 1px red;  */
 	margin-right: 20px;
 	cursor: pointer;
+	font-weight: bold;
 	
 }
 
-a.logo:hover{
+.logo:hover{
 	text-decoration: none;
 	color:black;
+	cursor: pointer;
+}
+
+.logo{
+	width: 250px; 
+	margin-left:405px; 
+	height: 75px; 
+	display: inline-block;
 }
 
 .moveColor {
@@ -84,6 +93,8 @@ a.logo:hover{
 	font-weight: bold; 
 	background-color: #00BCD4;
 }
+
+
 
 </style>
 
@@ -107,16 +118,22 @@ a.logo:hover{
 <div style=" width: 1080px;  height: 200px; margin: 0 auto; padding-top:10px;"><br>
 
 <!-- header 중앙에 표시되는 로고  -->
-<a class="logo" href="<%=ctxPath%>/index.up">
-	<img style=" width: 250px; margin-left:405px; height: 75px; display: inline-block;" src="<c:url value="/resources/images/logo.png" />">
-</a>
+	<img class="logo" onclick="javascript:location.href='<%=ctxPath%>/index.up'" src="<c:url value="/resources/images/logo.png" />">
 
 <!-- 우측상단 미니메뉴바  -->
+<span class="minimenu"><a href="<%=ctxPath%>/login/logout.up">로그아웃</a></span>
 <span class="minimenu"><a href="<%=ctxPath%>/login/login.up">로그인</a></span>
 <span class="minimenu"><a>회원가입</a></span>
 <span class="minimenu"><a>1:1상담</a></span>
-<span class="minimenu"><a href="admin.up">관리자</a></span>
-	
+<span class="minimenu"><a href="admin.up">관리자</a></span><br>
+<c:if test="${sessionScope.loginuser != null}">
+
+<div style="border: solid 1px red; width: 300px; text-align: right;">
+	<span style="color: navy; font-weight: bold; font-size: 10pt;">${sessionScope.loginuser.name}</span> 님 로그인중..
+</div>
+
+</c:if>
+
 	<!-- =====================================================================  -->
 	
 	<!-- 메뉴바가 담겨져 있는 div -->
@@ -164,19 +181,23 @@ a.logo:hover{
 		  <span>마이페이지</span>
 		  <div class="dropdown-content">
 		  <!-- 학생이라면 -->
-		  <p class="downmenu"><a href="<%=ctxPath%>/mypageMainS.up">마이페이지</a></p>
-          <p class="downmenu"><a href="<%=ctxPath%>/attandS.up">출석현황</a></p>
-          <p class="downmenu"><a href="<%=ctxPath%>/gradeS.up">성적관리</a></p>
-          <p class="downmenu"><a href="<%=ctxPath%>/">정보수정</a></p>
-
+		   <c:if test="${sessionScope.loginuser.identity == 1}">
+           	 <p class="downmenu"><a href="<%=ctxPath%>/mypageMainS.up">마이페이지</a></p>
+             <p class="downmenu"><a href="<%=ctxPath%>/attandS.up">출석현황</a></p>
+             <p class="downmenu"><a href="<%=ctxPath%>/gradeS.up">성적관리</a></p>
+             <p class="downmenu"><a href="<%=ctxPath%>/">정보수정</a></p>
+          </c:if>
 		  
 		  <!-- 교수라면 -->
-		  <p class="downmenu"><a href="<%=ctxPath%>/mypageMainP.up">마이페이지</a></p>
-          <p class="downmenu"><a href="<%=ctxPath%>/studentP.up">학생관리</a></p>
-          <p class="downmenu"><a href="<%=ctxPath%>/">시험출제</a></p>
-          <p class="downmenu"><a href="<%=ctxPath%>/">강의등록</a></p>
-          <p class="downmenu"><a href="<%=ctxPath%>/">교과목등록</a></p>
-          <p class="downmenu"><a href="<%=ctxPath%>/">정보수정</a></p>
+		  <c:if test="${sessionScope.loginuser.identity == 2}">
+            <p class="downmenu"><a href="<%=ctxPath%>/mypageMainP.up">마이페이지</a></p>
+            <p class="downmenu"><a href="<%=ctxPath%>/studentP.up">학생관리</a></p>
+            <p class="downmenu"><a href="<%=ctxPath%>/">시험출제</a></p>
+            <p class="downmenu"><a href="<%=ctxPath%>/">강의등록</a></p>
+            <p class="downmenu"><a href="<%=ctxPath%>/">교과목등록</a></p>
+            <p class="downmenu"><a href="<%=ctxPath%>/">정보수정</a></p>
+          </c:if>
+          
 		  </div>
 		</div>
 		
