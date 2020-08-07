@@ -117,6 +117,24 @@ public class MemberController {
 
 
 
+	// 로그아웃 처리하기 
+	@RequestMapping(value = "login/logout.up")
+	public ModelAndView logout(HttpServletRequest request, ModelAndView mav) {
+		
+		HttpSession session = request.getSession();
+		session.invalidate(); // session 전체 정보 삭제
+		
+		String msg = "로그아웃 되었습니다.";
+		String loc = request.getContextPath() + "/index.up";
+		
+		mav.addObject("msg", msg);
+		mav.addObject("loc", loc);
+
+		mav.setViewName("msg"); 
+		
+		return mav;		
+	}
+	
 
 
 
