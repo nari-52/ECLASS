@@ -88,6 +88,9 @@ public class DonationController {
 			HttpSession session = request.getSession();
 			MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
 			request.setAttribute("loginuser", loginuser);	
+			String name = request.getParameter("name");
+			String payment = request.getParameter("payment");
+			String donSeq = request.getParameter("donSeq");
 								    	
 			//결제하기 (insert) + 포인트 차감 (update)
 			int n = service.donationPayment(donpaymentvo);	
@@ -96,6 +99,9 @@ public class DonationController {
 			paraMap.put("userid", donpaymentvo.getFk_userid());	
 	    	if(n==1) { //결제가 성공되어지면 -> 후원서포터 페이지로 이동 
 	    		paraMap.put("pointPlus", String.valueOf(((Integer.parseInt(donpaymentvo.getPayment())*0.1)))); // after Advice용 (글을 작성하면 포인트 100을 주기로 한다)
+	    		request.setAttribute("name", name);
+	    		request.setAttribute("payment", payment);
+	    		request.setAttribute("donSeq", donSeq);
 	    		return "redirect:/donation/donationSupporter.up";				   		
 	    	}
 	    	else { //글쓰기 실패시 
@@ -105,10 +111,16 @@ public class DonationController {
 		}
 		
 		
-		
-		
-		
-		
+		@RequestMapping(value="/donation/pay.up")
+		public ModelAndView Pay(ModelAndView mav, HttpServletRequest request) {
+			
+			String recieve = request.getParameter("recieve");
+			
+			mav.addObject("recieve",recieve);
+			mav.setViewName("pay");
+			return mav;
+			
+		}
 		
 		
 		

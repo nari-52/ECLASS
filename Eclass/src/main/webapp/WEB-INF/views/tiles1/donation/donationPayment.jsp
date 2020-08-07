@@ -117,8 +117,7 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="/ShoppingMall/js/jquery-3.3.1.min.js"></script>
-<script type="text/javascript" src="/ShoppingMall/util/myutil.js"></script>
+<script type="text/javascript" src="<%= ctxPath %>/js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript">
 	
 	var pointUseInput = false; //포인트 금액 확인 
@@ -137,61 +136,7 @@
             pointUseInput = true;                        
        });// end of $("#pointUseInput").keyup(function(event){})--------
 
-       //만약 현재 포인트보다 크게 기입 했을 시 (x) --> 유효성 검사로 !!!!!!!!!!!!            
-       //1. 포인트 숫자 아닐 시 -> 알람 
-       //2. 빈칸 입력 시 -> 알람 
-       //3. 포인트보다 크게 기입 했을 시 (x) --> 알람
-       
-       $("#pointUseInput").blur(function(){// 포인트 input 태그에서 변화가 일어났을때
-			
-			$(this).val($(this).val().replace(/[^0-9]/g,"")); // 숫자만 입력
-			
-			var sumprice = $(".sumprice").text(); // 결제금액
-			var allPoint = $(".allPoint").text(); // 사용가능 포인트			
-			var point = $("#point").val(); // 사용하고 싶은 포인트
-					
-			if(allPoint-point<0){
-				alert('사용가능한 적립금을 확인하세요.');
-				point = 0;
-				$(".point").text(0);
-				$("#point").val(0);
-				
-				var lastPrice = $(".lastPrice").val();
-				lastPrice = sumprice-point;
-				$(".lastPrice").text(lastPrice);
-				
-				$("input:hidden[name=ordersumtotalPrice]").val(lastPrice);
-				$("input:hidden[name=orderUsePoint]").val(point);
-			}			 
-			else {
-				$(".point").text(point);
-				 				
-				var lastPrice = $(".lastPrice").val();
-				lastPrice = sumprice-point;
-				$(".lastPrice").text(lastPrice);
-				
-				$("input:hidden[name=ordersumtotalPrice]").val(lastPrice);
-				$("input:hidden[name=orderUsePoint]").val(point);
-			}
-				 
-			if(lastPrice<0){
-				alert('총 결제금액 만큼만 적립금을 사용할 수 있습니다.')
-				 
-				point = 0;
-				$(".point").text(0);
-				$("#point").val(0);
-					
-				var lastPrice = $(".lastPrice").val();
-				lastPrice = sumprice-point;
-				$(".lastPrice").text(lastPrice);
-						
-				$("input:hidden[name=ordersumtotalPrice]").val(lastPrice);
-				$("input:hidden[name=orderUsePoint]").val(point);
-			}
-			
-		}); // end of $("#pointUseInput").blur(function(){}) -------------
-		
-       
+
        // == 후원금액 
        $("#paymentInput").keyup(function(event){            
            //1) 숫자만 입력(숫자이외의 글자를 치면 아예 못치게 차단)
@@ -205,19 +150,74 @@
            }   
            
        });// end of $("#paymentInput").keyup(function(event){})--------
-           		
-       addComma($("#paymentInput").val());
+           	
+      
+       //만약 현재 포인트보다 크게 기입 했을 시 (x) --> 유효성 검사로 !!!!!!!!!!!!            
+       //1. 포인트 숫자 아닐 시 -> 알람 
+       //2. 빈칸 입력 시 -> 알람 
+       //3. 포인트보다 크게 기입 했을 시 (x) --> 알람
        
-       
-       
+       // 결재내역(포인트 넣기)
+       $("#pointUseInput").blur(function(){// 포인트 input 태그에서 변화가 일어났을때
+    	   
+			var pointuse =  $("#pointUseInput").val();
+	    	$("#usePoint").text(pointuse); 	
+	    	var allPoint = ${sessionScope.loginuser.point}; //사용가능 포인트 
+	    		    		    	
+	    	if(allPoint-pointuse<0){
+				alert('사용가능한 적립금을 확인하세요.');
+				pointuse = 0;
+				$(".point").text(0);
+				$("#pointUseInput").val(0);				
+				return;				
+			}
+	    	else{// 포인트 사용이 가능할때
+	    		$("#pointUseInput").val(pointuse);		    	
+	    		pointuse = numberWithCommas(pointuse);	    	
+	    		$(".point").text(pointuse);
+
+	    	}
+	    	//포인트 기입 시, 후원금액 나오기 전까지 진행하지 마라 
+	    	if($("#paymentInput").val() == null || $("#paymentInput").val().trim()=="") {	    		
+	    		return false;
+	    	}
+	    	
+	    	// 총결제금액이 포인트 금액이 바뀔때마다 변화해야함 !!! how to?
+	    	if(!($("#pointUseInput").val().trim()=="" && $("#paymentInput").val().trim()=="")){
+	     	    var sumprice =  $("#paymentInput").val() - $("#pointUseInput").val();
+	     	    
+	     	   sumprice = numberWithCommas(sumprice);
+	     	   
+	     	    $("#sumprice").text(sumprice);
+	     	}	    	       
+	    	
+		}); // end of $("#pointUseInput").blur(function(){}) -------------
+		
+       // 결제내역(후원금액 기입) 
+	   $("#paymentInput").blur(function(){
+    	   var payment =  $("#paymentInput").val();
+    	   
+    	   payment = numberWithCommas(payment);
+    	   
+    	   $("#lastPrice").text(payment);;
+    	   
+    	   if(!($("#pointUseInput").val().trim()=="" && $("#paymentInput").val().trim()=="")){
+	     	   var sumprice =  $("#paymentInput").val() - $("#pointUseInput").val();
+	     	   sumprice = numberWithCommas(sumprice);
+	     	   
+	     	   $("#sumprice").text(sumprice);
+	     	}   
+	    	   
+	   })
+		
+
        
     });//end of  $(document).ready(function(){}) ---------
 	
-    //숫자에 콤마 붙이는 함수  
-    function addComma(num) {
-  	 	var regexp = /\B(?=(\d{3})+(?!\d))/g;
-  	  	return num.toString().replace(regexp, ',');
-  	}
+    function numberWithCommas(x) {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+   
     // 유효성 검사 
     function goCheck(){	
     	
@@ -245,18 +245,51 @@
     // 아임포트 API 
 	function func_pop(){
 		
-		window.name="parentFrm";
-		sessionStorage.setItem("recieve", $("#totalPrice").val());	
-		console.log(sessionStorage.getItem("recieve"));
-		var win = window.open("<%=ctxPath%>/pay.do?pay="+pay,"childFrm","left=300px, top=100px, width=800px, height=700px");
-	}
+		/* window.name="parentFrm"; */
+		var recieve = $("#sumprice").text()
+		//localStorage.setItem("recieve", $("#sumprice").text());	
+		//console.log(sessionStorage.getItem("recieve"));
+		window.open("<%=ctxPath%>/donation/pay.up?recieve=" + recieve, "/donation/donationPaymentEnd", "left=350px, top=100px, width=820px, height=600px");
+		
+		<%-- var win = window.open("<%=ctxPath%>/donation/pay.up?userid="+userid+"payment="+payment,"childFrm","left=300px, top=100px, width=800px, height=700px");
+		 --%>
+		<%-- var win = window.open("<%=ctxPath%>/donation/pay.up","/donation/donationPaymentEnd","left=300px, top=100px, width=800px, height=700px");
+		 --%>
+		
+		
+		
+		// donation/pay.up 컨트롤러 만들고 
+		<%-- 		
+		var url="<%= request.getContextPath()%>/donation/pay.up";
+		
+		if(!bOrderInfo){
+			window.open(url, "/donation/donationPaymentEnd",
+		    "left=350px, top=100px, width=820px, height=600px");
+		} 
+     --%>
+    }
 	//결제 완료시 
 	function goSubmit(){
 		
-		 var frm = document.paymentFrm;
-		 frm.method="POST";
-		 frm.action= "<%= ctxPath%>/donation/donationPayment.up";
-		 frm.submit();
+		//이름 공개여부
+		if($("input[name='noName']:checked").val()=="1"){
+			sessionStorage.setItem("noName", "익명");
+		}
+		else{
+			essionStorage.setItem("name", "${sessionScope.loginuser.name}");
+		}
+		//금액 공개여부 
+		if($("input[name='noDonpmt']:checked").val()=="1"){
+			sessionStorage.setItem("noDonpmt", "");
+		}
+		else{
+			essionStorage.setItem("payment", 전체금액 );
+		}
+		
+		var frm = document.paymentFrm;
+		frm.method="POST";
+		frm.action= "<%= ctxPath%>/donation/donationPayment.up";
+		frm.submit();
 	}
 	
    //real 결제 -> 총금액에서 차감
@@ -279,13 +312,13 @@
                     <th>포인트 금액</th>
                     <td> 
                         <div class="paymentExp">현재 포인트 보유액 <fmt:formatNumber value="${sessionScope.loginuser.point}" pattern="###,###"/>원</div>
-                        <input class="pointUseInput" type="text" id="pointUseInput" name="pointUseInput" value="" required="required" maxlength="11">포인트를 사용하겠습니다
+                        <input class="pointUseInput" type="text" id="pointUseInput" name="point" value="" required="required" maxlength="11">포인트를 사용하겠습니다
                     </td>
                 </tr>
                 <tr>
                     <th>후원 금액</th>
                     <td> 
-                        <input type="text" id="paymentInput" name="paymentInput" value="" required="required" maxlength="11">원을 후원하겠습니다
+                        <input type="text" id="paymentInput" name="payment" value="" required="required" maxlength="11">원을 후원하겠습니다
                         <span class="smalltext">(후원금액의 10%는 포인트로 적립됩니다)</span>
                     </td>
                 </tr>
@@ -295,8 +328,8 @@
                     <th>공개 여부</th>
                     <td> 
                         <div class="paymentExp">서포터 목록에 서포터 이름과 후원금액이 공개됩니다</div>
-                        <input type="checkbox" id="nameCheck" name="nameCheck" value="1">이름 비공개 &nbsp;&nbsp;
-                        <input type="checkbox" id="priceCheck" name="priceCheck" value="1">금액 비공개
+                        <input type="checkbox" id="noName" name="noName" value="1">이름 비공개 &nbsp;&nbsp;
+                        <input type="checkbox" id="noDonpmt" name="noDonpmt" value="1">금액 비공개
                     </td>
                 </tr>
                 <tr style="height :50px;">
@@ -310,9 +343,9 @@
                             <th style="text-align: center; height : 25px;">총 결제금액</th>
                         </tr>
                         <tr>
-                            <td style="height : 40px;">{payment}{10,000}원</td>
-                            <td style="height : 40px;">{point}{3,000}점</td>
-                            <td style="height : 40px;">{payment+point}{7,000}원</td>
+                            <td style="height : 40px;" class="lastPrice"><span id="lastPrice"></span></td>
+                            <td style="height : 40px;" class="point"><span id="usePoint"></span></td>
+                            <td style="height : 40px;" class="sumprice"><span id="sumprice"></span></td>
                         </tr>                            
                         </table>
                         </div>
@@ -333,9 +366,9 @@
                 </tr>
             </table>
             
-            <input type="hidden" name="fk_donSeq" value="${donSeq}" />
-			<input type="hidden" name="fk_userid" value="${sessionScope.loginuser.userid}" />
-			<input type="hidden" name="name" value="${sessionScope.loginuser.name}" />
+            <input type="text" name="fk_donSeq" value="${donSeq}" />
+			<input type="text" name="fk_userid" value="${sessionScope.loginuser.userid}" />
+			<input type="text" name="name" value="${sessionScope.loginuser.name}" />
 				
         <!-- 7. 전송 버튼 -->					
         <div style="padding:30px 0 14px;" align="center">

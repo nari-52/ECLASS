@@ -19,7 +19,7 @@ $(document).ready(function() {
 	    pay_method : 'card',
 	    merchant_uid : 'merchant_' + new Date().getTime(),
 	    name : '주문명:결제테스트',
-	    amount : 'sessionStorage.getItem("recieve")',
+	    amount : '${recieve}', /* localStorage.getItem("recieve"), */
 	    buyer_email : '${sessionScope.loginuser.email}',
 	    buyer_name : '${sessionScope.loginuser.name}',
 	    buyer_tel : '${sessionScope.loginuser.mobile}',

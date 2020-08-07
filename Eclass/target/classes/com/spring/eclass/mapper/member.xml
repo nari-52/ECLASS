@@ -9,10 +9,9 @@
 	<!-- 로그인 처리하기 -->
 	
 	<select id="getLoginMember" parameterType="HashMap" resultType="com.spring.nari.model.MemberVO">
-		select userid, name
-	    from eclass_member
-	    where userid = #{userid} and
-	          pwd = #{pwd}
+		select userid, name, identity, point, email, mobile, address, postcode
+        from eclass_member
+        where userid = #{userid} and pwd = #{pwd}
 	</select>
 
 
