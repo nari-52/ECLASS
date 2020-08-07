@@ -134,12 +134,19 @@ a.logo:hover{
 		  <span>내 강의실</span>
 		  <div class="dropdown-content">
 		  <!-- 학생이라면 -->
-		  <p class="downmenu">나의 수업</p>
-		  <p class="downmenu">시험</p>
+		  <p class="downmenu"><a href="<%=ctxPath%>/mypageMainS.up">마이페이지</a></p>
+          <p class="downmenu"><a href="<%=ctxPath%>/attandS.up">출석현황</a></p>
+          <p class="downmenu"><a href="<%=ctxPath%>/gradeS.up">성적관리</a></p>
+          <p class="downmenu"><a href="<%=ctxPath%>/">정보수정</a></p>
+
 		  
 		  <!-- 교수라면 -->
-		  <p class="downmenu">강의 개설</p>
-		  <p class="downmenu">시험 출제</p>
+		  <p class="downmenu"><a href="<%=ctxPath%>/mypageMainP.up">마이페이지</a></p>
+          <p class="downmenu"><a href="<%=ctxPath%>/studentP.up">학생관리</a></p>
+          <p class="downmenu"><a href="<%=ctxPath%>/">시험출제</a></p>
+          <p class="downmenu"><a href="<%=ctxPath%>/">강의등록</a></p>
+          <p class="downmenu"><a href="<%=ctxPath%>/">교과목등록</a></p>
+          <p class="downmenu"><a href="<%=ctxPath%>/">정보수정</a></p>
 		  </div>
 		</div>
 		
