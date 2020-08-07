@@ -1,0 +1,35 @@
+package com.spring.nari.service;
+
+import java.util.HashMap;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.spring.common.AES256;
+import com.spring.nari.model.InterMemberDAO;
+import com.spring.nari.model.MemberVO;
+
+// 서비스 선언
+@Service
+public class MemberService implements InterMemberService {
+	
+	// 의존객체 주입하기
+	@Autowired
+	private InterMemberDAO dao;
+	
+	// 양방향 암호화 알고리즘 AES256 사용하여 복호화 하기 위한 의존객체 주입
+	@Autowired
+	private AES256 aes;
+	
+	
+	// 로그인 처리하기
+	@Override
+	public MemberVO getLoginMember(HashMap<String, String> paraMap) {
+		
+		MemberVO loginuser = dao.getLoginMember(paraMap);
+		
+		
+		return loginuser;
+	}
+
+}
