@@ -112,7 +112,7 @@ a.logo:hover{
 </a>
 
 <!-- 우측상단 미니메뉴바  -->
-<span class="minimenu"><a>로그인</a></span>
+<span class="minimenu"><a href="<%=ctxPath%>/login/login.up">로그인</a></span>
 <span class="minimenu"><a>회원가입</a></span>
 <span class="minimenu"><a>1:1상담</a></span>
 <span class="minimenu"><a href="admin.up">관리자</a></span>
