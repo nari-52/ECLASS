@@ -1,5 +1,190 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<div id="">
-	회원가입
-</div>
+
+<% String ctxPath = request.getContextPath(); %>
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<style type="text/css">
+	
+	div#login_container {
+		border: solid 1px gray;
+		max-width: 1080px;
+		height: 100px;
+		margin: 0 auto;
+	}
+	
+	h1#head_main {
+		color: #00bcd4; /* 메인컬러  */
+		margin: 0 auto;
+		text-align: center;
+		width: 100%;
+		height: 129px;
+		font-size: 25pt;
+		padding-top: 25px;
+	}
+	
+	/* 로그인 만들기  ----------------------------------------------------- */
+	
+	div#login_content {
+		/* border: solid 1px red; */
+		width: 100%;
+		height: 800px;
+		background: #fafafa;
+		display: inline-block;
+		margin: 0 auto;
+	}
+	
+	/* 로그인 배경 만들기 */
+	div#login_back {
+		border: solid 1px  #ddd;
+		width: 1080px;
+		height: 450px;
+		background: white;
+		margin: 0 auto;
+		margin-top: 50px;
+		padding-top: 50px; /* form 태그 위에 padding 주기 */
+	}	
+	
+	form#loginFrm {
+		/* border: solid 1px gray; */
+		margin: 0 auto;
+		width: 620px;
+		height: 400px;
+		background-color: white;
+	}
+	
+	ul.input_text {
+		list-style: none;
+		padding: 0;
+	}
+	
+	li.saveID {
+		margin: 20px 0px 30px 0px;
+		text-align: right;
+	}
+
+	div#loginbtn{
+		border: solid 1px blue;
+		margin: 0 auto;
+		width: 620px;
+		height: 30px;
+		background-color: #00bcd4;
+		color: white;
+		font-size: 12pt;
+		font-weight: bold;
+		text-align: center;
+		padding-top: 10px;
+	}
+	
+	div.login_footer {
+		border: solid 1px #ddd;
+		margin: 0 auto;
+		margin-top: 10px;
+		line-height: 60px;
+		text-align: center;
+		width: 620px;
+		height: 60px;
+	}
+
+</style>
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script type="text/javascript">
+
+	$(document).ready(function(){ 
+		$("#loginbtn").click(function() {
+			 func_Login();
+			 
+		}); // end of $("#btnLOGIN").click();-----------------------
+		
+		$("#pwd").keydown(function(event){
+				
+				if(event.keyCode == 13) { // 엔터를 했을 경우
+					func_Login();
+				}
+		}); // end of $("#pwd").keydown();-----------------------	
+		
+	}); // end of $(document).ready()---------------------------	
+	
+	
+	// 로그인 함수
+	function func_Login() {
+			
+		var userid = $("#userid").val();
+		var pwd = $("#pwd").val();
+		
+		if(userid.trim()=="") {
+			 alert("아이디를 입력하세요!!");
+			 $("#userid").val("");
+			 $("#userid").focus();
+			 return;
+		}
+		
+		if(pwd.trim()=="") {
+			 alert("비밀번호를 입력하세요!!");
+			 $("#pwd").val("");
+			 $("#pwd").focus();
+			 return;
+		}
+		var frm = document.loginFrm;
+		
+		frm.action = "<%=ctxPath%>/login/loginEnd.up";
+		frm.method = "POST";
+		frm.submit();
+	}
+	
+	
+
+
+</script>
+
+<body>
+	<div id="login_container" >
+		<section>
+			<div id="login_head">
+				<h1 id="head_main">로그인</h1>
+			</div>
+		</section>
+	</div>
+	
+	<div id="login_content">	
+		<div id="login_back">
+			<form name="loginFrm" id="loginFrm">
+				<div id="login">
+					<h3>ECLASS 회원 로그인</h3>
+					<ul class="input_text">
+						<li >
+							<label for="userid"></label>
+							<input type="text" name="userid" id="userid" class="input_text" required autofocus placeholder="아이디를 입력해주세요." style="border: solid 1px #ddd; width: 610px; height: 50px; vertical-align: middle; padding-left: 10px; font-size: 11pt;"/>
+						</li>
+						<li>
+							<label for="pwd"></label>
+							<input type="password" name="pwd" id="pwd" class="input_text" required placeholder="비밀번호를 입력해주세요." style="border: solid 1px #ddd; border-top:solid 0px;  width: 610px; height: 50px; vertical-align: middle; padding-left: 10px; font-size: 11pt;"/>
+						</li>
+						
+						<li class="saveID">
+							<input type="checkbox" name="saveID" id="saveID"/>
+							<label for="saveID">아이디 저장</label>
+						</li>
+						
+					</ul>
+					
+					<div id="loginbtn" >로그인</div>
+					<div class="login_footer">
+						<a>아이디찾기</a><span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+						<a>비밀번호 찾기</a><span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+						<a href="/eclass/member/signup_step1.up?identity=1">학생 회원가입</a><span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+						<a href="/eclass/member/signup_step1.up?identity=2">교수 회원가입</a>
+					</div>				
+				</div>
+			</form>
+		</div>
+		<c:if test="${sessionScope.loginuser != null}">
+			<div style="float: right; margin-top: 0.5%; border: solid 0px red;">
+			  <span style="color: navy; font-weight: bold; font-size: 10pt;">${sessionScope.loginuser.name}</span> 님 로그인중..
+			</div>
+		</c:if>
+		
+	</div>
+</body>
