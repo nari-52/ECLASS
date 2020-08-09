@@ -6,6 +6,35 @@
 <!-- ==== #29. 루트 엘리먼트 & 네임스페이스 설정(프로젝트 전체내에서 유일해야 한다.) ==== -->
 <mapper namespace="mypage">
 
+	<select id="getSInfo" resultType="com.spring.nari.model.MemberVO" parameterType="HashMap">
+		select name, university, major, point
+		<if test="identity == 1">
+			, student_num
+		</if>
+	    from eclass_member
+	    where userid = #{userid}
+	</select>
 
-
+	<select id="getSubjectList" resultType="com.spring.moonsa.model.SubjectVO" parameterType="HashMap">
+	    select subName, fk_subseq, finalG
+    	from 
+        	(select fk_subseq, finalG
+        	 from myPForS_tbl
+       		 where fk_userid = #{userid}
+        	)M left join subject_tbl S
+    on M.fk_subSeq = S.subseq;
+	</select>
+	
+	<select id="getAttandList" resultType="com.spring.moonsa.model.AttandVO" parameterType="HashMap">
+		select lecNum, attand
+	    from attand_tbl
+	    where fk_subseq = #{subjectSelect} and fk_userid = #{userid}
+	</select>
+	
+	<select id="getAttandOX" resultType="String" parameterType="HashMap">
+		select count(*) AS cnt
+	    from attand_tbl
+	    where fk_subseq = #{subjectSelect} and fk_userid = #{userid} and attand = 'O'
+	</select>
+	
 </mapper>

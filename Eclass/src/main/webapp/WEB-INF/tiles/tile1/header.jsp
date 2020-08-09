@@ -112,7 +112,7 @@ a.logo:hover{
 </a>
 
 <!-- 우측상단 미니메뉴바  -->
-<span class="minimenu"><a>로그인</a></span>
+<span class="minimenu"><a href="<%=ctxPath%>/login/login.up">로그인</a></span>
 <span class="minimenu"><a>회원가입</a></span>
 <span class="minimenu"><a>1:1상담</a></span>
 <span class="minimenu"><a href="admin.up">관리자</a></span>
@@ -164,10 +164,23 @@ a.logo:hover{
 		  <span>마이페이지</span>
 		  <div class="dropdown-content">
 		  <!-- 학생이라면 -->
-		  <p class="downmenu">Hello World!</p>
+		  <c:if test="${sessionScope.loginuser.identity == 1}">
+			  <p class="downmenu"><a href="<%=ctxPath%>/mypageMain.up">마이페이지</a></p>
+		  	  <p class="downmenu"><a href="<%=ctxPath%>/attandS.up">출석현황</a></p>
+		  	  <p class="downmenu"><a href="<%=ctxPath%>/gradeS.up">성적관리</a></p>
+		  	  <p class="downmenu"><a href="<%=ctxPath%>/">정보수정</a></p>
+	  	  </c:if>
 		  
 		  <!-- 교수라면 -->
-		  <p class="downmenu">Hello World!</p>
+		  <c:if test="${sessionScope.loginuser.identity == 2}">
+			  <p class="downmenu"><a href="<%=ctxPath%>/mypageMain.up">마이페이지</a></p>
+		  	  <p class="downmenu"><a href="<%=ctxPath%>/studentP.up">학생관리</a></p>
+			  <p class="downmenu"><a href="<%=ctxPath%>/">시험출제</a></p>
+			  <p class="downmenu"><a href="<%=ctxPath%>/">강의등록</a></p>
+			  <p class="downmenu"><a href="<%=ctxPath%>/">교과목등록</a></p>
+			  <p class="downmenu"><a href="<%=ctxPath%>/">정보수정</a></p>
+		  </c:if>
+		  
 		  </div>
 		</div>
 		

@@ -25,7 +25,7 @@
 </head>
 <body>
 	<div id="test">
-	  <h2>학생 OOO 님의 성적</h2>
+	  <h2>${sessionScope.loginuser.name} 님의 성적</h2>
 		<table id="tblcss" >
 			<tr style="background-color: #00BCD4;">
 				<th style="color: white;">강의명</th>
