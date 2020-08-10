@@ -45,7 +45,7 @@
 			</tr>
 			<tr>
 				<tr>
-				<td class="sidecss">강의 목록</td>
+				<td class="sidecss">교과목 목록</td>
 				<td>
 					<c:if test="${not empty subjectList}">
 						<c:forEach var="sublist" items="${subjectList}">
@@ -53,7 +53,7 @@
 						</c:forEach>
 					</c:if>
 					<c:if test="${empty subjectList}">
-						강의 없음
+						교과목 없음
 					</c:if>
 				</td>
 			</tr>

@@ -25,8 +25,8 @@ public class MypageService implements InterMypageService {
 
 	// 교과목 리스트 불러오기
 	@Override
-	public List<HashMap<String, String>> getSubjectList(HashMap<String, String> paraMap) {
-		List<HashMap<String, String>> subjectList = dao.getSubjectList(paraMap);
+	public List<HashMap<String, String>> getSubjectList(String userid) {
+		List<HashMap<String, String>> subjectList = dao.getSubjectList(userid);
 		return subjectList;
 	}
 
@@ -43,6 +43,28 @@ public class MypageService implements InterMypageService {
 		String attandOX = dao.getAttandOX(paraMap);
 		return attandOX;
 	}
+
+	// 교수 교과목 리스트 불러오기
+	@Override
+	public List<HashMap<String, String>> getSubjectListforP(String userid) {
+		List<HashMap<String, String>> subjectListforP = dao.getSubjectListforP(userid);
+		return subjectListforP;
+	}
+
+	// 해당 과목의 학생정적 모두 불러오기
+	@Override
+	public List<HashMap<String, String>> getStudentP(String subjectSelect) {
+		List<HashMap<String, String>> studentP = dao.getStudentP(subjectSelect);
+		return studentP;
+	}
+
+	// 수정할 학생명 가져오기
+	@Override
+	public String getSName(String userid) {
+		String SName = dao.getSName(userid);
+		return SName;
+	}
+
 
 	
 	

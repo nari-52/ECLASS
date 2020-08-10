@@ -26,8 +26,8 @@ public class MypageDAO implements InterMypageDAO {
 
 	// 교과목 리스트 불러오기
 	@Override
-	public List<HashMap<String, String>> getSubjectList(HashMap<String, String> paraMap) {
-		List<HashMap<String, String>> subjectList = sqlsession.selectList("mypage.getSubjectList", paraMap);
+	public List<HashMap<String, String>> getSubjectList(String userid) {
+		List<HashMap<String, String>> subjectList = sqlsession.selectList("mypage.getSubjectList", userid);
 		return subjectList;
 	}
 
@@ -44,6 +44,28 @@ public class MypageDAO implements InterMypageDAO {
 		String attandOX = sqlsession.selectOne("mypage.getAttandOX", paraMap);
 		return attandOX;
 	}
+
+	// 교수 교과목 리스트 불러오기
+	@Override
+	public List<HashMap<String, String>> getSubjectListforP(String userid) {
+		List<HashMap<String, String>> subjectListforP = sqlsession.selectList("mypage.getSubjectListforP", userid);
+		return subjectListforP;
+	}
+
+	// 해당 과목의 학생정적 모두 불러오기
+	@Override
+	public List<HashMap<String, String>> getStudentP(String subjectSelect) {
+		List<HashMap<String, String>> studentP = sqlsession.selectList("mypage.getStudentP", subjectSelect);
+		return studentP;
+	}
+	
+	// 수정할 학생명 가져오기
+	@Override
+	public String getSName(String userid) {
+		String SName = sqlsession.selectOne("mypage.getSName", userid);
+		return SName;
+	}
+
 
 	
 	

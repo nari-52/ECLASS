@@ -35,7 +35,7 @@
 			frm.submit();
 		});
 		
-	});
+	}); // end of $(document).ready(function(){})-----------------
 	
 	
 	
@@ -43,12 +43,12 @@
 </head>
 <body>
 	<div id="test">
-	<form name = "attandFrm">
+	<form name ="attandFrm">
 		  <h2>${sessionScope.loginuser.name} 님의 출석현황</h2>
 			<select name="subjectSelect" id="subjectSelect">
-				<option value="0">강의명</option>
+				<option value="0">교과목명</option>
 				<c:forEach var="sublist" items="${subjectList}">
-					<option value="${sublist.subseq}">${sublist.subName}</option>
+					<option value="${sublist.fk_subseq}">${sublist.subName}</option>
 				</c:forEach>
 			</select>
 		</form>
