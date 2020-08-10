@@ -27,9 +27,54 @@ public class MemberService implements InterMemberService {
 	public MemberVO getLoginMember(HashMap<String, String> paraMap) {
 		
 		MemberVO loginuser = dao.getLoginMember(paraMap);
-		
-		
 		return loginuser;
 	}
 
+
+	// AJAX를 이용하여 회원가입 아이디 중복검사
+	@Override
+	public String idDuplicateCheck(String userid) {
+		
+		String isUse = dao.idDuplicateCheck(userid);
+		
+		return isUse;
+	}
+
+	// 회원가입 하기
+	@Override
+	public int registerMember(MemberVO mvo) {
+		int n = dao.registerMember(mvo);
+		return n;
+	}
+
+	
+	// AJAX를 이용하여 휴대전화 중복검사
+	@Override
+	public String mobileDuplicateCheck(String mobile) {
+		String isUseMobile = dao.mobileDuplicateCheck(mobile);
+		
+		return isUseMobile;
+	}
+
+
+	// 아이디 찾기
+	@Override
+	public String idFind(HashMap<String, String> paraMap) {
+		String userid = dao.idFind(paraMap);
+		return userid;
+	}
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
