@@ -17,5 +17,7 @@ public interface InterDonationService {
 
 	int donationPayment(DonPaymentVO donpaymentvo) throws Throwable; //결제하기(insert)
 
+	List<DonStoryVO> donationSupporter(String donseq); //후원 서포터 보여주기
+
 	
 }

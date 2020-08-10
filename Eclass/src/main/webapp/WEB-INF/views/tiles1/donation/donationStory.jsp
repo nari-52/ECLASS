@@ -13,7 +13,7 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script> 
 <style type="text/css">
     .Mycontainer{
-        border: solid 1px #ccc;
+        border: solid 0px #ccc;
         width: 1080px;
         margin: 0 auto;
         /*background-color: #E5E5E5;*/
@@ -29,7 +29,7 @@
 		width: 150px;
 	}	
 	.info{
-        border: solid 1px pink;
+        border: solid 0px pink;
 		display:inline-block;
 		width: 1000px;
 	}	
@@ -38,8 +38,9 @@
 		display: inline-block;
 		width: 600px;
         height: 400px;
-        border:solid 1px red;
+        border:solid 0px red;
         float: left;
+        margin-right: 40px;
 	}	
 	
 	.donImg img{
@@ -47,7 +48,7 @@
 		width: 100%;
 		height: 100%;
 	}
-	
+		
 	/*기부 이미지의 옆에 나오는 기부 정보가 들어가 있는 div*/
 	.donInfo-table{
 		display: inline-block;
@@ -55,7 +56,11 @@
 		text-align: left;
         font-size: 20pt;
         border: solid 1px #ccc;
-	}
+        padding-left:30px;
+        padding-bottom: 30px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+	}	
 	
 	/*기부 정보가 나열된 리스트에서 각각의 항목 부분의 태그*/
 	dt{		
@@ -139,10 +144,11 @@
     /* 스토리, 후원자 누르는 내비부분 */
     .contentNavi{
         height: 50px;
-        border: solid 1px #ccc;
+        border-bottom: solid 0px #ccc;
         margin: 0 auto;
         text-align: center;
         padding-top: 10px;
+        background-color: #fcfcfc;
     }
     .contentNaviFont{
         font-size: 16pt;
@@ -167,8 +173,8 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="<%= ctxPath %>/js/jquery-3.3.1.min.js"></script>
-<script type="text/javascript" src="<%= ctxPath %>/util/myutil.js"></script>
+<script type="text/javascript" src="<%= ctxPath%>/js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="<%= ctxPath%>/util/myutil.js"></script>
 <script type="text/javascript">
 	
     $(document).ready(function(){
@@ -183,19 +189,30 @@
             $(".StoryNaviFnt").removeClass("contentNaviFontClick");
         });
         
+        //공유하기 버튼 클릭시 
+        $("#copy_btn").click(function(){
+    		$('#copy_text_input').select(); //복사할 텍스트를 선택
+    		document.execCommand("copy"); //클립보드 복사 실행
+    		alert('URL이 복사되었습니다');
+    	})
+        
 	});//end of  $(document).ready(function(){}) ---------
 	
+	function goPayment(donseq){
+	    location.href = "<%= ctxPath%>/donation/donationPayment.up?donseq="+donseq;
+	}
 	
+
 	
 </script>
 </head>
 <body>
 	<div class="Mycontainer">
-        <h2 style="margin-bottom: 1px; color:#00BCD4 ">후원하기</h2>
+        <h2 style="margin-bottom: 1px; color:#00BCD4 "><a href='<%= ctxPath%>/donation/donationList.up' style="color:#00BCD4; text-decoration: none;">후원하기</a></h2>
         <div class="contentLine" align="center"></div>
         <div class="contentNavi">
             <span class="contentNaviFont StoryNaviFnt"><a href='<%= ctxPath%>/donation/donationStory.up?donseq=${donstoryPage[0].donseq}'>스토리</a></span>|            
-            <span class="contentNaviFont SopportNaviFnt"><a href='<%= ctxPath%>/donation/donationSupporter.up?donseq=${donstoryPage[0].donseq}'> 후원자 </a></span>
+            <span class="contentNaviFont SopportNaviFnt"><a href='<%= ctxPath%>/donation/donationSupporter.up?donseq=${donstoryPage[0].donseq}'>후원자</a></span>
         </div>
 		<div class="section" align="center">
 			<div class="contents">
@@ -205,7 +222,7 @@
 					<%-- 준비중이 후원 상세 스토리가 없을 때 --%>
 					<c:if test="${empty donstoryPage}">
 						<tr> 
-							<td colspan = "3" style="color:gray; font-size: 16px;">후원 스토리 준비중입니다...조금만 기다려주세요 :)</td>
+							<td colspan = "3" style="color:gray; font-size: 16px;">후원 스토리 준비중입니다...<br/>조금만 기다려주세요 :)</td>
 						</tr>
 					</c:if>
 					<c:if test="${not empty donstoryPage}">
@@ -238,8 +255,10 @@
 							<dl>
 								<dt>${donstoryPage[0].totalSupporter}명의 후원자</dt>
 							</dl>
-	                        <span class="btn_donation" onclick="">후원하기</span>
-	                        <span class="btn_share" onclick="">공유하기</span>
+	                        <span class="btn_donation" onclick="goPayment('${donstoryPage[0].donseq}')">후원하기</span>
+	                        <span class="btn_share" id="copy_btn">공유하기</span>
+	                        <input type="hidden" id="copy_text_input" value="http://localhost:8080<%= ctxPath%>/donation/donationStory.up?donseq=${donstoryPage[0].donseq}" class="form-control">
+	                        
 						</div> 
 					</c:if> 
                 </div>

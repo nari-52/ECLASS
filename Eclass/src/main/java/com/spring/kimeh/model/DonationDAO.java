@@ -33,24 +33,32 @@ public class DonationDAO implements InterDonationDAO{
 		return donstoryPage;
 	}
 
-	//포인트주기 
-	@Override
-	public void pointPlus(HashMap<String, String> paraMap) {
-		sqlsession.update("board.pointPlus",paraMap);		
-	}
-
-	//인서트 
+	//1. 결제하기 
 	@Override
 	public int donationPayment(DonPaymentVO donpaymentvo) {
-		int n = sqlsession.insert("board.donationPayment", donpaymentvo);
+		int n = sqlsession.insert("donation.donationPayment", donpaymentvo);
 		return n;
 	}
 
-	//포인트차감
+	//2. 포인트 차감
 	@Override
 	public int updateUsePoint(DonPaymentVO donpaymentvo) {
-		int n = sqlsession.insert("board.updateUsePoint", donpaymentvo);
+		int n = sqlsession.update("donation.updateUsePoint", donpaymentvo);
 		return n;
+	}
+	
+	//3. 포인트주기 
+	@Override
+	public void pointPlus(HashMap<String, String> paraMap) {
+			sqlsession.update("donation.pointPlus",paraMap);		
+	}
+
+
+	//후원 서포터 페이지 보여주기 
+	@Override
+	public List<DonStoryVO> donationSupporter(String donseq) {
+		List<DonStoryVO> donsupporterPage = sqlsession.selectList("donation.donationSupporter",donseq);
+		return donsupporterPage;
 	}
 
 	

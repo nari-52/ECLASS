@@ -170,7 +170,7 @@
 				$(".point").text(0);
 				$("#pointUseInput").val(0);				
 				return;				
-			}
+	    	}
 	    	else{// 포인트 사용이 가능할때
 	    		$("#pointUseInput").val(pointuse);		    	
 	    		pointuse = numberWithCommas(pointuse);	    	
@@ -184,12 +184,20 @@
 	    	
 	    	// 총결제금액이 포인트 금액이 바뀔때마다 변화해야함 !!! how to?
 	    	if(!($("#pointUseInput").val().trim()=="" && $("#paymentInput").val().trim()=="")){
-	     	    var sumprice =  $("#paymentInput").val() - $("#pointUseInput").val();
+	     	   var sumprice =  $("#paymentInput").val() - $("#pointUseInput").val();
 	     	    
 	     	   sumprice = numberWithCommas(sumprice);
+	     	   $("#sumprice").text(sumprice);
 	     	   
-	     	    $("#sumprice").text(sumprice);
-	     	}	    	       
+	     	  if($("#sumprice").text()<0){//사용금액이 음수일 시
+					alert('총 결제금액을 확인해주세요');
+					return;	
+				}
+	     	   
+	     	   $("input:hidden[name=sumprice]").val(sumprice); //총액 인풋 
+	     	}	    
+	    	
+	    
 	    	
 		}); // end of $("#pointUseInput").blur(function(){}) -------------
 		
@@ -205,12 +213,15 @@
 	     	   var sumprice =  $("#paymentInput").val() - $("#pointUseInput").val();
 	     	   sumprice = numberWithCommas(sumprice);
 	     	   
-	     	   $("#sumprice").text(sumprice);
+	     	  $("#sumprice").text(sumprice);
+	     	  if($("#sumprice").text()<0){//사용금액이 음수일 시
+					alert('총 결제금액을 확인해주세요');
+					return;	
+				}
+	     	 $("input:hidden[name=sumprice]").val(sumprice); 
 	     	}   
 	    	   
-	   })
-		
-
+	   });
        
     });//end of  $(document).ready(function(){}) ---------
 	
@@ -239,56 +250,48 @@
 			return;
 	 	}		
 		
+		// 후원금액 결제페이지로 안넘어 가도 되는 경우
+		// 1)포인트금액으로 다 처리해버리는 경우(0원이상부터 가능) 2) 후원금액-후원액==0인 경우
+		if( !($("#pointUseInput").val().trim()=="" && $("#paymentInput").val().trim()=="") && $("#sumprice").text()=='0'){
+			goSubmit();
+			return false;
+		}
 		func_pop();		
 	};
     
     // 아임포트 API 
 	function func_pop(){
 		
-		/* window.name="parentFrm"; */
-		var recieve = $("#sumprice").text()
+		var recieve = $("#sumprice").text();
 		//localStorage.setItem("recieve", $("#sumprice").text());	
 		//console.log(sessionStorage.getItem("recieve"));
 		window.open("<%=ctxPath%>/donation/pay.up?recieve=" + recieve, "/donation/donationPaymentEnd", "left=350px, top=100px, width=820px, height=600px");
 		
-		<%-- var win = window.open("<%=ctxPath%>/donation/pay.up?userid="+userid+"payment="+payment,"childFrm","left=300px, top=100px, width=800px, height=700px");
-		 --%>
-		<%-- var win = window.open("<%=ctxPath%>/donation/pay.up","/donation/donationPaymentEnd","left=300px, top=100px, width=800px, height=700px");
-		 --%>
-		
-		
-		
-		// donation/pay.up 컨트롤러 만들고 
-		<%-- 		
-		var url="<%= request.getContextPath()%>/donation/pay.up";
-		
-		if(!bOrderInfo){
-			window.open(url, "/donation/donationPaymentEnd",
-		    "left=350px, top=100px, width=820px, height=600px");
-		} 
-     --%>
     }
 	//결제 완료시 
 	function goSubmit(){
 		
-		//이름 공개여부
-		if($("input[name='noName']:checked").val()=="1"){
-			sessionStorage.setItem("noName", "익명");
+		var noNameFlag = $("input:checkbox[name='noName']").is(":checked");
+		alert(noNameFlag);
+		if(noNameFlag){
+			$("input:checkbox[name='noName']").val("1");
+		}else{
+			$("input:checkbox[name='noName']").val("0");
 		}
-		else{
-			essionStorage.setItem("name", "${sessionScope.loginuser.name}");
+		
+		var noDonpmtFlag = $("input:checkbox[name='noDonpmt']").is(":checked");
+		alert(noDonpmtFlag);
+		if(noDonpmtFlag){
+			$("input:checkbox[name='noDonpmt']").val("1");
+		}else{
+			$("input:checkbox[name='noDonpmt']").val("0");
 		}
-		//금액 공개여부 
-		if($("input[name='noDonpmt']:checked").val()=="1"){
-			sessionStorage.setItem("noDonpmt", "");
-		}
-		else{
-			essionStorage.setItem("payment", 전체금액 );
-		}
+		
+		alert("후원해주셔서 감사합니다");
 		
 		var frm = document.paymentFrm;
 		frm.method="POST";
-		frm.action= "<%= ctxPath%>/donation/donationPayment.up";
+		frm.action= "<%= ctxPath%>/donation/donationPaymentEnd.up";
 		frm.submit();
 	}
 	
@@ -366,7 +369,7 @@
                 </tr>
             </table>
             
-            <input type="text" name="fk_donSeq" value="${donSeq}" />
+            <input type="text" name="fk_donSeq" value="${donseq}" />
 			<input type="text" name="fk_userid" value="${sessionScope.loginuser.userid}" />
 			<input type="text" name="name" value="${sessionScope.loginuser.name}" />
 				

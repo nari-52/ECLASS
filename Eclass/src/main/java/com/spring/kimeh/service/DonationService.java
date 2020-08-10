@@ -49,15 +49,26 @@ public class DonationService implements InterDonationService {
 	public int donationPayment(DonPaymentVO donpaymentvo) throws Throwable {
 		//해당 메소드를 호출하는 쪽에서 에러를 처리해라 
 		int result = 0;
-		int n = 0;		
+		int n = 0;
 		n = dao.donationPayment(donpaymentvo); // 결제하기(insert)
+		
+		if(n < 1) {
+			throw new Exception("test");
+		}
+		
 		//insert가 성공하여 n=1값이 나오면 사용한 포인트를 차감해주기(update) 
-		if(n==1) {
-			result = dao.updateUsePoint(donpaymentvo); // Member테이블에 포인트 차감(update) 
-		}		
+		//if(n==1) {
+		result = dao.updateUsePoint(donpaymentvo); // Member테이블에 포인트 차감(update) 
+		//}
+		
 		return result;
 	}
 
-	
+	//후원 서포터 보여주기 
+	@Override
+	public List<DonStoryVO> donationSupporter(String donseq) {
+		List<DonStoryVO> donsupporterPage = dao.donationSupporter(donseq);
+		return donsupporterPage;
+	}
 	
 }

@@ -24,6 +24,19 @@
 		where S.donseq = #{donseq}
 	</select>
 	
+	<select id="donationSupporter" resultType="com.spring.kimeh.model.DonStoryVO" parameterType="String">
+		select S.donseq, S.subject, S.content, S.listMainImg, S.storyImg, S.donDate, S.donDueDate,
+      		   S.donStatus, S.targetAmount, S.totalPayment, S.totalSupporter,
+       		   ceil(S.donDueDate - S.donDate) as dDay,
+       		   I.payment, I.name, I.point, I.noName, I.noDonpmt,
+       		  (I.payment + I.point) as sumPayment,
+		       to_char(I.paymentDate,'yyyy-mm-dd hh24:mi:ss') as paymentDate,
+		      (to_date(sysdate,'yyyy-mm-dd hh24:mi:ss') - to_date(I.paymentDate,'yyyy-mm-dd hh24:mi:ss'))*24*60 as showDate 
+		from donStory S left join donPayment I
+		on S.donseq = I.fk_donSeq  
+		where S.donseq = #{donseq}	
+	</select>    
+	    
 	    
     <!-- 1. 결제하기  -->
     <insert id="donationPayment" parameterType="com.spring.kimeh.model.DonPaymentVO">
@@ -39,7 +52,7 @@
     
     <!-- 3. AOP에서 사용하는 것으로 결제한 회원에게 포인트 증가  -->
     <update id="pointPlus" parameterType="HashMap">
-    	update mymvc_shopping_member set point = point + to_number(#{pointPlus})
+    	update eclass_member set point = point + to_number(#{pointPlus})
 		where userid = #{userid}
     </update>
     

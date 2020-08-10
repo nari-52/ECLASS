@@ -50,7 +50,7 @@ public class DonationAOP {
 		// 로그인 유무를 확인하기 위해서는 request를 통해 session을 얻어와야한다.
 		if (session.getAttribute("loginuser") == null) {
 			String msg = "로그인하신 후 이용하실 수 있습니다.";
-			String loc = request.getContextPath() + "/login.action";
+			String loc = request.getContextPath() + "/login/login.up";
 			request.setAttribute("msg", msg);
 			request.setAttribute("loc", loc);
 

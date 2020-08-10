@@ -21,12 +21,21 @@ public class DonStoryVO {
 	
 	private String dDay; //후원 종료날짜 
 	
+	//결제하기에서 가져옴 
+	private String name; 
+	private String payment;
+	private String point;
+	private String noName;
+	private String noDonpmt;
+	private String showDate; // 후원결제후 경과 시간 
+	private String sumPayment; //총후원금액(포인트+결제) 
 	
 	public DonStoryVO() {};
 	
 	public DonStoryVO(String donseq, String subject, String content, String listMainImg, String storyImg, String donCnt,
 			String donDate, String donDueDate, String donStatus, String targetAmount, String totalPayment,
-			String totalSupporter, String donImgseq, String fk_donSeq, String donImg, String dDay) {
+			String totalSupporter, String donImgseq, String fk_donSeq, String donImg, String dDay, String name,
+			String payment, String point, String noName, String noDonpmt, String showDate, String sumPayment) {
 		super();
 		this.donseq = donseq;
 		this.subject = subject;
@@ -44,9 +53,15 @@ public class DonStoryVO {
 		this.fk_donSeq = fk_donSeq;
 		this.donImg = donImg;
 		this.dDay = dDay;
+		this.name = name;
+		this.payment = payment;
+		this.point = point;
+		this.noName = noName;
+		this.noDonpmt = noDonpmt;
+		this.showDate = showDate;
+		this.sumPayment = sumPayment;
 	}
 
-	
 	public String getdDay() {
 		return dDay;
 	}
@@ -144,6 +159,62 @@ public class DonStoryVO {
 	}
 	public void setDonImg(String donImg) {
 		this.donImg = donImg;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getPayment() {
+		return payment;
+	}
+
+	public void setPayment(String payment) {
+		this.payment = payment;
+	}
+
+	public String getPoint() {
+		return point;
+	}
+
+	public void setPoint(String point) {
+		this.point = point;
+	}
+
+	public String getNoName() {
+		return noName;
+	}
+
+	public void setNoName(String noName) {
+		this.noName = noName;
+	}
+
+	public String getNoDonpmt() {
+		return noDonpmt;
+	}
+
+	public void setNoDonpmt(String noDonpmt) {
+		this.noDonpmt = noDonpmt;
+	}
+
+	public String getShowDate() {
+		return showDate;
+	}
+
+	public void setShowDate(String showDate) {
+		this.showDate = showDate;
+	}
+
+	public String getSumPayment() {
+		return sumPayment;
+	}
+
+	public void setSumPayment(String sumPayment) {
+		this.sumPayment = sumPayment;
 	}
 	
 }

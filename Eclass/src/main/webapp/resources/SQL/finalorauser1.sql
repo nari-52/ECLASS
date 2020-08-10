@@ -1,5 +1,5 @@
 show user;
--- USER이(가) "FINALPROJECT1"입니다.
+-- USER이(가) "FINALORAUSER1"입니다.
 
 drop table login_table;
 drop table subject_tbl;
@@ -87,71 +87,61 @@ nocycle
 nocache;
 
 commit;
--- 강의 테이블
-create table lecture_tbl
-(lecSeq number not null -- 강의차수 - 시퀀스
-,fk_subSeq number not null -- 교과목번호 - 시퀀스
-,lecTitle varchar2(50) not null -- 강의제목
-,lecLink varchar2(1000) -- 강의영상
-,lecStartday date  --강의 시작일자
-,lecEndday date  -- 강의 마감일자
-,constraint PK_lecture_tbl_lecSeq PRIMARY KEY (lecSeq)
-,constraint FK_lecture_tbl_subSeq foreign key(fk_subSeq) references subject_tbl(subseq)
-);
 
-alter table lecture_tbl add (lecTitle varchar2(50) not null);
-commit;
+  -- 강의 테이블
+    create table lecture_tbl
+    (lecNum number not null -- 강의차수
+    ,fk_subSeq number not null -- 교과목번호 - 시퀀스
+    ,lecLink varchar2(1000) -- 강의영상
+    ,lecStartday date  --강의 시작일자
+    ,lecEndday date  -- 강의 마감일자
+    ,lecTitle varchar2(50) not null -- 강의 제목
+    ,constraint FK_lecture_tbl_subSeq foreign key(fk_subSeq) references subject_tbl(subseq)
+    );
 
-create sequence seq_lecSeq
-start with 1
-increment by 1
-nomaxvalue
-nominvalue
-nocycle
-nocache;
+    -- 강의 댓글 테이블
+    create table lectureComment_tbl
+    (lecComSeq number not null  -- 강의댓글번호 - 시퀀스
+    ,fk_subSeq number not null -- 교과목번호 - 시퀀스
+    ,fk_lecNum number not null -- 강의차수시퀀스
+    ,fk_userid varchar2(50) not null -- 아이디
+    ,comContent varchar2(2000) not null -- 댓글 내용
+    ,writeday date default sysdate -- 작성일자
+    ,constraint PK_lectureComment_tbl PRIMARY KEY (lecComSeq)
+    ,constraint FK_lectureComment_tbl_subSeq foreign key(fk_subSeq) references subject_tbl(subseq)
+    ,constraint FK_lectureComment_tbl_lecNum foreign key(fk_lecNum) references lecture_tbl(lecNum)
+    ,constraint FK_lectureComment_tbl_userid foreign key(fk_userid) references eclass_member(userid)
+    );
+    
+    create sequence seq_lecComSeq
+    start with 1
+    increment by 1
+    nomaxvalue
+    nominvalue
+    nocycle
+    nocache;
 
-
--- 강의 댓글 테이블(출석)
-create table lectureComment_tbl
-(lecComSeq number not null  -- 강의댓글번호 - 시퀀스
-,fk_lecSeq number not null -- 강의차수시퀀스
-,fk_userid varchar2(50) not null -- 아이디
-,comContent varchar2(2000) not null -- 댓글 내용
-,writeday date default sysdate -- 작성일자
-,constraint PK_lectureComment_tbl PRIMARY KEY (lecComSeq)
-,constraint FK_lectureComment_tbl_lecSeq foreign key(fk_lecSeq) references lecture_tbl(lecSeq)
-,constraint FK_lectureComment_tbl_userid foreign key(fk_userid) references eclass_member(userid)
-);
-
-create sequence seq_lecComSeq
-start with 1
-increment by 1
-nomaxvalue
-nominvalue
-nocycle
-nocache;
-
-
--- 출석테이블
-create table attand_tbl
-(attandSeq number not null -- 출석시퀀스
-,fk_subSeq number not null -- 교과목번호 시퀀스
-,fk_lecSeq number not null -- 강의차수 시퀀스
-,fk_userid varchar2(50) not null -- 아이디
-,data date default sysdate -- 출석날짜
-,constraint PK_attand_tbl_attandSeq PRIMARY KEY (attandSeq)
-,constraint FK_attand_tbl_subSeq foreign key(fk_subSeq) references subject_tbl(subSeq)
-,constraint FK_attand_tbl_lecSeq foreign key(fk_lecSeq) references lecture_tbl(lecSeq)
-,constraint FK_attand_tbl_userid foreign key(fk_userid) references eclass_member(userid)
-);
-
-create sequence seq_attandSeq
-start with 1
-increment by 1
-nomaxvalue
-nominvalue
-nocycle
-nocache;
+    -- 출석테이블
+    create table attand_tbl
+    (attandSeq number not null -- 출석시퀀스
+    ,fk_subSeq number not null -- 교과목번호 시퀀스
+    ,fk_lecNum number not null -- 강의차수번호
+    ,fk_userid varchar2(50) not null -- 아이디
+    ,attand varchar2(2) default 'X' -- 출석여부
+    ,data date default sysdate -- 출석날짜
+    ,constraint PK_attand_tbl_attandSeq PRIMARY KEY (attandSeq)
+    ,constraint FK_attand_tbl_subSeq foreign key(fk_subSeq) references subject_tbl(subSeq)
+    ,constraint FK_attand_tbl_lecNum foreign key(fk_lecNum) references lecture_tbl(lecNum)
+    ,constraint FK_attand_tbl_userid foreign key(fk_userid) references eclass_member(userid)
+    );
+    
+    create sequence seq_attandSeq
+    start with 1
+    increment by 1
+    nomaxvalue
+    nominvalue
+    nocycle
+    nocache;
 
 
 -- 교수 강의실 (마이페이지)
@@ -478,7 +468,23 @@ select S.donseq, S.subject, S.content, S.listMainImg, S.storyImg, S.donDate, S.d
        ceil(donDueDate - donDate) as dDay
 from donStory S left join donImg I
 on S.donseq = I.fk_donSeq  
-where S.donseq = 11;
+where S.donseq = 4;
+
+-- 후원 서포터 페이지 
+select S.donseq, S.subject, S.content, S.listMainImg, S.storyImg, S.donDate, S.donDueDate,
+       S.donStatus, S.targetAmount, S.totalPayment, S.totalSupporter,
+       ceil(S.donDueDate - S.donDate) as dDay,
+       I.payment, I.name, I.point, I.noName, I.noDonpmt,
+       (I.payment + I.point) as sumPayment,
+       to_char(I.paymentDate,'yyyy-mm-dd hh24:mi:ss') as paymentDate,
+       (to_date(sysdate,'yyyy-mm-dd hh24:mi:ss') - to_date(I.paymentDate,'yyyy-mm-dd hh24:mi:ss'))*24*60 as showDate 
+from donStory S left join donPayment I
+on S.donseq = I.fk_donSeq  
+where S.donseq = 1;
+
+--후원결제된것 시분으로 나타내기  (분으로 알아오기) --> 60을 넘으면 시간으로 나타내고, 1440이 넘어가면 -> 일로나타내기 
+select (to_date(sysdate,'yyyy-mm-dd hh24:mi:ss') - to_date(paymentDate,'yyyy-mm-dd hh24:mi:ss'))*24*60 as paymentDate
+from donPayment;
 
 
 -- 몇일 몇시간 남음.
@@ -486,7 +492,7 @@ select donDueDate - donDate
 from donStory;
 
 -- 날짜 - 날짜 = 일수(숫자) // 날짜 - 날짜 (시분초 동일)
-select to_date( to_char(donDueDate, 'yyyy-mm-dd') , 'yyyy-mm-dd' ) - to_date(to_char(donDate,'yyyy-mm-dd'))
+select to_date(to_char(donDueDate, 'yyyy-mm-dd') , 'yyyy-mm-dd' ) - to_date(to_char(donDate,'yyyy-mm-dd'))
 from donStory;
 
 select ceil(donDueDate - donDate)
@@ -519,21 +525,17 @@ insert into donPayment(fk_donSeq, fk_userid, name, noName, noDonpmt, paymentDate
 values( #{fk_donSeq} , #{fk_userid} ,#{name}, default, default, default,#{payment} ); 
 
 insert into donPayment(fk_donSeq, fk_userid, name, noName, noDonpmt, paymentDate, payment, point) 
-values( '4' , 'Grace', '김은혜', default, default, default, '10000', default ); 
+values( '4' , 'Grace', '김은혜', default, default, default, '10000', 2000 ); 
 
 insert into donPayment(fk_donSeq, fk_userid, name, noName, noDonpmt, paymentDate, payment, point) 
 values( '4' , 'kh123', '김건형', default, default, default, '20000', 5000); 
 
 -->> 회원가입 insert 
-insert into eclass_member(userid, name, pwd, university, major, email, mobile)
-values ('Grace', '김은혜', 'asdf1234!', '서울대', '수학과', 'milkim0907@gmail.com', '010-1234-5678');
+insert into eclass_member(userid, name, pwd, university, major, email, mobile, point)
+values ('Grace', '김은혜', 'asdf1234!', '서울대', '수학과', 'milkim0907@gmail.com', '010-1234-5678', default);
 
 insert into eclass_member(userid, name, pwd, university, major, email, mobile, point)
 values ('kh123', '김건형', 'asdf1234!', '서울대', '심리학과', 'k2001mik@gmail.com', '010-2083-8287', 2000);
-
-insert into eclass_member(userid, name, pwd, university, major, email, mobile, point)
-values ('kh123', '김건형', 'asdf1234!', '서울대', '심리학과', 'k2001mik@gmail.com', '010-2083-8287', 2000);
-
 
 commit;
 rollback;
@@ -586,8 +588,6 @@ where fk_userid = #{fk_userid};
 select fk_donSeq, fk_userid, name, noName, noDonpmt, paymentDate, payment, point,
       (payment+point) as totalpayment
 from donPayment
-where fk_userid = 'kh123'; 
+where fk_userid = 'Grace'; 
 
 --------------------------------------테이블 끝-----------------------------------------------
-
-

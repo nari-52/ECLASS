@@ -49,10 +49,29 @@ public class DonationController {
 		@RequestMapping(value="/donation/donationStory.up")
 		public ModelAndView donationStory(ModelAndView mav, HttpServletRequest request) {
 			String donseq = request.getParameter("donseq");
-			List<DonStoryVO> donstoryPage = service.donationStory(donseq);
 			
-			mav.addObject("donstoryPage",donstoryPage);
-			mav.setViewName("donation/donationStory.tiles1");
+			//직접 /donation/donationStory.up쳤을 때 --> List로 가게 하는 방법!!!
+			if(donseq==null) {
+				String msg = "존재하지 않는 페이지입니다"; 
+				String loc = "javascript:history.back()";
+				
+				mav.addObject("msg",msg);
+				mav.addObject("loc",loc);
+				mav.setViewName("msg");
+			}
+			else {
+				List<DonStoryVO> donstoryPage = service.donationStory(donseq);
+				//seq가 없을 때
+				if(donstoryPage.isEmpty()) {
+					mav.setViewName("donation/donationList.tiles1");
+				}
+				else {
+					mav.addObject("donseq",donseq);
+					mav.addObject("donstoryPage",donstoryPage);
+					mav.setViewName("donation/donationStory.tiles1");
+				}
+			}
+			
 			return mav;
 		}
 		
@@ -61,9 +80,27 @@ public class DonationController {
 		public ModelAndView donationSupporter(ModelAndView mav, HttpServletRequest request) {
 			
 			String donseq = request.getParameter("donseq");
-			
-			mav.addObject("donseq",donseq);
-			mav.setViewName("donation/donationSupporter.tiles1");
+			//직접 /donation/donationSupporter.up쳤을 때 --> List로 가게 하는 방법!!!
+			if(donseq==null) {
+				String msg = "존재하지 않는 페이지입니다"; 
+				String loc = "javascript:history.back()";
+				
+				mav.addObject("msg",msg);
+				mav.addObject("loc",loc);
+				mav.setViewName("msg");
+			}
+			else {
+				List<DonStoryVO> donsupporterPage = service.donationSupporter(donseq);
+				
+				if(donsupporterPage.isEmpty()) {
+					mav.setViewName("donation/donationList.tiles1");
+					
+				}else {
+					mav.addObject("donseq",donseq);
+					mav.addObject("donsupporterPage",donsupporterPage);
+					mav.setViewName("donation/donationSupporter.tiles1");
+				}
+			}
 			return mav;
 		}
 		
@@ -90,7 +127,7 @@ public class DonationController {
 			request.setAttribute("loginuser", loginuser);	
 			String name = request.getParameter("name");
 			String payment = request.getParameter("payment");
-			String donSeq = request.getParameter("donSeq");
+			String donSeq = request.getParameter("fk_donSeq");
 								    	
 			//결제하기 (insert) + 포인트 차감 (update)
 			int n = service.donationPayment(donpaymentvo);	
@@ -101,12 +138,12 @@ public class DonationController {
 	    		paraMap.put("pointPlus", String.valueOf(((Integer.parseInt(donpaymentvo.getPayment())*0.1)))); // after Advice용 (글을 작성하면 포인트 100을 주기로 한다)
 	    		request.setAttribute("name", name);
 	    		request.setAttribute("payment", payment);
-	    		request.setAttribute("donSeq", donSeq);
-	    		return "redirect:/donation/donationSupporter.up";				   		
+	    		request.setAttribute("fk_donSeq", donSeq);
+	    		return "redirect:/donation/donationSupporter.up?donseq="+donSeq;
 	    	}
-	    	else { //글쓰기 실패시 
+	    	else { //결재 실패시 
 	    		paraMap.put("pointPlus", "0");
-	    		return "redirect:/donation/donationPayment.up";
+	    		return "redirect:/donation/donationPayment.up?donseq="+donSeq;
 	    	}				
 		}
 		

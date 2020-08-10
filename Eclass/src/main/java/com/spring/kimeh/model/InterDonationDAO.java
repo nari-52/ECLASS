@@ -17,5 +17,7 @@ public interface InterDonationDAO {
 
 	int updateUsePoint(DonPaymentVO donpaymentvo); //포인트 차감
 
+	List<DonStoryVO> donationSupporter(String donseq); //후원 서포터 페이지 보여주기
+
 	
 }

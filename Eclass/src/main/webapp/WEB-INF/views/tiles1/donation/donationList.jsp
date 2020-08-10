@@ -133,7 +133,7 @@
                		 <%-- 준비중이 후원 스토리가 없을 때 --%>
 						<c:if test="${empty donstoryList}">
 							<tr> 
-								<td colspan = "3" style="color:gray; font-size: 16px;">후원 스토리 준비중입니다...조금만 기다려주세요 :)</td>
+								<td colspan = "3" style="color:gray; font-size: 16px;">후원 스토리 준비중입니다...<br/>조금만 기다려주세요 :)</td>
 							</tr>
 						</c:if>
 						<c:if test="${not empty donstoryList}">
