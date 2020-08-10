@@ -48,6 +48,11 @@
 	          and status = '1'
 	</select>
 
+	<!-- 비밀번호 찾기 시 비밀번호 변경 하기 -->
+	<update id="pwd_update" parameterType="HashMap">
+		update eclass_member set pwd = #{pwd}
+    	where userid = #{userid}
+	</update>
 </mapper>
 
 

@@ -154,7 +154,7 @@
 				
 				<tr>
 					<th>유저id</th>
-					<td><input type="text" name="fk_userid" value="#{sessionScope.loginuser.userid}"/></td>
+					<td><input type="text" name="fk_userid"/></td>
 				</tr>
 				
 				<tr>

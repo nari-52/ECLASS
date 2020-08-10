@@ -1,8 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-    
 <!DOCTYPE html>
 <html>
 <head>
@@ -25,31 +22,25 @@
 </head>
 <body>
 	<div id="test">
-	  <h2>${membervo.name} 교수님의 마이페이지 입니다</h2>
+	  <h2>OOO 교수님의 마이페이지 입니다</h2>
 	  	<table>
 			<tr>
 				<td class="sidecss">학교이름</td>
-				<td>${membervo.university}</td>
+				<td>이클래스대학교</td>
 			</tr>
 			<tr>
 				<td class="sidecss">학과</td>
-				<td>${membervo.major}</td>
+				<td>러시아어문학과</td>
 			</tr>
 			<tr>
 				<td class="sidecss">포인트</td>
-				<td>${membervo.point}</td>
+				<td>300</td>
 			</tr>
 			<tr>
-				<td class="sidecss">교과목 목록</td>
-				<td>
-					<c:if test="${not empty subjectListforP}">
-						<c:forEach var="sublist" items="${subjectListforP}">
-							${sublist.subName}<br/>
-						</c:forEach>
-					</c:if>
-					<c:if test="${empty subjectListforP}">
-						교과목 없음
-					</c:if>
+				<td class="sidecss">강의 목록</td>
+				<td>HTML의 이해<br/>
+					JAVA의 응용<br/>
+					알고리즘의 이해
 				</td>
 			</tr>
 		</table>

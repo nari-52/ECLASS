@@ -109,25 +109,4 @@
 		where comment_seq = #{delseq}	
 	</update>
 	
-	<!-- 자유게시판 글 삭제 완료하기  -->
-	<update id="delfreeboard" parameterType="HashMap">
-		update free_board set status = 0
-		where free_seq = #{free_seq} and password= #{password}
-	</update>
-	
-	<!-- 자유게시판 글을 삭제하면 딸린 댓글도 같이 삭제하기 -->
-	<update id="delComment" parameterType="HashMap">
-		update free_board_comment set status = 0
-		where parentSeq = #{free_seq}
-	</update>
-	
-	<!-- 자유게시판 글 수정하기 완료하기 -->
-	<update id="editfreeboardEnd" parameterType="com.spring.kanghm.model.FreeboardVO">
-		update free_board set title = #{title}
-							 ,content = #{content}
-							 ,writedate = sysdate
-		where free_seq = #{free_seq} and password = #{password}
-	</update>
-	
-	
 </mapper>

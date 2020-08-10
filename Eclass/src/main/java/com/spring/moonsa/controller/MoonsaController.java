@@ -1,23 +1,12 @@
 package com.spring.moonsa.controller;
 
-import java.util.HashMap;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.spring.moonsa.model.AttandVO;
 import com.spring.moonsa.service.InterMypageService;
-import com.spring.nari.model.MemberVO;
 
 @Component
 
@@ -27,64 +16,19 @@ public class MoonsaController {
 	@Autowired
 	private InterMypageService service;
 	
-	// 메인페이지 요청
-	@RequestMapping(value="/mypageMain.up")
-	public ModelAndView index(ModelAndView mav, HttpServletRequest request) {
+	// 메인페이지 요청(학생)
+	@RequestMapping(value="/mypageMainS.up")
+	public ModelAndView indexS(ModelAndView mav) {
 		
-		HttpSession session = request.getSession();
-		MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
-		String userid = loginuser.getUserid();
-		
-		HashMap<String, String> paraMap = new HashMap<>();
-	    paraMap.put("identity", loginuser.getIdentity());
-	    paraMap.put("userid", userid);
-		
-	    MemberVO membervo = service.getSInfo(paraMap); // 로그인한 정보 불러오기
-	    List<HashMap<String, String>> subjectList = service.getSubjectList(userid); // 학생 교과목 리스트 불러오기
-	    List<HashMap<String, String>> subjectListforP = service.getSubjectListforP(userid); // 교수 교과목 리스트 불러오기
-	    
-	    mav.addObject("membervo", membervo);
-	    
-		if("1".equals(loginuser.getIdentity())) {
-			mav.addObject("subjectList", subjectList);
-			mav.setViewName("forS/main.tiles2");
-		}
-		if("2".equals(loginuser.getIdentity())) {
-			mav.addObject("subjectListforP", subjectListforP);
-			mav.setViewName("forP/main.tiles2");
-		}
+		mav.setViewName("forS/main.tiles2");
 		
 		return mav;
 	}
 	
 	// 출석현황 (학생)
 	@RequestMapping(value="/attandS.up")
-	public ModelAndView attandS(ModelAndView mav, HttpServletRequest request) {
+	public ModelAndView attandS(ModelAndView mav) {
 		
-		String subjectSelect = request.getParameter("subjectSelect");
-		
-		if(subjectSelect == null) {
-			subjectSelect = "0";
-		}
-		
-		HttpSession session = request.getSession();
-		MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
-		String userid = loginuser.getUserid();
-		
-		HashMap<String, String> paraMap = new HashMap<>();
-	    paraMap.put("identity", loginuser.getIdentity());
-	    paraMap.put("userid", userid);
-	    paraMap.put("subjectSelect", subjectSelect);
-	    
-	    List<HashMap<String, String>> subjectList = service.getSubjectList(userid); // 교과목 리스트 불러오기
-	    
-	    List<AttandVO> attandList = service.getAttandList(paraMap); // 해당 학생의 출석 리스트 불러오기
-	    
-	    String attandOX = service.getAttandOX(paraMap); // 총 출석 수 가져오기
-	    
-	    mav.addObject("subjectList", subjectList);
-	    mav.addObject("attandList", attandList);
-	    mav.addObject("attandOX", attandOX);
 		mav.setViewName("forS/attandS.tiles2");
 		
 		return mav;
@@ -92,105 +36,38 @@ public class MoonsaController {
 	
 	// 성적관리 (학생)
 	@RequestMapping(value="/gradeS.up")
-	public ModelAndView gradeS(ModelAndView mav, HttpServletRequest request) {
+	public ModelAndView gradeS(ModelAndView mav) {
 		
-		HttpSession session = request.getSession();
-		MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
-		
-		String userid = loginuser.getUserid();
-		
-		List<HashMap<String, String>> gradeList = service.getSubjectList(userid); // 해당 학생의 성적 불러오기
-		
-		mav.addObject("gradeList", gradeList);
 		mav.setViewName("forS/gradeS.tiles2");
 		
 		return mav;
 	}
 	
+	// 메인페이지 요청(교수)
+	@RequestMapping(value="/mypageMainP.up")
+	public ModelAndView indexP(ModelAndView mav) {
+		
+		mav.setViewName("forP/main.tiles2");
+		
+		return mav;
+	}
 	
 	// 학생관리 (교수)
 	@RequestMapping(value="/studentP.up")
-	public ModelAndView studentP(ModelAndView mav, HttpServletRequest request) {
+	public ModelAndView studentP(ModelAndView mav) {
 		
-		HttpSession session = request.getSession();
-		MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
-		String userid = loginuser.getUserid();
-		
-		String subjectSelect = request.getParameter("subjectSelect");
-		
-		if(subjectSelect == null) {
-			subjectSelect = "0";
-		}
-		
-		List<HashMap<String, String>> subjectListforP = service.getSubjectListforP(userid); // 교수 교과목 리스트 불러오기
-		List<HashMap<String, String>> studentP  = service.getStudentP(subjectSelect); // 해당 과목의 학생정적 모두 불러오기 
-		
-		HashMap<String, String> paraMap = new HashMap<>();
-	    paraMap.put("userid", userid);
-	    paraMap.put("subjectSelect", subjectSelect);
-		
-	    mav.addObject("subjectSelect", subjectSelect);
-		mav.addObject("subjectListforP", subjectListforP);
-		mav.addObject("studentP", studentP);
 		mav.setViewName("forP/studentP.tiles2");
 		
 		return mav;
 	}
 	
-	// 학생관리 (교수) ajax 부분
-	@ResponseBody // view단이 필요 없다는것. 여긴 ajax이므로 필요없음
-	@RequestMapping(value="/studentP2.up", produces="text/plain;charset=UTF-8")
-	public String studentP2(HttpServletRequest request) {
-		
-		String userid = request.getParameter("userid");
-		
-		System.out.println(userid);
-		String Sname = service.getSName(userid); // 수정할 학생명 가져오기
-   
-	    JSONObject jsonObj = new JSONObject();
-	    jsonObj.put("Sname", Sname);
-	    
-		return jsonObj.toString();
-	}
-	
 	// 출석수정 (교수)
-	@ResponseBody // view단이 필요 없다는것. 여긴 ajax이므로 필요없음
-	@RequestMapping(value="/changeAttand.up", produces="text/plain;charset=UTF-8")
-	public String changeAttand(HttpServletRequest request) {
+	@RequestMapping(value="/changeAttand.up")
+	public ModelAndView changeAttand(ModelAndView mav) {
 		
-		String userid = request.getParameter("userid");
-		String subjectSelect = request.getParameter("subjectSelect");
-   
-	    JSONObject jsonObj = new JSONObject();
-	    jsonObj.put("userid", userid);
-	    jsonObj.put("subjectSelect", subjectSelect);
-	    
-		return jsonObj.toString();
-	}
-	
-	// 출석수정 (교수) 페이지 이동
-	@RequestMapping(value="/changeAttand2.up")
-	public ModelAndView changeAttand2(ModelAndView mav, HttpServletRequest request) {
-		
-		String userid = request.getParameter("userid");
-		String subjectSelect = request.getParameter("subjectSelect");
-		
-		System.out.println(userid+subjectSelect);
-		
-		HashMap<String, String> paraMap = new HashMap<>();
-		paraMap.put("userid", userid);
-	    paraMap.put("subjectSelect", subjectSelect);
-	    
-	    List<AttandVO> attandList = service.getAttandList(paraMap); // 해당 학생의 출석 리스트 불러오기
-	    String Sname = service.getSName(userid); // 수정할 학생명 가져오기
-	    
-	    String attandOX = service.getAttandOX(paraMap); // 총 출석 수 가져오기
-	    
-	    mav.addObject("Sname", Sname);
-	    mav.addObject("attandList", attandList);
-	    mav.addObject("attandOX", attandOX);
 		mav.setViewName("forP/changeAttand.tiles2");
 		
-	    return mav;
+		return mav;
 	}
+	
 }

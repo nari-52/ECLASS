@@ -199,19 +199,20 @@
 					
 					<div id="loginbtn" >로그인</div>
 					<div class="login_footer">
-						<a>아이디찾기</a><span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
-						<a>비밀번호 찾기</a><span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+						<a href="/eclass/login/idFind.up">아이디찾기</a><span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+						<a href="/eclass/login/pwdFind.up">비밀번호 찾기</a><span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
 						<a href="/eclass/member/signup_step1.up?identity=1">학생 회원가입</a><span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
 						<a href="/eclass/member/signup_step1.up?identity=2">교수 회원가입</a>
 					</div>				
 				</div>
 			</form>
 		</div>
-		<c:if test="${sessionScope.loginuser != null}">
-			<div style="float: right; margin-top: 0.5%; border: solid 0px red;">
-			  <span style="color: navy; font-weight: bold; font-size: 10pt;">${sessionScope.loginuser.name}</span> 님 로그인중..
-			</div>
-		</c:if>
+
+		
+		<!-- <iframe src=“http://www.career.go.kr/cnet/front/base/major/FunivMajorList.iframe?apiKey=0466dca798e7b31756c6da4c354bf75b&svcType=frm&svcCode=MAJOR" scrolling="no" name="ce" width="680" height="1080" frameborder="0" style="border-width:0px;border-color:white; border-style:solid;"> </iframe> 
+		-->
+		
+		
 		
 	</div>
 </body>
