@@ -316,6 +316,7 @@
 	
 	<div id="updownView">
 		<table>
+		<%-- <c:if>로 윗글아랫글로 처리 --%>
 			<tr>
 				<th>이전글</th>
 				<td><span onclick="javascript:location.href='freeboardview.up?free_seq=${freeboardvo.previousseq}'">${freeboardvo.previoussubject}</span></td>
@@ -329,9 +330,9 @@
 	</div><br>
 	
 	<div id="updownView" style="height: 40px; background-color: #fafafa;">
-		<span class="button">글수정</span>
-		<span class="button">글삭제</span>
-		<span class="button" onclick="javascript:location.href='<%= request.getContextPath()%>/freeboard.up'">목록</span>
+		<span class="button" onclick="javascript:location.href='<%=ctxPath%>/board/editfreeboard.up?free_seq=${freeboardvo.free_seq}'">글수정</span>
+		<span class="button" onclick="javascript:location.href='<%=ctxPath%>/board/delfreeboard.up?free_seq=${freeboardvo.free_seq}'">글삭제</span>
+		<span class="button" onclick="javascript:location.href='<%=ctxPath%>/freeboard.up'">목록</span>
 	</div><br>
 	
 	<div id="addReply">
