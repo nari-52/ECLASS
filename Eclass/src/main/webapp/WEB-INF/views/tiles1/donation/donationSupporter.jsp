@@ -7,7 +7,6 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link rel="stylesheet" href="<%= ctxPath %>/css/style.css" />
 <title>donationSupporter</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script> 
 <style type="text/css">
@@ -244,15 +243,18 @@
 	                        	</div>
 	                        	<%-- 후원결제(분으로)==> 60을 넘으면 시간/ 1440이 넘으면 일로 나타게  --%> 
 	                           	<div class="donSopportTime">
-	                           	<c:choose>
-	                           	<!-- 몇시간전인지 해야함!! -->
-		                           	<c:when test="${60 > (don.showDate)}">
-		                           		<fmt:parseNumber var="showDate" value="${don.showDate/60}" integerOnly="true"/>${showDate}분전 
-		                           	</c:when>
-		                           	<c:otherwise>
-		                           		<fmt:parseNumber var="showDate" value="${don.showDate/1440}" integerOnly="true"/> ${showDate}일전
-		                           	</c:otherwise>
-	                           	</c:choose>
+	                            	
+	                           	<c:if test="${60>don.showDate}">
+	                           	<fmt:parseNumber value="${don.showDate}" integerOnly="true" />분 전 
+	                           	</c:if>
+	                           	
+	                           	<c:if test="${60<don.showDate && don.showDate<1440}">
+	                           	<fmt:parseNumber value="${don.showDate/60}" integerOnly="true" />시간 전 
+	                           	</c:if>
+	                           	
+	                           	<c:if test="${don.showDate>=1440}">
+	                           	<fmt:parseNumber value="${don.showDate/1440}" integerOnly="true" />일전 
+	                           	</c:if>	                        
 	                           	</div>
                            	</c:if>
                         </c:forEach>
@@ -274,16 +276,16 @@
                        	<dt style="color:#00BCD4">오늘 종료</dt>
                        </c:if>
                        <c:if test="${(donsupporterPage[0].dDay-1)> 0}">
-						<dt>${donsupporterPage[0].dDay}일 남음</dt>
+						<dt style="color:#00BCD4">${donsupporterPage[0].dDay}일 남음</dt>
 					   </c:if>															
-						<div style="border-bottom: solid 4px #00BCD4; width: 120px; padding-bottom: 3px" align="center"></div>
+						<div style="border-bottom: solid 4px #00BCD4; width: 120px; padding-bottom: 3px;"></div>
                        </dl>
                                               
 					<dl class="underLine">
 						<dt><fmt:formatNumber value="${(donsupporterPage[0].totalPayment)/donsupporterPage[0].targetAmount}" pattern="0.0%"/>달성</dt>
 					</dl>
 					<dl class="underLine">							
-						<dt><fmt:formatNumber value="${donsupporterPage[0].totalPayment}" pattern="###,###"/>원 펀딩</dt>
+						<dt><fmt:formatNumber value="${donsupporterPage[0].totalPayment}" pattern="###,###"/>원 후원</dt>
 					</dl>                         
 					<dl>
 						<dt>${donsupporterPage[0].totalSupporter}명의 후원자</dt>

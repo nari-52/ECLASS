@@ -112,9 +112,19 @@ public class DonationController {
 			HttpSession session = request.getSession();
 			MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
 			request.setAttribute("loginuser", loginuser);
-						
-	    	mav.addObject("donseq",donseq);
-			mav.setViewName("donation/donationPayment.tiles1");
+			
+			if(donseq==null) {
+				String msg = "존재하지 않는 페이지입니다"; 
+				String loc = "javascript:history.back()";
+				
+				mav.addObject("msg",msg);
+				mav.addObject("loc",loc);
+				mav.setViewName("msg");
+			}
+			else {
+		    	mav.addObject("donseq",donseq);
+				mav.setViewName("donation/donationPayment.tiles1");
+			}
 			return mav;
 		}
 		
@@ -143,7 +153,7 @@ public class DonationController {
 	    	}
 	    	else { //결재 실패시 
 	    		paraMap.put("pointPlus", "0");
-	    		return "redirect:/donation/donationPayment.up?donseq="+donSeq;
+	    		return "redirect:/donation/donatqionPayment.up?donseq="+donSeq;
 	    	}				
 		}
 		

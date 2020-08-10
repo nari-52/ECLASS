@@ -28,7 +28,7 @@ public class DonStoryVO {
 	private String noName;
 	private String noDonpmt;
 	private String showDate; // 후원결제후 경과 시간 
-	private String sumPayment; //총후원금액(포인트+결제) 
+	private String sumPayment; //회원의 총후원금액(포인트+결제) 	
 	
 	public DonStoryVO() {};
 	

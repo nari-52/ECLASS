@@ -408,10 +408,21 @@ where donseq = 4;
 
 select donseq, subject, content, listMainImg, storyImg, donCnt
            , to_char(donDate,'yyyy-mm-dd hh24:mi:ss') as donDate 
-           , donDueDate , donStatus
-          , targetAmount, totalPayment, totalSupporter
+           , donDueDate , donStatus , targetAmount,
+           ceil(donDueDate - donDate) as dDay,
+           (select nvl(sum(payment + point), 0) from donPayment where fk_donSeq = '4') as totalPayment, 
+           totalSupporter
 from donStory   
-order by donDate desc;
+order by donseq desc;
+
+
+select donseq, subject, content, listMainImg, storyImg, donCnt
+           , to_char(donDate,'yyyy-mm-dd hh24:mi:ss') as donDate 
+           , donDueDate , donStatus , targetAmount, totalPayment,
+           ceil(donDueDate - donDate) as dDay, totalSupporter
+from donStory   
+order by donseq desc;
+
 
 create sequence donStorySeq
 start with 1
@@ -464,26 +475,68 @@ ORDER BY 1;
 commit;
 
 select S.donseq, S.subject, S.content, S.listMainImg, S.storyImg, S.donDate, S.donDueDate,
-       S.donStatus, S.targetAmount, S.totalPayment, S.totalSupporter, I.donImg, I.donImgseq,
+       S.donStatus, S.targetAmount, 
+       (select nvl(sum(payment + point), 0) from donPayment) as totalPayment, 
+       (select count(*) as totalSupporter from donPayment) as totalSupporter, 
+       I.donImg, I.donImgseq,
        ceil(donDueDate - donDate) as dDay
 from donStory S left join donImg I
 on S.donseq = I.fk_donSeq  
-where S.donseq = 4;
+where S.donseq = 27;
 
 -- 후원 서포터 페이지 
 select S.donseq, S.subject, S.content, S.listMainImg, S.storyImg, S.donDate, S.donDueDate,
-       S.donStatus, S.targetAmount, S.totalPayment, S.totalSupporter,
+       S.donStatus, S.targetAmount, S.totalPayment , S.totalSupporter,
        ceil(S.donDueDate - S.donDate) as dDay,
        I.payment, I.name, I.point, I.noName, I.noDonpmt,
        (I.payment + I.point) as sumPayment,
        to_char(I.paymentDate,'yyyy-mm-dd hh24:mi:ss') as paymentDate,
-       (to_date(sysdate,'yyyy-mm-dd hh24:mi:ss') - to_date(I.paymentDate,'yyyy-mm-dd hh24:mi:ss'))*24*60 as showDate 
+       round(TO_NUMBER((SYSDATE - paymentDate) * (24 * 60)),0) as showDate 
 from donStory S left join donPayment I
 on S.donseq = I.fk_donSeq  
-where S.donseq = 1;
+where S.donseq = 4;
+
+select sum(totalPayment)
+from donStory;
+
+--> 쿼리문, totalPayment수정(sum) ,totalSupporter수정(cnt), 
+select S.donseq, S.subject, S.content, S.listMainImg, S.storyImg, S.donDate, S.donDueDate,
+       S.donStatus, S.targetAmount,
+       (select nvl(sum(payment + point), 0) from donPayment where fk_donSeq = 26) as totalPayment,
+       (select count(*) as totalSupporter from donPayment where fk_donSeq = 26) as totalSupporter,
+       ceil(S.donDueDate - S.donDate) as dDay,
+       I.payment, I.name, I.point, I.noName, I.noDonpmt,
+       (I.payment + I.point) as sumPayment,
+       to_char(I.paymentDate,'yyyy-mm-dd hh24:mi:ss') as paymentDate,
+       round(TO_NUMBER((SYSDATE - paymentDate) * (24 * 60)),0) as showDate 
+from donStory S left join donPayment I
+on S.donseq = I.fk_donSeq  
+where S.donseq = 4;
+
+
+-- 달성, 후원, 총후원자 
+select count(*) as totalSupporter,
+       nvl(sum(payment + point), 0) AS sumPayment
+from donPayment
+where fk_donSeq=4;
+
+--현재 총 모인금액 
+select nvl(sum(payment + point), 0) AS sumPayment
+from donPayment;
+
+
+select to_date(to_char(paymentDate,'yyyy-mm-dd hh24:mi:ss'),'yyyy-mm-dd hh24:mi:ss')
+from donPayment;
+
 
 --후원결제된것 시분으로 나타내기  (분으로 알아오기) --> 60을 넘으면 시간으로 나타내고, 1440이 넘어가면 -> 일로나타내기 
 select (to_date(sysdate,'yyyy-mm-dd hh24:mi:ss') - to_date(paymentDate,'yyyy-mm-dd hh24:mi:ss'))*24*60 as paymentDate
+from donPayment;
+
+select round(TO_NUMBER((SYSDATE - paymentDate) * (24 * 60)),0) as paymentDate
+from donPayment;
+
+select TO_NUMBER((SYSDATE - paymentDate) * (24 * 60)) as paymentDate
 from donPayment;
 
 
@@ -546,10 +599,6 @@ from eclass_member;
 -- 포인트 셀렉트(후원 결제시 가능 사용액 보여주기) 
 select point
 from eclass_member
-where userid = #{fk_userid}; 
-
-select point
-from eclass_member
 where userid = 'kh123'; 
 
 -- == 결제 시 == 
@@ -558,8 +607,14 @@ insert into donPayment(fk_donSeq, fk_userid, name, noName, noDonpmt, paymentDate
 values( #{fk_donSeq} , #{fk_userid} ,#{name}, default, default, default,#{payment}, default ); 
 
 insert into donPayment(fk_donSeq, fk_userid, name, noName, noDonpmt, paymentDate, payment, point) 
-values( '4' , 'Grace', '김은혜', default, default, default, '10000', default ); 
+values( '4' , 'Grace', '김은혜', 1, 1, default, '10000', default ); 
 
+insert into donPayment(fk_donSeq, fk_userid, name, noName, noDonpmt, paymentDate, payment, point) 
+values( '4' , 'Grace', '김은혜', 1, 0, default, '20000', default ); 
+commit;
+
+select *
+from donPayment;
 
 -- 포인트 차감 (update)
 update eclass_member set point = point - ? --(사용한 포인트만큼)

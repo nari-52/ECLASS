@@ -8,17 +8,20 @@
 
 	<select id="donationList" resultType="com.spring.kimeh.model.DonStoryVO">
 		select donseq, subject, content, listMainImg, storyImg, donCnt
-		     , to_char(donDate,'yyyy-mm-dd hh24:mi:ss') as donDate 
-		     , donDueDate , donStatus
-			 , targetAmount, totalPayment, totalSupporter
-   		from donStory   
+           , to_char(donDate,'yyyy-mm-dd hh24:mi:ss') as donDate 
+           , donDueDate , donStatus , targetAmount, totalPayment,
+           ceil(donDueDate - donDate) as dDay, totalSupporter
+		from donStory      
    		order by donDate desc
 	</select>
 	
 	<select id="donationStory" resultType="com.spring.kimeh.model.DonStoryVO" parameterType="String">
 		select S.donseq, S.subject, S.content, S.listMainImg, S.storyImg, S.donDate, S.donDueDate,
-      		   S.donStatus, S.targetAmount, S.totalPayment, S.totalSupporter, I.donImg, I.donImgseq,
-     		   ceil(donDueDate - donDate) as dDay 
+		       S.donStatus, S.targetAmount, 
+		       (select nvl(sum(payment + point), 0) from donPayment where fk_donSeq = #{donseq}) as totalPayment, 
+		       (select count(*) as totalSupporter from donPayment where fk_donSeq = #{donseq}) as totalSupporter, 
+		       I.donImg, I.donImgseq,
+		       ceil(donDueDate - donDate) as dDay
 		from donStory S left join donImg I
 		on S.donseq = I.fk_donSeq  
 		where S.donseq = #{donseq}
@@ -26,14 +29,16 @@
 	
 	<select id="donationSupporter" resultType="com.spring.kimeh.model.DonStoryVO" parameterType="String">
 		select S.donseq, S.subject, S.content, S.listMainImg, S.storyImg, S.donDate, S.donDueDate,
-      		   S.donStatus, S.targetAmount, S.totalPayment, S.totalSupporter,
-       		   ceil(S.donDueDate - S.donDate) as dDay,
-       		   I.payment, I.name, I.point, I.noName, I.noDonpmt,
-       		  (I.payment + I.point) as sumPayment,
+		       S.donStatus, S.targetAmount,
+		       (select nvl(sum(payment + point), 0) from donPayment where fk_donSeq = #{donseq}) as totalPayment,
+		       (select count(*) as totalSupporter from donPayment where fk_donSeq = #{donseq}) as totalSupporter,
+		       ceil(S.donDueDate - S.donDate) as dDay,
+		       I.payment, I.name, I.point, I.noName, I.noDonpmt,
+		       (I.payment + I.point) as sumPayment,
 		       to_char(I.paymentDate,'yyyy-mm-dd hh24:mi:ss') as paymentDate,
-		      (to_date(sysdate,'yyyy-mm-dd hh24:mi:ss') - to_date(I.paymentDate,'yyyy-mm-dd hh24:mi:ss'))*24*60 as showDate 
+		       round(TO_NUMBER((SYSDATE - paymentDate) * (24 * 60)),0) as showDate  
 		from donStory S left join donPayment I
-		on S.donseq = I.fk_donSeq  
+		on S.donseq = I.fk_donSeq    
 		where S.donseq = #{donseq}	
 	</select>    
 	    

@@ -144,17 +144,20 @@
                                         <div style="width:250px; height:350px;" class="sample_image">
                                         <img style="width:100%; height:100%;" src="<%= ctxPath%>/resources/images/${don.listMainImg}" /></div>
 
-                                        <br/><span style="font-size:12.5pt; letter-spacing: 0.4px; color:#333; ">
+                                        <br/><span style="font-size:12.5pt; letter-spacing: 0.4px; color:#333;">
                                         	${don.subject}</span>
                                         
                                         <div style="border-bottom: solid 2px #00BCD4; width: 248px; padding: 3px 0 0 0"></div>
                                             
                                         <c:if test="${don.totalPayment != 0}">
-                                            <span style="color: #00BCD4; font-weight: bold; font-size: 18px;">
-                                            <fmt:formatNumber value="${(don.totalPayment)/don.targetAmount}" pattern="0.0%"/>                                                                                
-                                           <%-- ${(don.totalPayment*100)/don.targetAmount}%  --%>
-											</span>
-                                            <span style="float:right; padding-right:33px; color: #bbb; font-weight: bold; font-size: 16px;">목표금액 <fmt:formatNumber value="${don.targetAmount}" pattern="###,###"/>원 </span>                                                                                        
+                                        	<c:if test="${don.dDay<=0}">
+                                        	<span style="color: #00BCD4; font-weight: bold; font-size: 18px;">후원종료</span>
+                                        	</c:if>
+                                        	<c:if test="${don.dDay>0}">
+                                        	<span style="color: #00BCD4; font-weight: bold; font-size: 18px;">D-${don.dDay}</span>
+                                        	</c:if>                                            
+											<%-- <fmt:formatNumber value="${(don.totalPayment)/don.targetAmount}" pattern="0.0%"/>  --%>  
+                                            <span style="float:right; padding-top:3px; padding-right:25px; color: #bbb; font-weight: bold; font-size: 16px;">목표금액 <fmt:formatNumber value="${don.targetAmount}" pattern="###,###"/>원 </span>                                                                                        
                                         </c:if>
                                     </a>
                                 </td> 

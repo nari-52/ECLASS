@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>    
-<%@ page import="java.util.Date" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <% String ctxPath = request.getContextPath(); %>
@@ -241,7 +240,7 @@
 	                        	<dt style="color:#00BCD4">오늘 종료</dt>
 	                        </c:if>
 	                         <c:if test="${(donstoryPage[0].dDay-1)> 0}">
-								<dt>${donstoryPage[0].dDay}일 남음</dt>
+								<dt style="color:#00BCD4">${donstoryPage[0].dDay}일 남음</dt>
 							</c:if>															
 								<div style="border-bottom: solid 4px #00BCD4; width: 120px; padding-bottom: 3px" align="center"></div>
 	                        </dl>
