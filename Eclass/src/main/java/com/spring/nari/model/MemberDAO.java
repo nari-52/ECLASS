@@ -63,6 +63,15 @@ public class MemberDAO implements InterMemberDAO {
 		
 		return userid;
 	}
+
+
+	// 비밀번호 찾기 시 비밀번호 변경 하기
+	@Override
+	public int pwd_update(HashMap<String, String> paraMap) {
+		
+		int n = sqlsession.update("member.pwd_update", paraMap); 
+		return n;
+	}
 	
 	
 	

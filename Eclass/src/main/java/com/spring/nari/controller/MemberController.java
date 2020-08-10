@@ -1,5 +1,8 @@
 package com.spring.nari.controller;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
+
 import java.io.File;
 import java.util.HashMap;
 import java.util.Random;
@@ -97,7 +100,7 @@ public class MemberController {
 				else {
 					// 아무런 이상없이 로그인 하는 경우
 					session.setAttribute("loginuser", loginuser);
-
+					
 					if (session.getAttribute("gobackURL") != null) {
 						// 세션에 저장된 돌아갈 페이지 주소(gobackURL)가 있는 경우
 						String gobackURL = (String) session.getAttribute("gobackURL");
@@ -106,9 +109,8 @@ public class MemberController {
 						session.removeAttribute("gobackURL"); // 중요!!!! 반드시 제거해 주어야 한다.
 					}
 					
+					mav.setViewName("main/index.tiles1");
 					
-					mav.setViewName("login/login.tiles1");
-					// /WEB-INF/views/tiles1/login/loginEnd.jsp 파일을 생성해야 한다.
 				}
 			}
 		}
@@ -442,7 +444,7 @@ public class MemberController {
 	
 	// 아이디찾기 화면 보여주기
 	@RequestMapping (value="login/idFind.up")
-	public ModelAndView idFind(ModelAndView mav) {
+	public ModelAndView idFind(HttpServletRequest request, ModelAndView mav) {
 		
 		mav.setViewName("login/idFind.tiles1");
 		
@@ -450,10 +452,10 @@ public class MemberController {
 	}
 	
 	
-	// AJAX를 이용하여 아이디찾기 페이지에서 인증메일 보내기 (왜 똑같은 ajax인데 안될까??????)
+	// AJAX를 이용하여 아이디찾기 페이지에서 인증메일 보내기 
 	@ResponseBody
 	@RequestMapping (value="login/idFind_mail.up", produces="text/plain; charset=UTF-8")
-	public String idFind(HttpServletRequest request, ModelAndView mav) {
+	public String idFind_mail(HttpServletRequest request, ModelAndView mav) {
 		
 		// 입력한 이름 가져오기
 		String name = request.getParameter("name");
@@ -515,10 +517,82 @@ public class MemberController {
 		return jsonObj.toString();
 	}
 	
+	// 아이디찾기 완료 화면 보여주기
+	@RequestMapping (value="login/idFind_end.up")
+	public ModelAndView idFind_end(HttpServletRequest request, ModelAndView mav) { 
+		
+		String userid = request.getParameter("userid");
+		
+		// System.out.println("~~~~~~~~~~~~~~userid : " + userid);
+		
+		mav.addObject("userid", userid);
+		mav.setViewName("login/idFind_end.tiles1");
+		
+		return mav;
+	}
 	
+	// 비밀번호 찾기 화면 보여주기
+	@RequestMapping (value="login/pwdFind.up")
+	public ModelAndView pwdFind(HttpServletRequest request, ModelAndView mav) {
+		
+		mav.setViewName("login/pwdFind.tiles1");
+		
+		return mav;
+	}
 	
+	// 비밀번호찾기 비밀번호 변경 화면 보여주기
+	@RequestMapping (value="login/pwdFind_update.up")
+	public ModelAndView pwdFind_update(HttpServletRequest request, ModelAndView mav) { 
+		
+		String userid = request.getParameter("userid");
+		String mobile = request.getParameter("mobile");
+		
+		// System.out.println("~~~~~~~~~~~~~~userid : " + userid);
+		// System.out.println("~~~~~~~~~~~~~~mobile : " + mobile);
+		
+		mav.addObject("userid", userid);
+		mav.addObject("mobile", mobile);
+		
+		mav.setViewName("login/pwdFind_update.tiles1");
+		
+		return mav;
+	}
 	
-	
+	// 비밀번호 찾기 완료 화면 보여주기
+	@RequestMapping (value="login/pwdFind_end.up")
+	public String pwdFind_end(HttpServletRequest request, ModelAndView mav) {
+		
+		String userid = request.getParameter("userid");
+		String pwd = request.getParameter("pwd");
+		
+		// System.out.println("~~~~~~~~~~변경할 userid: "+userid);
+		// System.out.println("~~~~~~~~~~변경할 pwd: "+pwd);
+		
+		HashMap<String, String> paraMap = new HashMap<>();
+		paraMap.put("userid", userid);
+		paraMap.put("pwd", pwd);
+		
+		int n = service.pwd_update(paraMap); // 비밀번호 찾기 시 비밀번호 변경 하기
+		
+		// System.out.println("업데이트 실행 후");
+		String msg = "";
+		String loc = "";
+		
+		if(n==1) {
+			
+			return "tiles1/login/pwdFind_end";
+		}
+		else {
+			msg = "비밀번호 변경 실패";
+			loc = "javascript:history.back()";	// 자바스크립트를 이용한 이전페이지로 이동하는 것이다.
+			
+			request.setAttribute("msg", msg);
+			request.setAttribute("loc", loc);
+			
+			return "msg"; //msg.jsp 페이지로 이동
+		}
+
+	}
 	
 	
 	
