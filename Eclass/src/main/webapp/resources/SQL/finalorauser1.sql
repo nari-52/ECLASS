@@ -58,21 +58,57 @@ create table login_table
 );
 
 select *
-from login_table;
+from subject_tbl;
+    
+    select subName,subContent,subImg
+    from subject_tbl;
+    
+    delete from subject_tbl where status =1
+    
+    commit;
     
  -- 교과목 테이블
 create table subject_tbl
 (subseq number not null  -- 교과목 번호-시퀀스
-,fk_userid  varchar2(50) not null -- 아이디
+,fk_userid  varchar2(50) not null -- 아이디eq = 6
 ,status number(1) default 1 -- 이수구분(전공,교양,일반)
 ,subName varchar2(500) not null -- 교과목명
 ,subContent varchar2(2000)  -- 교과목소개
-,subImg varchar2(200) -- 교과목대표이미지
+,subImg varchar2(200) -- 오리지날 교과목대표이미지
+,saveSubImg varchar2(800) -- 저장될 이미지
 ,writeday date default sysdate -- 교과목 등록일
 ,constraint PK_subject_tbl_subseq PRIMARY KEY (subseq)
 ,constraint FK_subject_tbl_userid foreign key(fk_userid) references eclass_member(userid)
 ,constraint CK_subject_tbl check (status in(1,2,3))
 );
+
+alter table subject_tbl add saveSubImg varchar2(800);-- 저장될 이미지
+select *
+from user_constraints;
+
+insert into subject_tbl(subseq,fk_userid,status,subName,subContent,subImg,writeday)
+values(seq_subseq.nextval,'test','1','c++언어','초보자도 쉽게 접근할수 있게끔 설명이 깔금한 강의 c++언어 전문가가 되자','main1.PNG',sysdate);
+
+insert into subject_tbl(subseq,fk_userid,status,subName,subContent,subImg,writeday)
+values(seq_subseq.nextval,'test','2','자바프로그래밍','자바프로그래밍 이 강의하나로끝낼수 있다 자바프로그래밍 이 강의하나로끝낼수 있다','main2.PNG',sysdate);
+
+insert into subject_tbl(subseq,fk_userid,status,subName,subContent,subImg,writeday)
+values(seq_subseq.nextval,'test','3','공업역학의 모든 것','대학수학의 기본기부터 고난이도 문제까지 한방에 끝내기 프로젝트','main3.PNG',sysdate);
+
+insert into subject_tbl(subseq,fk_userid,status,subName,subContent,subImg,writeday)
+values(seq_subseq.nextval,'test','1','c++언어','초보자도 쉽게 접근할수 있게끔 설명이 깔금한 강의 c++언어 전문가가 되자','main1.PNG',sysdate);
+
+insert into subject_tbl(subseq,fk_userid,status,subName,subContent,subImg,writeday)
+values(seq_subseq.nextval,'test','2','자바프로그래밍','자바프로그래밍 이 강의하나로끝낼수 있다 자바프로그래밍 이 강의하나로끝낼수 있다','main2.PNG',sysdate);
+
+insert into subject_tbl(subseq,fk_userid,status,subName,subContent,subImg,writeday)
+values(seq_subseq.nextval,'test','3','공업역학의 모든 것','대학수학의 기본기부터 고난이도 문제까지 한방에 끝내기 프로젝트','main3.PNG',sysdate);
+
+
+select *
+from subject_tbl;
+
+commit;
 
 create sequence seq_subseq
 start with 1
@@ -124,6 +160,7 @@ nomaxvalue
 nominvalue
 nocycle
 nocache;
+
 
 
 -- 출석테이블
@@ -182,6 +219,18 @@ create table myPForS_tbl
 ,constraint FK_myPForS_tbl_userid foreign key(fk_userid) references eclass_member(userid)
 );
 
+select *
+from myPForS_tbl;
+delete from myPForS_tbl where mysseq = 1
+
+insert into myPForS_tbl(mySSEq,fk_subSeq,fk_userid,finalG,examG,attandG)
+		values(seq_mySSeq.nextval,99,'test',default,default,default)
+
+
+rollback;
+
+drop sequence seq_mySSeq;
+commit;
 create sequence seq_mySSeq
 start with 1
 increment by 1
@@ -190,6 +239,8 @@ nominvalue
 nocycle
 nocache;
 
+select *
+from myPForS_tbl;
 
 ---------------------------- [[ 시험 테이블 ]] ----------------------------
 create table exam    -- 시험 테이블
