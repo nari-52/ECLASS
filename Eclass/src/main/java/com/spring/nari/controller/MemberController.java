@@ -116,7 +116,6 @@ public class MemberController {
 	}
 
 
-
 	// 로그아웃 처리하기 
 	@RequestMapping(value = "login/logout.up")
 	public ModelAndView logout(HttpServletRequest request, ModelAndView mav) {
@@ -167,7 +166,6 @@ public class MemberController {
 		
 		mav.addObject("identity", identity);
 		
-		
 		mav.setViewName("member/signup_mailAuthentication.tiles1");
 		
 		return mav;
@@ -206,7 +204,7 @@ public class MemberController {
 			certificationCode += randnum;
 		}
 		
-		System.out.println(certificationCode);
+		// System.out.println(certificationCode);
 		// cayta8010732
 		String mailmessage = certificationCode;
 		
@@ -217,21 +215,12 @@ public class MemberController {
 			e.printStackTrace();
 		}
 		
-		// json으로 데이터 넘겨주기 (배열)
-		
-		// JSONArray jsonArr = new JSONArray();
+		// json으로 데이터 넘겨주기 
 		JSONObject jsonObj = new JSONObject();
 		
 		jsonObj.put("mailmessage", mailmessage);
 		jsonObj.put("name", name);
 		jsonObj.put("email", email);
-		
-		// jsonArr.put(jsonObj);
-		
-		/*mailmessage = jsonObj.toString();
-		name = jsonObj.toString();
-		email = jsonObj.toString();*/
-		// System.out.println(mailmessage);
 
 		return jsonObj.toString();
 	}
@@ -329,6 +318,215 @@ public class MemberController {
 		
 		return mav;
 	}
-				
-				
+	
+	
+	// AJAX를 이용하여 회원가입 아이디 중복검사
+	@ResponseBody
+	@RequestMapping (value="member/idDuplicateCheck.up", produces="text/plain; charset=UTF-8")
+	public String idDuplicateCheck(HttpServletRequest request, ModelAndView mav) {
+		
+		String userid = request.getParameter("userid");
+		// System.out.println("~~~~~~~~~~~~~userid: " + userid);
+		
+		String isUse = service.idDuplicateCheck(userid);
+		
+		// System.out.println("~~~~~~~~~~~~~isUse: " + isUse);
+		JSONObject jsonObj = new JSONObject();
+		jsonObj.put("isUse", isUse);
+		
+		return jsonObj.toString();
+		
+	}
+	
+	// AJAX를 이용하여 휴대전화 중복검사
+	@ResponseBody
+	@RequestMapping (value="member/mobileDuplicateCheck.up", produces="text/plain; charset=UTF-8")
+	public String mobileDuplicateCheck(HttpServletRequest request, ModelAndView mav) {
+		
+		String mobile = request.getParameter("mobile");
+		// System.out.println("~~~~~~~~~~~~~mobile: " + mobile);
+		
+		String isUseMobile = service.mobileDuplicateCheck(mobile);
+		
+		System.out.println("~~~~~~~~~~~~~isUse: " + isUseMobile);
+		JSONObject jsonObj = new JSONObject();
+		jsonObj.put("isUseMobile", isUseMobile);
+		
+		return jsonObj.toString();
+		
+	}
+
+	// 회원가입_정보입력 완료 (회원가입!)
+	@RequestMapping (value="member/signup_step3_end.up", method= {RequestMethod.POST})
+	public String signup_step3_end(HttpServletRequest request, ModelAndView mav, MemberVO mvo) {
+		
+		
+		// 회원가입 값 가져오기 // VO로 가져오는 경우 name값과 colum 값이 일치하면 따로 값을 가져오지 않아도 자동 matching 된다
+		/*String userid = request.getParameter("userid");		
+		String name = request.getParameter("name");			
+		String pwd = request.getParameter("pwd");			
+		String identity = request.getParameter("identity");		
+		String university = request.getParameter("university");	
+		String major = request.getParameter("major");		
+		String student_num = request.getParameter("student_num");	
+		String email = request.getParameter("email");		
+		String mobile = request.getParameter("mobile");		
+		String postcode = request.getParameter("postcode");		
+		
+		String address = request.getParameter("address");		
+		String detailaddress = request.getParameter("detailaddress");
+		String extraaddress = request.getParameter("extraaddress");	
+		String point = request.getParameter("point");			
+		String registerday = request.getParameter("registerday");		
+		String status = request.getParameter("status");			
+		String last_login_date = request.getParameter("last_login_date");	
+		String pwd_change_date = request.getParameter("pwd_change_date");	
+		String filename = request.getParameter("filename");		
+		String orgfilename = request.getParameter("orgfilename");*/
+		
+		
+		
+		// 회원가입 하기
+		int n = service.registerMember(mvo);
+		// System.out.println("~~~~~~N: "+n); 
+		
+		String msg = "";
+		String loc = "";
+		
+		if(n==1) {
+			
+			/*mav.addObject("userid", mvo.getUserid());
+			mav.addObject("name", mvo.getName());
+			mav.addObject("university", mvo.getUniversity());
+			mav.addObject("major", mvo.getMajor());
+			mav.addObject("student_num", mvo.getStudent_num());
+			mav.addObject("email", mvo.getEmail());
+			mav.addObject("mobile", mvo.getMobile());*/
+			
+			request.setAttribute("userid", mvo.getUserid());
+			request.setAttribute("name", mvo.getName());
+			request.setAttribute("university", mvo.getUniversity());
+			request.setAttribute("major", mvo.getMajor());
+			request.setAttribute("student_num", mvo.getStudent_num());
+			request.setAttribute("mobile", mvo.getMobile());
+			
+/*			mav.setViewName("member/signup_end.tiles1");*/
+			return "tiles1/member/signup_end";
+		}
+		else {
+			msg = "회원가입  실패";
+			loc = "javascript:history.back()";	// 자바스크립트를 이용한 이전페이지로 이동하는 것이다.
+			
+	/*		mav.addObject("msg", msg);
+			mav.addObject("loc", loc);*/
+			
+			request.setAttribute("msg", msg);
+			request.setAttribute("loc", loc);
+			
+			return "msg"; //msg.jsp 페이지로 이동
+		}
+
+	}
+	
+	
+	
+	// 회원가입 완료 화면 보여주기
+	@RequestMapping (value="member/signup_end.up")
+	public ModelAndView signup_end(ModelAndView mav) {
+		
+		mav.setViewName("member/signup_end.tiles1");
+		
+		return mav;
+	}
+	
+	
+	// 아이디찾기 화면 보여주기
+	@RequestMapping (value="login/idFind.up")
+	public ModelAndView idFind(ModelAndView mav) {
+		
+		mav.setViewName("login/idFind.tiles1");
+		
+		return mav;
+	}
+	
+	
+	// AJAX를 이용하여 아이디찾기 페이지에서 인증메일 보내기 (왜 똑같은 ajax인데 안될까??????)
+	@ResponseBody
+	@RequestMapping (value="login/idFind_mail.up", produces="text/plain; charset=UTF-8")
+	public String idFind(HttpServletRequest request, ModelAndView mav) {
+		
+		// 입력한 이름 가져오기
+		String name = request.getParameter("name");
+		// 입력한 이메일 값 가져오기
+		String email = request.getParameter("email");
+		
+		GoogleMail mail = new GoogleMail();
+		
+		// 인증키를 랜덤하게 생성하도록 한다.
+		Random rnd = new Random();
+		String certificationCode = "";
+		
+		char randchar = ' ';
+		for(int i=0; i<5; i++) {
+		/*
+		    min 부터 max 사이의 값으로 랜덤한 정수를 얻으려면 
+		    int rndnum = rnd.nextInt(max - min + 1) + min;
+		       영문 소문자 'a' 부터 'z' 까지 랜덤하게 1개를 만든다.  	
+		 */
+			randchar = (char) (rnd.nextInt('z' - 'a' + 1) + 'a');
+			certificationCode += randchar;
+		}
+		
+		int randnum = 0;
+		for(int i=0; i<7; i++) {
+			randnum = rnd.nextInt(9 - 0 + 1) + 0;
+			certificationCode += randnum;
+		}
+		
+		// System.out.println(certificationCode);
+		// cayta8010732
+		String mailmessage = certificationCode;
+		
+		try {
+			mail.sendmail(email, mailmessage);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		// name과 email 넘겨주기
+		HashMap<String, String> paraMap = new HashMap<>();
+		paraMap.put("name", name);
+		paraMap.put("email", email);
+		
+		String userid = service.idFind(paraMap);
+		
+		// System.out.println("~~~~~~~~~~~~userid : " + userid);
+		
+		// json으로 데이터 넘겨주기 
+		JSONObject jsonObj = new JSONObject();
+		
+		jsonObj.put("mailmessage", mailmessage);
+		jsonObj.put("name", name);
+		jsonObj.put("email", email);
+		jsonObj.put("userid", userid);
+
+		return jsonObj.toString();
+	}
+	
+	
+	
 }
+	
+	
+	
+	
+	
+	
+	
+	
+	
+				
+				
+

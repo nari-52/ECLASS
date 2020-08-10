@@ -93,17 +93,30 @@
 <script type="text/javascript">
 
 	$(document).ready(function(){ 
+		
+		// 로그인 버튼 클릭 시
 		$("#loginbtn").click(function() {
 			 func_Login();
 			 
 		}); // end of $("#btnLOGIN").click();-----------------------
 		
+		// 비밀번호 작성 후 엔터를 쳤을 경우
 		$("#pwd").keydown(function(event){
 				
 				if(event.keyCode == 13) { // 엔터를 했을 경우
 					func_Login();
 				}
 		}); // end of $("#pwd").keydown();-----------------------	
+		
+		// 로컬에 저장된 userid 값을 불러와서 userid에 넣어주기
+		var loginUserid = localStorage.getItem('saveID');
+		
+		if(loginUserid != null) {
+			$("#userid").val(loginUserid);
+			$("input:checkbox[id=saveID]").prop("checked", true);
+		}
+		
+		
 		
 	}); // end of $(document).ready()---------------------------	
 	
@@ -127,6 +140,20 @@
 			 $("#pwd").focus();
 			 return;
 		}
+		
+		var loginUserid = $("#userid").val().trim();
+		
+		// 아이디 저장
+		if ($("input:checkbox[name=saveID]").prop("checked")) {
+			alert("아이디 저장 체크");
+			
+			localStorage.setItem('saveID', $("#userid").val());
+		}
+		else{
+			alert("아이디 저장 체크 안함");
+			localStorage.removeItem('saveID');
+		}
+		
 		var frm = document.loginFrm;
 		
 		frm.action = "<%=ctxPath%>/login/loginEnd.up";

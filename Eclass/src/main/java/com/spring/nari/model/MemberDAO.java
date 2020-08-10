@@ -25,4 +25,71 @@ public class MemberDAO implements InterMemberDAO {
 		return loginuser;
 	}
 
+
+	// AJAX를 이용하여 회원가입 아이디 중복검사
+	@Override
+	public String idDuplicateCheck(String userid) {
+		
+		String isUse = sqlsession.selectOne("member.idDuplicateCheck", userid);
+		
+		return isUse;
+	}
+
+	// 회원가입 하기
+	@Override
+	public int registerMember(MemberVO mvo) {
+		
+		int n = sqlsession.insert("member.registerMember", mvo);
+		
+		return n;
+	}
+
+
+	// AJAX를 이용하여 휴대전화 중복검사
+	@Override
+	public String mobileDuplicateCheck(String mobile) {
+		
+		String isUseMobile = sqlsession.selectOne("member.mobileDuplicateCheck", mobile);
+		
+		return isUseMobile;
+	}
+
+
+	// 아이디 찾기
+	@Override
+	public String idFind(HashMap<String, String> paraMap) {
+
+		String userid = sqlsession.selectOne("member.idFind", paraMap);	
+		
+		return userid;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
