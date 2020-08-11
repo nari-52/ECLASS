@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.spring.kimeh.model.DonStoryVO;
 
 //=== #32. DAO 선언 ===
 @Repository  
@@ -92,6 +93,48 @@ public class EclassDAO implements InterEclassDAO{
 		int n = sqlsession.update("kanghm.delFreeComment", delseq);
 		
 		return n;
+	}
+
+	// 자유게시판 글 삭제 완료하기
+	@Override
+	public int delfreeboard(HashMap<String, String> paraMap) {
+		
+		int n = sqlsession.update("kanghm.delfreeboard",paraMap);
+		
+		return n;
+	}
+
+	// 자유게시판 글을 삭제하면 딸린 댓글도 같이 삭제하기
+	@Override
+	public void delComment(HashMap<String, String> paraMap) {
+		
+		int n = sqlsession.update("kanghm.delComment",paraMap);
+		
+	}
+
+	// 자유게시판 글 수정하기 완료하기
+	@Override
+	public int editfreeboardEnd(FreeboardVO freeboardvo) {
+		
+		int n = sqlsession.update("kanghm.editfreeboardEnd",freeboardvo);
+		
+		return n;
+	}
+
+	// 자유게시판 조회수 증가하며 글 조회하기
+	@Override
+	public FreeboardVO getFreeView(String free_seq) {
+		
+		FreeboardVO freeboardvo = sqlsession.selectOne("kanghm.getFreeView",free_seq);
+		
+		return freeboardvo;
+	}
+
+	// 조회수 1증가 시키기
+	@Override
+	public void addViewCount(String free_seq) {
+		sqlsession.update("kanghm.addViewCount",free_seq);
+		
 	}
 	
 }

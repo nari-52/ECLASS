@@ -128,7 +128,7 @@
 						<td align="center">${boardList.writedate}</td>
 						<td align="center">${boardList.viewcount}</td>
 						<c:if test="${not empty boardList.fileName}">
-							<td align="center">파일있음</td>
+							<td align="center"><img src="<c:url value="/resources/images/disk.gif" />"></td>
 						</c:if>
 						
 						<c:if test="${empty boardList.fileName}">
@@ -163,7 +163,7 @@
 	
 	<form name="goViewFrm">
 		<input type="hidden" name="free_seq"/>
-		<%-- <input type="hidden" name="gobackURL" value="${gobackURL}"/> --%>
+		<input type="hidden" name="gobackURL" value="${gobackURL}"/>
 	</form>
 	
 	
