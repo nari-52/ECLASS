@@ -43,5 +43,11 @@ public interface InterEclassDAO {
 	// 자유게시판 글 수정하기 완료하기
 	int editfreeboardEnd(FreeboardVO freeboardvo);
 
+	// 자유게시판 조회수 증가하며 글 조회하기
+	FreeboardVO getFreeView(String free_seq);
+
+	// 조회수 1증가 시키기
+	void addViewCount(String free_seq);
+
 
 }

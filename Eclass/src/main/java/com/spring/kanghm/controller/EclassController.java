@@ -24,6 +24,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.common.FileManager;
+import com.spring.common.MyUtil;
 import com.spring.kanghm.model.FreeCommentVO;
 import com.spring.kanghm.model.FreeboardVO;
 import com.spring.kanghm.service.InterEclassService;
@@ -194,6 +195,16 @@ public class EclassController {
 		      
 		    mav.addObject("pageBar", pageBar);		        
 		    
+		    ////////////////////////////////
+		    String gobackURL = MyUtil.getCurrentURL(request);
+		    
+		    mav.addObject("gobackURL", gobackURL);    
+		    
+		    HttpSession session = request.getSession();
+		    session.setAttribute("readCountPermission", "yes");
+		    session.setAttribute("gobackURL", gobackURL);
+		    
+		    //////////////////////////////////////////
 		    
 		    mav.addObject("totalCount",totalCount);
 		    mav.addObject("freeboardList",freeboardList);
@@ -204,7 +215,7 @@ public class EclassController {
 		
 		// 자유게시판 글쓰기
 		@RequestMapping(value="/addfreeboard.up")
-		public ModelAndView addfreeboard(ModelAndView mav) {
+		public ModelAndView requiredLogin_addfreeboard(HttpServletRequest request, HttpServletResponse response,ModelAndView mav) {
 			
 			mav.setViewName("board/addfreeboard.tiles1");
 			
@@ -297,8 +308,32 @@ public class EclassController {
 			
 			String free_seq = request.getParameter("free_seq");
 
-			FreeboardVO freeboardvo = service.getFreeViewNoAdd(free_seq);
+			String gobackURL = request.getParameter("gobackURL");
+			mav.addObject("gobackURL",gobackURL);
 			
+			HttpSession session = request.getSession();
+			MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
+			
+			String userid = null;
+			
+			if(loginuser != null) {
+				userid = loginuser.getUserid();
+				// userid 는 로그인 되어진 사용자의 userid 이다.
+			}
+			
+			FreeboardVO freeboardvo = null;
+			
+			if("yes".equals(session.getAttribute("readCountPermission"))) {
+				
+				// 조회수 증가와 함께 글 조회
+				freeboardvo = service.getFreeView(free_seq,userid);
+				
+				session.removeAttribute("readCountPermission");
+			}
+			else {
+				freeboardvo = service.getFreeViewNoAdd(free_seq);
+			}
+					
 			mav.addObject("freeboardvo",freeboardvo);
 			mav.setViewName("board/freeboardview.tiles1");
 	
@@ -310,7 +345,7 @@ public class EclassController {
 		@RequestMapping(value="/download.up")
 		public void download(HttpServletRequest request, HttpServletResponse response) {
 			
-			String free_seq = request.getParameter("free_seq");
+			String free_seq = request.getParameter("free_seq");	
 			
 			FreeboardVO freeboardvo = service.getFreeViewNoAdd(free_seq);
 			
@@ -348,7 +383,7 @@ public class EclassController {
 		
 		// 자유게시판 글 삭제하기
 		@RequestMapping(value="/board/delfreeboard.up")
-		public ModelAndView delfreeboard(HttpServletRequest request, ModelAndView mav) {
+		public ModelAndView requiredLogin_delfreeboard(HttpServletRequest request,HttpServletResponse response, ModelAndView mav) {
 			
 			// 삭제해야할 글번호를 받아온다.
 			String free_seq = request.getParameter("free_seq");
@@ -404,7 +439,7 @@ public class EclassController {
 		
 		// 자유게시판 글 수정하기 
 		@RequestMapping(value="/board/editfreeboard.up")
-		public ModelAndView editfreeboard(HttpServletRequest request, ModelAndView mav) {
+		public ModelAndView requiredLogin_editfreeboard(HttpServletRequest request, HttpServletResponse response,ModelAndView mav) {
 			
 			// 글 수정해야할 글번호 가져오기 
 			String free_seq = request.getParameter("free_seq");

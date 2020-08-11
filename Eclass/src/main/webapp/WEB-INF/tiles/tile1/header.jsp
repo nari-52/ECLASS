@@ -121,9 +121,12 @@
    <img class="logo" onclick="javascript:location.href='<%=ctxPath%>/index.up'" src="<c:url value="/resources/images/logo.png" />">
 
 <!-- 우측상단 미니메뉴바  -->
+<c:if test="${sessionScope.loginuser != null}">
 <span class="minimenu"><a href="<%=ctxPath%>/login/logout.up">로그아웃</a></span>
+</c:if>
+<c:if test="${sessionScope.loginuser == null}">
 <span class="minimenu"><a href="<%=ctxPath%>/login/login.up">로그인</a></span>
-<span class="minimenu"><a>회원가입</a></span>
+</c:if>
 <span class="minimenu"><a>1:1상담</a></span>
 <span class="minimenu"><a href="admin.up">관리자</a></span><br>
 <c:if test="${sessionScope.loginuser != null}">
