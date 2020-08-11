@@ -77,6 +77,19 @@
 		padding-top: 10px;
 	}
 	
+	div#delMemberbtn {
+		border: solid 1px blue;
+		margin: 0 auto;
+		width: 620px;
+		height: 30px;
+		background-color: #00bcd4;
+		color: white;
+		font-size: 12pt;
+		font-weight: bold;
+		text-align: center;
+		padding-top: 10px;
+	}
+	
 	div.login_footer {
 		border: solid 1px #ddd;
 		margin: 0 auto;
@@ -116,9 +129,24 @@
 			$("input:checkbox[id=saveID]").prop("checked", true);
 		}
 		
+		// 회원탈퇴 버튼 클릭시
+		$("#delMemberbtn").click(function() {
+			func_delMember();
+			 
+		}); // end of $("#btnLOGIN").click();-----------------------
 		
 		
 	}); // end of $(document).ready()---------------------------	
+	
+	// 회원탈퇴 함수
+	function func_delMember(){
+		var frm = document.DelMemberFrm;
+		
+		frm.action = "<%=ctxPath%>/member/delMember.up";
+		frm.method = "POST";
+		frm.submit();
+		
+	}
 	
 	
 	// 로그인 함수
@@ -198,6 +226,7 @@
 					</ul>
 					
 					<div id="loginbtn" >로그인</div>
+					<div id="delMemberbtn" >회원탈퇴</div>
 					<div class="login_footer">
 						<a href="/eclass/login/idFind.up">아이디찾기</a><span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
 						<a href="/eclass/login/pwdFind.up">비밀번호 찾기</a><span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
@@ -208,7 +237,11 @@
 			</form>
 		</div>
 
-		
+		<form name="DelMemberFrm">
+			<input type="text" name="delPwd" value="${sessionScope.loginuser.pwd}" />
+			<input type="text" name="delUserid" value="${sessionScope.loginuser.userid}" />
+			
+		</form>
 		<!-- <iframe src=“http://www.career.go.kr/cnet/front/base/major/FunivMajorList.iframe?apiKey=0466dca798e7b31756c6da4c354bf75b&svcType=frm&svcCode=MAJOR" scrolling="no" name="ce" width="680" height="1080" frameborder="0" style="border-width:0px;border-color:white; border-style:solid;"> </iframe> 
 		-->
 		
