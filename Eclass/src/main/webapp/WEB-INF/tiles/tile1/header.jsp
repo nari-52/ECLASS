@@ -193,8 +193,8 @@
             <p class="downmenu"><a href="<%=ctxPath%>/mypageMainP.up">마이페이지</a></p>
             <p class="downmenu"><a href="<%=ctxPath%>/studentP.up">학생관리</a></p>
             <p class="downmenu"><a href="<%=ctxPath%>/">시험출제</a></p>
-            <p class="downmenu"><a href="<%=ctxPath%>/SubjectMatter_insert.up">강의등록</a></p>
-            <p class="downmenu"><a href="<%=ctxPath%>/">교과목등록</a></p>
+            <p class="downmenu"><a href="<%=ctxPath%>/">강의등록</a></p>
+            <p class="downmenu"><a href="<%=ctxPath%>/SubjectMatter_insert.up">교과목등록</a></p>
             <p class="downmenu"><a href="<%=ctxPath%>/">정보수정</a></p>
           </c:if>
           
