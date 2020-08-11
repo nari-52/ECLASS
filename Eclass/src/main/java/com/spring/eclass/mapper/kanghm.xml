@@ -128,6 +128,30 @@
 							 ,writedate = sysdate
 		where free_seq = #{free_seq} and password = #{password}
 	</update>
+
+	<!-- 자유게시판 조회수 증가하며 글 조회하기 -->
+	<select id="getFreeView" parameterType="String" resultType="com.spring.kanghm.model.FreeboardVO">
+		select previousseq, previoussubject, free_seq, fk_userid, name, title, content, viewcount, writedate
+		      ,nextseq, nextsubject, orgFilename, fileName
+		from
+		(
+		 select lag(free_seq, 1) over(order by free_seq desc) as previousseq  
+				           , nvl(lag(title, 1) over(order by free_seq desc),'이전글이 없습니다')as previoussubject				           				           
+				           , free_seq, fk_userid, name, title, content, viewcount
+				           , to_char(writedate, 'yyyy-mm-dd hh24:mi:ss') as writedate				         
+				           , lead(free_seq, 1) over(order by free_seq desc) as nextseq
+				           , nvl(lead(title, 1) over(order by free_seq desc),'다음글이 없습니다.') as nextsubject
+		                   , orgFilename, fileName
+				      from free_board
+				      where status = 1
+		) V
+		where free_seq = #{free_seq}
+	</select>
 	
+	<!-- 조회수 1증가 시키기 -->
+	<update id="addViewCount" parameterType="String">
+		update free_board set viewcount = viewcount + 1
+		where free_seq = #{free_seq}
+	</update>
 	
 </mapper>

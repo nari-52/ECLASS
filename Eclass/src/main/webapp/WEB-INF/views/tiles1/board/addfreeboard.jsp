@@ -150,11 +150,13 @@
 				<tr>
 					<th>작성자</th>
 					<td><input type="text" name="name"/></td>
+					<td><input type="text" name="name" value="${sessionScope.loginuser.name}"/></td>
 				</tr>
 				
 				<tr>
 					<th>유저id</th>
 					<td><input type="text" name="fk_userid" value="#{sessionScope.loginuser.userid}"/></td>
+					<td><input type="text" name="fk_userid" value="${sessionScope.loginuser.userid}"/></td>
 				</tr>
 				
 				<tr>

@@ -120,5 +120,22 @@ public class EclassDAO implements InterEclassDAO{
 		
 		return n;
 	}
+
+	// 자유게시판 조회수 증가하며 글 조회하기
+	@Override
+	public FreeboardVO getFreeView(String free_seq) {
+		
+		FreeboardVO freeboardvo = sqlsession.selectOne("kanghm.getFreeView",free_seq);
+		
+		return freeboardvo;
+	}
+
+	// 조회수 1증가 시키기
+	@Override
+	public void addViewCount(String free_seq) {
+		sqlsession.update("kanghm.addViewCount",free_seq);
+		
+	}
+
 	
 }
