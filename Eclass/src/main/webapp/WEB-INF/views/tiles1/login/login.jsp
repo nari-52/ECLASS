@@ -77,19 +77,6 @@
 		padding-top: 10px;
 	}
 	
-	div#delMemberbtn {
-		border: solid 1px blue;
-		margin: 0 auto;
-		width: 620px;
-		height: 30px;
-		background-color: #00bcd4;
-		color: white;
-		font-size: 12pt;
-		font-weight: bold;
-		text-align: center;
-		padding-top: 10px;
-	}
-	
 	div.login_footer {
 		border: solid 1px #ddd;
 		margin: 0 auto;

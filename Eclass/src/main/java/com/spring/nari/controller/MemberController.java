@@ -36,16 +36,16 @@ public class MemberController {
 	private InterMemberService service; // 의존객체 service
 
 	// 로그인 페이지 보여주기
-	@RequestMapping (value="/login/login.up")
+	@RequestMapping (value="login/login.up")
 	public ModelAndView login(ModelAndView mav) {
 		
-		mav.setViewName("/login/login.tiles1");
+		mav.setViewName("login/login.tiles1");
 		
 		return mav;
 	}
 	
 	// 로그인 처리하기
-	@RequestMapping (value="/login/loginEnd.up", method= {RequestMethod.POST})
+	@RequestMapping (value="login/loginEnd.up", method= {RequestMethod.POST})
 	public ModelAndView loginEnd(HttpServletRequest request, ModelAndView mav) {
 		
 		String userid = request.getParameter("userid"); // loginform.jsp 에서 name값 가져오기
@@ -109,7 +109,7 @@ public class MemberController {
 						session.removeAttribute("gobackURL"); // 중요!!!! 반드시 제거해 주어야 한다.
 					}
 					
-					mav.setViewName("/main/index.tiles1");
+					mav.setViewName("main/index.tiles1");
 					
 				}
 			}
@@ -119,7 +119,7 @@ public class MemberController {
 
 
 	// 로그아웃 처리하기 
-	@RequestMapping(value = "/login/logout.up")
+	@RequestMapping(value = "login/logout.up")
 	public ModelAndView logout(HttpServletRequest request, ModelAndView mav) {
 		
 		HttpSession session = request.getSession();
@@ -147,20 +147,20 @@ public class MemberController {
 	
 
 	// 회원가입_약관동의 페이지 보여주기
-	@RequestMapping (value="/member/signup_step1.up")
+	@RequestMapping (value="member/signup_step1.up")
 	public ModelAndView signup_step1(HttpServletRequest request, ModelAndView mav) {
 		
 		// 회원 구분 값 가져오기
 		String identity = request.getParameter("identity");
 		
 		mav.addObject("identity", identity);
-		mav.setViewName("/member/signup_TnC.tiles1");
+		mav.setViewName("member/signup_TnC.tiles1");
 		
 		return mav;
 	}
 	
 	// 회원가입_메일 인증 페이지 보여주기
-	@RequestMapping (value="/member/signup_step2.up")
+	@RequestMapping (value="member/signup_step2.up")
 	public ModelAndView signup_step2(HttpServletRequest request, ModelAndView mav) {
 		
 		// 회원 구분 값 가져오기
@@ -168,14 +168,14 @@ public class MemberController {
 		
 		mav.addObject("identity", identity);
 		
-		mav.setViewName("/member/signup_mailAuthentication.tiles1");
+		mav.setViewName("member/signup_mailAuthentication.tiles1");
 		
 		return mav;
 	}
 	
 	// AJAX를 이용하여 회원가입_메일 인증 페이지에서 인증메일 보내기
 	@ResponseBody
-	@RequestMapping (value="/member/signup_step2_mail.up", produces="text/plain; charset=UTF-8")
+	@RequestMapping (value="member/signup_step2_mail.up", produces="text/plain; charset=UTF-8")
 	public String signup_step3_mail(HttpServletRequest request, ModelAndView mav) {
 		
 		// 입력한 이름 가져오기
@@ -230,7 +230,7 @@ public class MemberController {
 	
 	// AJAX를 이용하여 회원가입_메일 인증 페이지에서 파일이름 보내주기
 	@ResponseBody
-	@RequestMapping (value="/member/signup_step2_attach.up", produces="text/plain; charset=UTF-8")
+	@RequestMapping (value="member/signup_step2_attach.up", produces="text/plain; charset=UTF-8")
 	public String signup_step2_attach(HttpServletRequest request, ModelAndView mav, MultipartHttpServletRequest mrequest) {
 		
 		mrequest.getFile("a").getOriginalFilename();
@@ -301,7 +301,7 @@ public class MemberController {
 		
 	
 	// 회원가입_정보입력 페이지 보여주기
-	@RequestMapping (value="/member/signup_step3.up")
+	@RequestMapping (value="member/signup_step3.up")
 	public ModelAndView signup_step3(HttpServletRequest request, ModelAndView mav) {
 		// 회원 구분 값 가져오기
 		String identity = request.getParameter("identity");
@@ -316,7 +316,7 @@ public class MemberController {
 		mav.addObject("name", name);
 		mav.addObject("email", email);
 		
-		mav.setViewName("/member/signup_information.tiles1");
+		mav.setViewName("member/signup_information.tiles1");
 		
 		return mav;
 	}
@@ -324,7 +324,7 @@ public class MemberController {
 	
 	// AJAX를 이용하여 회원가입 아이디 중복검사
 	@ResponseBody
-	@RequestMapping (value="/member/idDuplicateCheck.up", produces="text/plain; charset=UTF-8")
+	@RequestMapping (value="member/idDuplicateCheck.up", produces="text/plain; charset=UTF-8")
 	public String idDuplicateCheck(HttpServletRequest request, ModelAndView mav) {
 		
 		String userid = request.getParameter("userid");
@@ -342,7 +342,7 @@ public class MemberController {
 	
 	// AJAX를 이용하여 휴대전화 중복검사
 	@ResponseBody
-	@RequestMapping (value="/member/mobileDuplicateCheck.up", produces="text/plain; charset=UTF-8")
+	@RequestMapping (value="member/mobileDuplicateCheck.up", produces="text/plain; charset=UTF-8")
 	public String mobileDuplicateCheck(HttpServletRequest request, ModelAndView mav) {
 		
 		String mobile = request.getParameter("mobile");
@@ -359,7 +359,7 @@ public class MemberController {
 	}
 
 	// 회원가입_정보입력 완료 (회원가입!)
-	@RequestMapping (value="/member/signup_step3_end.up", method= {RequestMethod.POST})
+	@RequestMapping (value="member/signup_step3_end.up", method= {RequestMethod.POST})
 	public String signup_step3_end(HttpServletRequest request, ModelAndView mav, MemberVO mvo) {
 		
 		
@@ -433,20 +433,20 @@ public class MemberController {
 	
 	
 	// 회원가입 완료 화면 보여주기
-	@RequestMapping (value="/member/signup_end.up")
+	@RequestMapping (value="member/signup_end.up")
 	public ModelAndView signup_end(ModelAndView mav) {
 		
-		mav.setViewName("/member/signup_end.tiles1");
+		mav.setViewName("member/signup_end.tiles1");
 		
 		return mav;
 	}
 	
 	
 	// 아이디찾기 화면 보여주기
-	@RequestMapping (value="/login/idFind.up")
+	@RequestMapping (value="login/idFind.up")
 	public ModelAndView idFind(HttpServletRequest request, ModelAndView mav) {
 		
-		mav.setViewName("/login/idFind.tiles1");
+		mav.setViewName("login/idFind.tiles1");
 		
 		return mav;
 	}
@@ -454,7 +454,7 @@ public class MemberController {
 	
 	// AJAX를 이용하여 아이디찾기 페이지에서 인증메일 보내기 
 	@ResponseBody
-	@RequestMapping (value="/login/idFind_mail.up", produces="text/plain; charset=UTF-8")
+	@RequestMapping (value="login/idFind_mail.up", produces="text/plain; charset=UTF-8")
 	public String idFind_mail(HttpServletRequest request, ModelAndView mav) {
 		
 		// 입력한 이름 가져오기
@@ -518,7 +518,7 @@ public class MemberController {
 	}
 	
 	// 아이디찾기 완료 화면 보여주기
-	@RequestMapping (value="/login/idFind_end.up")
+	@RequestMapping (value="login/idFind_end.up")
 	public ModelAndView idFind_end(HttpServletRequest request, ModelAndView mav) { 
 		
 		String userid = request.getParameter("userid");
@@ -526,22 +526,22 @@ public class MemberController {
 		// System.out.println("~~~~~~~~~~~~~~userid : " + userid);
 		
 		mav.addObject("userid", userid);
-		mav.setViewName("/login/idFind_end.tiles1");
+		mav.setViewName("login/idFind_end.tiles1");
 		
 		return mav;
 	}
 	
 	// 비밀번호 찾기 화면 보여주기
-	@RequestMapping (value="/login/pwdFind.up")
+	@RequestMapping (value="login/pwdFind.up")
 	public ModelAndView pwdFind(HttpServletRequest request, ModelAndView mav) {
 		
-		mav.setViewName("/login/pwdFind.tiles1");
+		mav.setViewName("login/pwdFind.tiles1");
 		
 		return mav;
 	}
 	
 	// 비밀번호찾기 비밀번호 변경 화면 보여주기
-	@RequestMapping (value="/login/pwdFind_update.up")
+	@RequestMapping (value="login/pwdFind_update.up")
 	public ModelAndView pwdFind_update(HttpServletRequest request, ModelAndView mav) { 
 		
 		String userid = request.getParameter("userid");
@@ -553,13 +553,13 @@ public class MemberController {
 		mav.addObject("userid", userid);
 		mav.addObject("mobile", mobile);
 		
-		mav.setViewName("/login/pwdFind_update.tiles1");
+		mav.setViewName("login/pwdFind_update.tiles1");
 		
 		return mav;
 	}
 	
 	// 비밀번호 찾기 완료 화면 보여주기
-	@RequestMapping (value="/login/pwdFind_end.up")
+	@RequestMapping (value="login/pwdFind_end.up")
 	public String pwdFind_end(HttpServletRequest request, ModelAndView mav) {
 		
 		String userid = request.getParameter("userid");
@@ -595,17 +595,14 @@ public class MemberController {
 	}
 	
 	// 회원 탈퇴 페이지 보여주기
-	@RequestMapping (value="/member/delMember.up")
+	@RequestMapping (value="member/delMember.up")
 	public ModelAndView delMember(HttpServletRequest request, ModelAndView mav) {
 		
-		String userid = request.getParameter("delUserid");
 		String pwd = request.getParameter("delPwd");
+		String userid = request.getParameter("delUserid");
 		
-		// int n = service.delMember(userid); // 회원 탈퇴하기 (status = 0)
-		
-		mav.addObject("userid", userid);
-		mav.addObject("pwd", pwd);
-		
+		mav.addObject("pwd",pwd);
+		mav.addObject("userid",userid);
 		mav.setViewName("member/delMember.tiles1");
 		
 		return mav;

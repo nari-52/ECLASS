@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.spring.kanghm.model.FreeCommentVO;
 import com.spring.kanghm.model.FreeboardVO;
 import com.spring.kanghm.model.InterEclassDAO;
+import com.spring.kimeh.model.DonStoryVO;
 
 //=== Service 선언 === 
 //트랜잭션 처리를 담당하는곳 , 업무를 처리하는 곳, 비지니스(Business)단
@@ -94,6 +95,28 @@ public class EclassService implements InterEclassService {
 	public int delFreeComment(String delseq) {
 
 		int n = dao.delFreeComment(delseq);
+		
+		return n;
+	}
+
+	// 자유게시판 글 삭제 완료하기
+	@Override
+	public int delfreeboard(HashMap<String, String> paraMap) throws Throwable {
+		
+		int n = dao.delfreeboard(paraMap);
+		
+		if(n==1) {
+			dao.delComment(paraMap);
+		}
+		
+		return n;
+	}
+
+	// 자유게시판 글 수정하기 완료하기
+	@Override
+	public int editfreeboardEnd(FreeboardVO freeboardvo) {
+		
+		int n = dao.editfreeboardEnd(freeboardvo);
 		
 		return n;
 	}
