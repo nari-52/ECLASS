@@ -176,8 +176,6 @@ public class MoonsaController {
 		String userid = request.getParameter("userid");
 		String subjectSelect = request.getParameter("subjectSelect");
 		
-	//	System.out.println(userid+subjectSelect);
-		
 		HashMap<String, String> paraMap = new HashMap<>();
 		paraMap.put("userid", userid);
 	    paraMap.put("subjectSelect", subjectSelect);
@@ -234,7 +232,6 @@ public class MoonsaController {
 		paraMap.put("finalG", finalG);
 		paraMap.put("fk_userid", fk_userid);
 		paraMap.put("fk_subSeq", fk_subSeq);
-		
 		
 		int n = service.getChangeG(paraMap); // 성적 정보 수정하기(update)
 		
