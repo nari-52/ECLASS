@@ -62,12 +62,24 @@
     where userid = 'admin' and
           pwd = 'qwer1234$'
     
+    -- 비밀번호 찾기
+    select pwd
+    from eclass_member
+    where userid = 'idfind'
+          and mobile = '01052649067'
+    
+    -- 비밀번호 변경하기
+    update eclass_member set pwd = 'qwer1234$'
+    where userid = 'idfind'
     
     select *
-    from eclass_member;
+    from eclass_member
+    where userid = 'idfind'
     
+    update eclass_member set mobile = '01052649067'
+    where userid='idfind'
     
-    
+    commit
     
     -- 로그인 테이블
     create table login_table
@@ -189,6 +201,8 @@
     nominvalue
     nocycle
     nocache;
+    
+    -- 교과목 등록하면 교수 강의실에 insert
     
     
     -- 학생 강의실 (마이페이지)
