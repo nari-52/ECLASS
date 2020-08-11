@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+    
 <!DOCTYPE html>
 <html>
 <head>
@@ -25,66 +28,55 @@
 		
 	});
 
+	function attandChange(){
+		
+		var lecNum = $("#lectureSelect").val();
+		var attand = $("#attandSelect").val();
+		var fk_userid = "${userid}";
+		var fk_subSeq = "${subjectSelect}";
+		
+		$.ajax({
+			url:"<%= request.getContextPath()%>/changeAttandEnd.up",
+			data:{"lecNum":lecNum,
+				  "attand":attand,
+				  "fk_userid":fk_userid,
+				  "fk_subSeq":fk_subSeq},
+			dataType:"JSON",
+			success:function(json){
+				if(json.n==1) {
+					alert("수정 되었습니다!");
+				}
+				else {
+					alert("수정 오류!");
+				}
+				location.reload();
+			},
+			error: function(request, status, error){
+				alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+			}
+		});
+	}
+	
+	
 </script>
 </head>
 <body>
 	<div id="test">
-	  	<h2>OOO 교수님</h2>
-	  	<h3>과목명 : HTML의 이해</h3>
-		<select name="StudentSelect" id="StudentSelect">
-			<option>학생명</option>
-			<option>문상아</option>   
-			<option>김은혜</option>
-			<option>김건형</option>
-		</select>
+	  	<h3>수정할 학생명 : ${Sname}</h3>
 		<table id="tblcss" >
 			<tr style="background-color: #00BCD4;">
 				<th style="color: white;">챕터</th>
 				<th style="color: white;">출석현황</th>
 			</tr>
-			<tr>
-				<td>1강</td>
-				<td>O</td>
-			</tr>
-			<tr>
-				<td>2강</td>
-				<td>O</td>
-			</tr>
-			<tr>
-				<td>3강</td>
-				<td>X</td>
-			</tr>
-			<tr>
-				<td>4강</td>
-				<td>O</td>
-			</tr>
-			<tr>
-				<td>5강</td>
-				<td>O</td>
-			</tr>
-			<tr>
-				<td>6강</td>
-				<td>O</td>
-			</tr>
-			<tr>
-				<td>7강</td>
-				<td>X</td>
-			</tr>
-			<tr>
-				<td>8강</td>
-				<td>O</td>
-			</tr>
-			<tr>
-				<td>9강</td>
-				<td>O</td>
-			</tr>
-			<tr>
-				<td>10강</td>
-				<td>O</td>
-			</tr>
+			<c:forEach var="AList" items="${attandList}">
+				<tr>
+					<td>${AList.lecNum}강</td>
+					<td>${AList.attand}</td>
+				</tr>
+			</c:forEach>
 			<tr>
 				<td style="background-color: #E5E5E5;">총 출석수</td>
-				<td id="total">8</td><!-- count로 총 개수 알아오기/ select count(*) from tbl_attendanct where attend = 1(출석) -->
+				<td id="total">${attandOX}</td><!-- count로 총 개수 알아오기/ select count(*) from tbl_attendanct where attend = 1(출석) -->
 			</tr>
 			<tr>
 				<td style="background-color: #E5E5E5;">출석률 (%)</td>
@@ -92,15 +84,22 @@
 			</tr>
 		</table>
 		<select name="lectureSelect" id="lectureSelect">
-			<option>1강</option>
-			<option>2강</option>   
-			<option>3강</option>
+			<option value="1">1강</option>
+			<option value="2">2강</option>   
+			<option value="3">3강</option>
+			<option value="4">4강</option>
+			<option value="5">5강</option>
+			<option value="6">6강</option>
+			<option value="7">7강</option>
+			<option value="8">8강</option>
+			<option value="9">9강</option>
+			<option value="10">10강</option>
 		</select>
-		<select name="attandSelect" id="lectureSelect">
-			<option>O</option>
-			<option>X</option>   
+		<select name="attandSelect" id="attandSelect">
+			<option value="O">O</option>
+			<option value="X">X</option>   
 		</select>
-		<button type="button">수정하기</button>
+		<button type="button" onclick="attandChange();">수정하기</button>
 		<button type="button" onclick="location.href='javascript:history.back()'">이전으로</button>
 	</div>  
 </body>
