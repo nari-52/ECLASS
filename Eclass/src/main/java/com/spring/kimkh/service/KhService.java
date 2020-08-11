@@ -58,4 +58,14 @@ public class KhService implements InterKhService {
 		return n;
 	}
 
+
+	//교과목 등록후 교수마이페이지에 insert하기
+	@Override
+	public int ForPInter(HashMap<String, String> paraMap) {
+
+		int m = dao.ForPInter(paraMap);
+		
+		return m;
+	}
+
 }

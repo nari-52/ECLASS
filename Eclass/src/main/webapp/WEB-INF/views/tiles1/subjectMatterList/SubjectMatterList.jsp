@@ -260,7 +260,7 @@
                     	<c:forEach var="lmivList" items="${lmivList}" >
                     	<li class="igan" style="display:inline-block !important;  margin-bottom:60px;">
                         <div class="cimg" style="display:inline-block !important;">
-                            <a href='<%= ctxPath%>/SubjectMatterDetail.up?subseq=${lmivList.subseq}'><img style="width:278px; height:180px;" src="<%= ctxPath %>/resources/images/${lmivList.subImg}"/>    </a>
+                            <a href='<%= ctxPath%>/SubjectMatterDetail.up?subseq=${lmivList.subseq}'><img style="width:278px; height:180px;" src="<%= ctxPath %>/resources/images/${lmivList.subImg}"/></a>
                         </div>
                         
                         <div class="nayong" style="display:inline-block !important;">

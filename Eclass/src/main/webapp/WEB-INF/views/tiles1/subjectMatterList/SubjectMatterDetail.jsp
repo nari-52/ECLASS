@@ -50,7 +50,7 @@
         text-decoration: none;
       }
       
-      a:hover {
+      a.lecture1:hover {
         color: #00BCD4;
         font-weight: bold;
         font-size:14pt;
@@ -123,9 +123,9 @@
 	 <section id="contents">
 		<aside id="side_menu">
 			<ul id="side_nav">
-                <li><a href="">전공</a></li>
-            <li><a href="">교양</a></li> 
-            <li><a href="">일반</a></li>
+                <li><a class="lecture1"href="">전공</a></li>
+            <li><a class="lecture1" href="">교양</a></li> 
+            <li><a class="lecture1" href="">일반</a></li>
       
 			</ul>
 		</aside>
@@ -144,7 +144,7 @@
 		 
 		 <form name="sugangFm">
 		 	-교과목 시퀀스번호 넘길때 수강신청으로 넘길때 사용합니다-<input type="text" name="subseq" value="${lmivOne.subseq}"/> <br/>
-			 -로그인한 학생의 아이디가 들어갑니다- <input type="text" name="fk_userid" value="test"/> <!-- controller에서 loginuser를 만들기 --><%-- ${loginuser. } --%>
+			 -로그인한 학생의 아이디가 들어갑니다- <input type="text" name="fk_userid" value="${loginuser.userid}"/>
 		 </form> 
 			
 

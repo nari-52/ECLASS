@@ -3,13 +3,11 @@ package com.spring.kanghm.service;
 import java.util.HashMap;
 import java.util.List;
 
-<<<<<<< HEAD
-=======
+
 import com.spring.kanghm.model.FreeCommentVO;
 import com.spring.kanghm.model.FreeboardVO;
 import com.spring.kimeh.model.DonStoryVO;
 
->>>>>>> 44fe3848a80e995427140ecbf4f3640bb61377c7
 public interface InterEclassService {
 
 	// 첨부파일이 존재하지 않는 자유게시판 글쓰기

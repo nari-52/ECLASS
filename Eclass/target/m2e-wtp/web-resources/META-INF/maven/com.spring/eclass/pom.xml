@@ -22,11 +22,8 @@
             <url>https://code.lds.org/nexus/content/groups/main-repo</url>
 		</repository>
 		
-<<<<<<< HEAD
 		
 		
-=======
->>>>>>> 44fe3848a80e995427140ecbf4f3640bb61377c7
 		<!-- ===== 네이버 스마트 에디터에서 사진첨부 관련하여 이미지의 크기를 구하기위한 라이브러리 다운받는곳 =====  -->
 		<repository>
 		    <id>osgeo</id>
@@ -57,10 +54,7 @@
 			<version>${org.springframework-version}</version>
 		</dependency>
 				
-<<<<<<< HEAD
 				
-=======
->>>>>>> 44fe3848a80e995427140ecbf4f3640bb61377c7
 		<!-- AspectJ -->
 		<dependency>
 			<groupId>org.aspectj</groupId>

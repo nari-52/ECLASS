@@ -15,6 +15,8 @@ public interface InterKhDAO {
 
 	int sugangInsert(HashMap<String,String> paraMap);//수강신청 버튼 클릭시 학생마이페이지에 insert 시키기
 
+	int ForPInter(HashMap<String, String> paraMap);//교과목 등록후 교수마이페이지에 insert하기
+
 
 
 }

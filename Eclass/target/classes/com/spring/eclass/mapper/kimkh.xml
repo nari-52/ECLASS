@@ -5,6 +5,7 @@
 
 <mapper namespace="kimkh">
 
+	<!-- 디비에 교과목 insert시키기 -->
 	<insert id="MatterInsert" parameterType="com.spring.kimkh.model.LecutreMatterInsertVO">
 
 		insert into subject_tbl(subseq,fk_userid,status,subName,subContent,subImg,writeday)
@@ -12,25 +13,18 @@
 		
 	</insert>
 
+	<!-- 교과목 목록을 보여주기 -->
 	<select id="selectMatterList" resultType="com.spring.kimkh.model.LecutreMatterInsertVO" parameterType="com.spring.kimkh.model.LecutreMatterInsertVO">
 		select subseq,subName,subContent,subImg
     	from subject_tbl
 	</select>
 	
+	<!-- 교과목 상세페이지 보여주기(한개만) -->
 	<select id="selectOnekh" resultType="com.spring.kimkh.model.LecutreMatterInsertVO" parameterType="String">
 		select subseq,subName,subContent,subImg
     	from subject_tbl
         where subseq = #{subseq}
 	</select>
-	
-	<!-- === #47. 로그인 처리하기 === 
-	<select id="getLoginMember" parameterType="HashMap" resultType="com.spring.member.model.MemberVO">
-		select idx, userid, name, email, gradelevel
-           , trunc( months_between(sysdate, lastPwdChangeDate) ) AS pwdchangegap  
-           , trunc( months_between(sysdate, lastLoginDate) ) AS lastlogindategap
-		from mymvc_shopping_member
-		where status = 1 and userid = #{userid} and pwd = #{pwd}
-	</select> -->
 	
 	<!-- 수강신청 버튼 클릭시 학생마이페이지에 insert 시키기 -->
 	<insert id="sugangInsert" parameterType="HashMap">
@@ -39,9 +33,9 @@
 	</insert>
 	
 	<!-- 교과목 등록후 교수마이페이지에 insert 시키기 -->
-    <insert id="">
-    	insert into myPForP_tbl(myPSeq,fk_userid,university,major)
-		values(seq_myPSeq.nextval,#{fk_userid},'서울대','수학과')
+    <insert id="ForPInter" parameterType="HashMap">
+    	insert into myPForP_tbl(myPSeq,fk_userid,university)
+		values(seq_myPSeq.nextval,#{fk_userid},#{university})
     </insert>
 	
 </mapper>
