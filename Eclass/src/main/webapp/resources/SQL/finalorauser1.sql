@@ -56,17 +56,24 @@
     insert into eclass_member(userid,name,pwd,identity,university,major,student_num,email,mobile,postcode,address,detailaddress,extraaddress,point,registerday,status,last_login_date)
     values('admin1','관리자1','qwer1234$',3,'서울대','서울과','20200804','admin@gmail.com','01012345678','12345','서울시 종로구','123-567','종로동',default,sysdate,default,sysdate);
     
+     insert into eclass_member(userid,name,pwd,identity,university,major,email,mobile,postcode,address,detailaddress,extraaddress,point,registerday,status,last_login_date)
+     values('youks','유관순','qwer1234$',2,'서울대','서울과','youks@gmail.com','01012345678','12345','서울시 종로구','123-567','종로동',default,sysdate,default,sysdate);
     
+     update eclass_member set point = 300
+     where userid = 'leess';
+     
     select userid, name
     from eclass_member
     where userid = 'admin' and
-          pwd = 'qwer1234$'
+          pwd = 'qwer1234$';
     
     
     select *
     from eclass_member;
     
-    
+     select name
+    from eclass_member
+    where userid = 'moonsa';
     
     
     -- 로그인 테이블
@@ -95,6 +102,17 @@
     ,constraint CK_subject_tbl check (status in(1,2,3))
     );
     
+    alter table subject_tbl add saveSubImg varchar2(800);-- 저장될 이미지
+    
+    insert into subject_tbl (subseq, fk_userid, status, subName, writeday)
+    values(seq_subseq.nextval, 'leess', '1', 'HTML의 이해', sysdate);
+    insert into subject_tbl (subseq, fk_userid, status, subName, writeday)
+    values(seq_subseq.nextval, 'leess', '2', '알고리즘과 이해', sysdate);
+    insert into subject_tbl (subseq, fk_userid, status, subName, writeday)
+    values(seq_subseq.nextval, 'leess', '1', 'JAVA의 응용', sysdate);
+    commit;
+    
+    drop sequence seq_subseq;
     create sequence seq_subseq
     start with 1
     increment by 1
@@ -103,21 +121,33 @@
     nocycle
     nocache;
     
+    select *
+    from subject_tbl;
     
+    select subName, subseq
+    from subject_tbl
+    where fk_userid = 'leess';
+    
+     update subject_tbl set fk_userid = 'leess'
+     where subname = '알고리즘과 이해';
+     
+     commit;
+     
     -- 강의 테이블
     create table lecture_tbl
-    (lecSeq number not null -- 강의차수 - 시퀀스
+    (lecNum number not null -- 강의차수
     ,fk_subSeq number not null -- 교과목번호 - 시퀀스
     ,lecLink varchar2(1000) -- 강의영상
     ,lecStartday date  --강의 시작일자
     ,lecEndday date  -- 강의 마감일자
-    ,constraint PK_lecture_tbl_lecSeq PRIMARY KEY (lecSeq)
+    ,lecTitle varchar2(50) not null -- 강의 제목
     ,constraint FK_lecture_tbl_subSeq foreign key(fk_subSeq) references subject_tbl(subseq)
     );
     
     alter table lecture_tbl add (lecTitle varchar2(50) not null);
     commit;
     
+    drop sequence seq_lecSeq;
     create sequence seq_lecSeq
     start with 1
     increment by 1
@@ -127,18 +157,20 @@
     nocache;
     
     
-    -- 강의 댓글 테이블(출석)
+    -- 강의 댓글 테이블
     create table lectureComment_tbl
     (lecComSeq number not null  -- 강의댓글번호 - 시퀀스
-    ,fk_lecSeq number not null -- 강의차수시퀀스
+    ,fk_subSeq number not null -- 교과목번호 - 시퀀스
+    ,lecNum number not null -- 강의차수
     ,fk_userid varchar2(50) not null -- 아이디
     ,comContent varchar2(2000) not null -- 댓글 내용
     ,writeday date default sysdate -- 작성일자
     ,constraint PK_lectureComment_tbl PRIMARY KEY (lecComSeq)
-    ,constraint FK_lectureComment_tbl_lecSeq foreign key(fk_lecSeq) references lecture_tbl(lecSeq)
+    ,constraint FK_lectureComment_tbl_subSeq foreign key(fk_subSeq) references subject_tbl(subseq)
     ,constraint FK_lectureComment_tbl_userid foreign key(fk_userid) references eclass_member(userid)
     );
     
+    drop sequence seq_lecComSeq;
     create sequence seq_lecComSeq
     start with 1
     increment by 1
@@ -152,15 +184,28 @@
     create table attand_tbl
     (attandSeq number not null -- 출석시퀀스
     ,fk_subSeq number not null -- 교과목번호 시퀀스
-    ,fk_lecSeq number not null -- 강의차수 시퀀스
+    ,lecNum number not null -- 강의차수번호
     ,fk_userid varchar2(50) not null -- 아이디
+    ,attand varchar2(2) default 'X' -- 출석여부
     ,data date default sysdate -- 출석날짜
     ,constraint PK_attand_tbl_attandSeq PRIMARY KEY (attandSeq)
     ,constraint FK_attand_tbl_subSeq foreign key(fk_subSeq) references subject_tbl(subSeq)
-    ,constraint FK_attand_tbl_lecSeq foreign key(fk_lecSeq) references lecture_tbl(lecSeq)
     ,constraint FK_attand_tbl_userid foreign key(fk_userid) references eclass_member(userid)
     );
+
+    select *
+    from attand_tbl;
     
+    update attand_tbl set attand = 'O'
+    where fk_userid = 'moonsa'
+    and fk_subSeq = '1'
+    and lecNum = '1';
+    
+    select count(attand) AS cnt
+    from attand_tbl
+    where fk_subseq = '1' and fk_userid = 'moonsa' and attand = 'O';
+    
+    drop sequence seq_attandSeq;
     create sequence seq_attandSeq
     start with 1
     increment by 1
@@ -169,7 +214,59 @@
     nocycle
     nocache;
     
+    insert into attand_tbl (attandSeq, fk_subSeq, lecNum, fk_userid, attand, data)
+    values (seq_attandSeq.nextval, 1, 1, 'moonsa', 'O', sysdate);
+        insert into attand_tbl (attandSeq, fk_subSeq, lecNum, fk_userid, attand, data)
+    values (seq_attandSeq.nextval, 1, 2, 'moonsa', 'O', sysdate);
+        insert into attand_tbl (attandSeq, fk_subSeq, lecNum, fk_userid, attand, data)
+    values (seq_attandSeq.nextval, 1, 3, 'moonsa', 'X', sysdate);
+        insert into attand_tbl (attandSeq, fk_subSeq, lecNum, fk_userid, attand, data)
+    values (seq_attandSeq.nextval, 1, 4, 'moonsa', 'O', sysdate);
+        insert into attand_tbl (attandSeq, fk_subSeq, lecNum, fk_userid, attand, data)
+    values (seq_attandSeq.nextval, 1, 5, 'moonsa', 'X', sysdate);
+        insert into attand_tbl (attandSeq, fk_subSeq, lecNum, fk_userid, attand, data)
+    values (seq_attandSeq.nextval, 1, 6, 'moonsa', 'O', sysdate);
+        insert into attand_tbl (attandSeq, fk_subSeq, lecNum, fk_userid, attand, data)
+    values (seq_attandSeq.nextval, 1, 7, 'moonsa', 'O', sysdate);
+        insert into attand_tbl (attandSeq, fk_subSeq, lecNum, fk_userid, attand, data)
+    values (seq_attandSeq.nextval, 1, 8, 'moonsa', 'X', sysdate);
+        insert into attand_tbl (attandSeq, fk_subSeq, lecNum, fk_userid, attand, data)
+    values (seq_attandSeq.nextval, 1, 9, 'moonsa', 'O', sysdate);
+        insert into attand_tbl (attandSeq, fk_subSeq, lecNum, fk_userid, attand, data)
+    values (seq_attandSeq.nextval, 1, 10, 'moonsa', 'X', sysdate);
+    commit;
     
+        insert into attand_tbl (attandSeq, fk_subSeq, lecNum, fk_userid, attand, data)
+    values (seq_attandSeq.nextval, 2, 1, 'moonsa', 'O', sysdate);
+        insert into attand_tbl (attandSeq, fk_subSeq, lecNum, fk_userid, attand, data)
+    values (seq_attandSeq.nextval, 2, 2, 'moonsa', 'O', sysdate);
+        insert into attand_tbl (attandSeq, fk_subSeq, lecNum, fk_userid, attand, data)
+    values (seq_attandSeq.nextval, 2, 3, 'moonsa', 'X', sysdate);
+        insert into attand_tbl (attandSeq, fk_subSeq, lecNum, fk_userid, attand, data)
+    values (seq_attandSeq.nextval, 2, 4, 'moonsa', 'O', sysdate);
+        insert into attand_tbl (attandSeq, fk_subSeq, lecNum, fk_userid, attand, data)
+    values (seq_attandSeq.nextval, 2, 5, 'moonsa', 'X', sysdate);
+        insert into attand_tbl (attandSeq, fk_subSeq, lecNum, fk_userid, attand, data)
+    values (seq_attandSeq.nextval, 2, 6, 'moonsa', 'O', sysdate);
+        insert into attand_tbl (attandSeq, fk_subSeq, lecNum, fk_userid, attand, data)
+    values (seq_attandSeq.nextval, 2, 7, 'moonsa', 'O', sysdate);
+        insert into attand_tbl (attandSeq, fk_subSeq, lecNum, fk_userid, attand, data)
+    values (seq_attandSeq.nextval, 2, 8, 'moonsa', 'O', sysdate);
+        insert into attand_tbl (attandSeq, fk_subSeq, lecNum, fk_userid, attand, data)
+    values (seq_attandSeq.nextval, 2, 9, 'moonsa', 'O', sysdate);
+        insert into attand_tbl (attandSeq, fk_subSeq, lecNum, fk_userid, attand, data)
+    values (seq_attandSeq.nextval, 2, 10, 'moonsa', 'O', sysdate);
+    commit;
+    
+    
+     select name, attandG, examG, finalG
+    from 
+        (select fk_userid, attandG, examG, finalG
+         from myPForS_tbl
+         where fk_subseq = '1' 
+         )M left join eclass_member E
+     on M.fk_userid = E.userid;
+     
     -- 교수 강의실 (마이페이지)
     create table myPForP_tbl
     (myPSeq number not null -- 교수강의실시퀀스
@@ -190,6 +287,9 @@
     nocycle
     nocache;
     
+    insert into myPForP_tbl(myPSeq, fk_userid, university, subject, major)
+    values(seq_myPSeq.nextval, 'leess', '서울대', 'HTML의 이해', '서울과');
+    commit;
     
     -- 학생 강의실 (마이페이지)
     create table myPForS_tbl
@@ -204,6 +304,7 @@
     ,constraint FK_myPForS_tbl_userid foreign key(fk_userid) references eclass_member(userid)
     );
     
+    drop sequence seq_mySSeq;
     create sequence seq_mySSeq
     start with 1
     increment by 1
@@ -212,6 +313,44 @@
     nocycle
     nocache;
     
+    select *
+    from myPForS_tbl;
+    
+    insert into myPForS_tbl(mySSeq, fk_subSeq, fk_userid, finalG, examG, attandG)
+    values(seq_mySSeq.nextval, 1, 'moonsa', 'A', 60, 15);
+    insert into myPForS_tbl(mySSeq, fk_subSeq, fk_userid, finalG, examG, attandG)
+    values(seq_mySSeq.nextval, 2, 'moonsa', 'B', 50, 20);
+    insert into myPForS_tbl(mySSeq, fk_subSeq, fk_userid, finalG, examG, attandG)
+    values(seq_mySSeq.nextval, 3, 'moonsa', 'F', 0, 10);
+    commit;
+
+    insert into myPForS_tbl(mySSeq, fk_subSeq, fk_userid, finalG, examG, attandG)
+    values(seq_mySSeq.nextval, 1, 'eomjh', 'B', 50, 15);
+    
+    ---==여기서부터
+    update myPForS_tbl set finalG = 'A'
+    where fk_userid = 'moonsa'
+    and fk_subSeq = '1';
+    
+    update tbl_board set subject = '안녕하세요'
+     where boardno = 1;
+     
+    select name, attandG, examG, finalG
+    from 
+        (select fk_userid, attandG, examG, finalG
+         from myPForS_tbl
+         where fk_subseq = '1' 
+         )M left join eclass_member E
+     on M.fk_userid = E.userid;
+   
+
+    select subName, fk_subseq, finalG
+    from 
+        (select fk_subseq, finalG
+        from myPForS_tbl
+        where fk_userid = 'moonsa'
+        )M left join subject_tbl S
+    on M.fk_subSeq = S.subseq;
     
     ---------------------------- [[ 시험 테이블 ]] ----------------------------
     create table exam    -- 시험 테이블
