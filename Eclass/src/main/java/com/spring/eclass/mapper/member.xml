@@ -9,7 +9,7 @@
 	<!-- 로그인 처리하기 -->
 	
 	<select id="getLoginMember" parameterType="HashMap" resultType="com.spring.nari.model.MemberVO">
-		select userid, name, identity, point,university
+		select userid, name, identity, point
 	    from eclass_member
 	    where userid = #{userid} and
 	          pwd = #{pwd}
@@ -48,6 +48,11 @@
 	          and status = '1'
 	</select>
 
+	<!-- 비밀번호 찾기 시 비밀번호 변경 하기 -->
+	<update id="pwd_update" parameterType="HashMap">
+		update eclass_member set pwd = #{pwd}
+    	where userid = #{userid}
+	</update>
 </mapper>
 
 

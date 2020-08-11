@@ -131,7 +131,7 @@
 				<div style="text-align: center; font-size: 12pt; font-weight: bold; color: gray; margin-bottom: 15px;"> ECLASS 회원이 되신 것을 진심으로  축하합니다.</div>
 				
 				<hr>
-				<table>
+					<table>
 						<tr>
 							<th>
 								이름
@@ -195,11 +195,6 @@
 			</div>
 
 		</div>
-		<c:if test="${sessionScope.loginuser != null}">
-			<div style="float: right; margin-top: 0.5%; border: solid 0px red;">
-			  <span style="color: navy; font-weight: bold; font-size: 10pt;">${sessionScope.loginuser.name}</span> 님 로그인중..
-			</div>
-		</c:if>
 		
 	</div>
 </body>

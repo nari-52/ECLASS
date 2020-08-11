@@ -98,28 +98,6 @@ public class EclassService implements InterEclassService {
 		return n;
 	}
 
-	// 자유게시판 글 삭제 완료하기
-	@Override
-	public int delfreeboard(HashMap<String, String> paraMap) throws Throwable {
-		
-		int n = dao.delfreeboard(paraMap);
-		
-		if(n==1) {
-			dao.delComment(paraMap);
-		}
-		
-		return n;
-	}
-
-	// 자유게시판 글 수정하기 완료하기
-	@Override
-	public int editfreeboardEnd(FreeboardVO freeboardvo) {
-		
-		int n = dao.editfreeboardEnd(freeboardvo);
-		
-		return n;
-	}
-
 	
 	
 }

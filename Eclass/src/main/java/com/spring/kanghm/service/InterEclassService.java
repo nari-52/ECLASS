@@ -3,7 +3,6 @@ package com.spring.kanghm.service;
 import java.util.HashMap;
 import java.util.List;
 
-
 import com.spring.kanghm.model.FreeCommentVO;
 import com.spring.kanghm.model.FreeboardVO;
 import com.spring.kimeh.model.DonStoryVO;
@@ -36,12 +35,6 @@ public interface InterEclassService {
 
 	// 자유게시판 댓글 삭제하기
 	int delFreeComment(String delseq);
-
-	// 자유게시판 글 삭제 완료하기
-	int delfreeboard(HashMap<String, String> paraMap) throws Throwable;
-
-	// 자유게시판 글 수정하기 완료하기
-	int editfreeboardEnd(FreeboardVO freeboardvo);
 
 	
 
