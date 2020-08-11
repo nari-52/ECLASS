@@ -25,7 +25,7 @@
 	
 	/* 진행상황 시작 ------------------------------------------ */
 	
-	div#idFindcontent {
+	div#pwdFindcontent {
 		border: solid 1px red;
 		width: 100%;
 		height: 1500px;
@@ -36,7 +36,7 @@
 	
 	/* 메일 인증 ------------------------------------------------------------------ */
 	
-	div#idFind_content {
+	div#pwdFind_content {
 		/* border: solid 1px red; */
 		width: 100%;
 		height: 800px;
@@ -46,7 +46,7 @@
 	}
 	
 	/* 이메일 인증 배경 만들기 */
-	div#idFind_back {
+	div#pwdFind_back {
 		border: solid 1px #ddd;
 		width: 1080px;
 		height: 570px;
@@ -55,7 +55,7 @@
 		padding-top: 50px; /* form 태그 위에 padding 주기 */
 	}
 		
-	form#idFind_form {
+	form#pwdFind_form {
 		/* border: solid 1px gray; */
 		margin: 0 auto;
 		width: 620px;
@@ -70,7 +70,7 @@
 	}
 	
 	/* 가입하기 버튼 */
-	div#idfind {
+	div#pwdFind {
 		border: solid 1px blue;
 		margin: 0 auto;
 		width: 620px;
@@ -84,7 +84,7 @@
 	}
 	
 	/* 메일 인증번호 받기 */
-	div#mailbtn {
+	div#pwdFindbtn {
 		border: solid 1px blue;
 		margin: 0 auto;
 		width: 140px;
@@ -108,7 +108,7 @@
 	$(document).ready(function(){ 
 		
 		// AJAX로 메일 인증번호 받기
-		$("#mailbtn").click(function(){
+		$("#mobilebtn").click(function(){
 			
 			var nameVal = $("#name").val().trim();
 			var emailVal = $("#email").val().trim();
@@ -120,7 +120,7 @@
 				alert(nameVal+ "님, 인증번호가 발송되었습니다. 입력하신 메일의 인증번호를 작성해주세요.");
  				
 				$.ajax({
-					url: "<%=ctxPath%>/login/idFind_mail.up",
+					url: "<%=ctxPath%>/login/pwdFind_mail.up",
 					data: {"name" : nameVal,
 						   "email" : emailVal},
 					type: "POST",
@@ -140,11 +140,11 @@
 				alert("이름과 메일주소를 확인해주세요!");				
 			}
 
-		}); // end of  $("#mailbtn").click(function()-------------------------------
+		}); // end of  $("#mobilebtn").click(function()-------------------------------
 		
 				
-		// 아이디찾기 버튼 클릭 시 확인하기
-		$("#idfindbtn").click(function(){ 
+		// 비밀번호 찾기 버튼 클릭 시 확인하기
+		$("#pwdFindbtn").click(function(){ 
 			/* 
 			// 1. 이름과 메일주소가 공란인지 확인한다. -------------------------------------------- 
 			var nameVal = $("#name").val().trim();
@@ -185,26 +185,26 @@
 
 			 
 			 // alert("userid : " + userid);
-			 goidFind(); // 아이디찾기
+			 gopwdFind(); // 아이디찾기
 			
 			
 			
-		}); // end of $("#idfindbtn").click(function() ------------
+		}); // end of $("#pwdFindbtn").click(function() ------------
 
 
 		
 	}); // end of $(document).ready(function() -----------
 
-	// 아이디찾기 클릭 함수		
-	function goidFind() {
+	// 비밀번호 찾기 클릭 함수		
+	function gopwdFind() {
 		
-		var frm = document.idFind_form;
+		var frm = document.pwdFind_form;
 		
 		frm.method = "POST";
-		frm.action = "<%= ctxPath%>/login/idFind_end.up";
+		frm.action = "<%= ctxPath%>/login/pwdFind_update.up";
 		frm.submit();
 		
-	} // function goidFind()-------------------------------
+	} // function gopwdFind()-------------------------------
 </script>
     
 <body>
@@ -212,29 +212,29 @@
 	<div id="signuptitle">
 		<section>
 			<div id="signup_head">
-				<h1 id="head_main">아이디 찾기</h1>
+				<h1 id="head_main">비밀번호 찾기</h1>
 			</div>
 		</section>	
 	</div>
 	
-	<div id="idFindcontent">
+	<div id="pwdFindcontent">
 		<br/><br/><br/><br/>
-		<div id="idFind_content">
-			<div id="idFind_back">
-				<form name="idFind_form" id="idFind_form">
-					<h3 style="text-align: center;">메일 주소 인증하기</h3>
+		<div id="pwdFind_content">
+			<div id="pwdFind_back">
+				<form name="pwdFind_form" id="pwdFind_form">
+					<h3 style="text-align: center;">휴대전화  인증하기</h3>
 					<ul class="input_text">
 						<li>
-							<label for="name"></label>
-							<input type="text" name="name" id="name" value="${name}" class="input_text" required autofocus placeholder="이름을 입력해주세요." style="border: solid 1px #ddd; width: 450px; height: 50px; vertical-align: middle; padding-left: 10px; font-size: 11pt;"/>
+							<label for="userid"></label>
+							<input type="text" name="userid" id="userid" value="${userid}" class="input_text" required autofocus placeholder="아이디를 입력해주세요." style="border: solid 1px #ddd; width: 450px; height: 50px; vertical-align: middle; padding-left: 10px; font-size: 11pt;"/>
 						</li>
 						<li>
-							<label for="email"></label>
-							<input type="text" name="email" id="email" value="${email}" class="input_text" required placeholder="이메일을 입력해주세요." style="border: solid 1px #ddd; border-top:solid 0px;  width: 450px; height: 50px; vertical-align: middle; padding-left: 10px; font-size: 11pt;"/>
+							<label for="mobile"></label>
+							<input type="text" name="mobile" id="mobile" value="${mobile}" class="input_text" required placeholder="휴대전화 번호를 입력해주세요. (-제외)" style="border: solid 1px #ddd; border-top:solid 0px;  width: 450px; height: 50px; vertical-align: middle; padding-left: 10px; font-size: 11pt;"/>
 						</li>
 					</ul>
 					<%-- <input type="hidden" name="identity" id="identity" value="${identity}"/> --%>
-					<div id="mailbtn">인증번호 받기</div>
+					<div id="mobilebtn">인증번호 받기</div>
 					
 					<input type="hidden" id="namecheck" value="" />
 					<input type="hidden" id="emailcheck" value="" />
@@ -245,7 +245,7 @@
 					
 
 					
-					<div id="idfindbtn" >아이디찾기</div>
+					<div id="pwdFindbtn" >비밀번호 찾기</div>
 				
 					<div style="color: #888; margin-top: 30px;">※ 인증메일 발송에 약간의 시간이 소요됩니다.</div>
 					<div style="color: #888;">※ 회원가입시 사용하신 메일주소를 입력해주세요.</div>

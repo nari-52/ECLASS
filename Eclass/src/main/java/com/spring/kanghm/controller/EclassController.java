@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -51,7 +52,6 @@ public class EclassController {
 		// 메인페이지 요청
 		@RequestMapping(value="/index.up")
 		public ModelAndView index(ModelAndView mav) {
-			
 			mav.setViewName("main/index.tiles1");
 			
 			return mav;
@@ -339,7 +339,7 @@ public class EclassController {
 	
 			return mav;
 		}
-			
+		
 		
 		// 자유게시판 상세글의 첨부파일 다운로드
 		@RequestMapping(value="/download.up")
@@ -378,7 +378,6 @@ public class EclassController {
 				
 			}
 		}// end of download()------------------------------------------------------------
-		
 		
 		
 		// 자유게시판 글 삭제하기
@@ -483,6 +482,7 @@ public class EclassController {
 			
 			return mav;
 		}
+
 		
 		// 자유게시판 댓글쓰기
 		@ResponseBody

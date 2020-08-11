@@ -19,4 +19,7 @@ public interface InterMemberDAO {
 	// 아이디 찾기
 	String idFind(HashMap<String, String> paraMap);
 
+	// 비밀번호 찾기 시 비밀번호 변경 하기
+	int pwd_update(HashMap<String, String> paraMap);
+
 }

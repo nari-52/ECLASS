@@ -17,7 +17,7 @@
 		background-color: #fafafa;
 	}
 	
-	table,tr,th,td{
+	tr,th,td{
 		border: solid 1px black;
 		border-collapse: collapse;
 		padding: 20px;
