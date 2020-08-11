@@ -256,7 +256,7 @@
 							</dl>
 	                        <span class="btn_donation" onclick="goPayment('${donstoryPage[0].donseq}')">후원하기</span>
 	                        <span class="btn_share" id="copy_btn">공유하기</span>
-	                        <input type="hidden" id="copy_text_input" value="http://localhost:8080<%= ctxPath%>/donation/donationStory.up?donseq=${donstoryPage[0].donseq}" class="form-control">
+	                        <input type="hidden" id="copy_text_input" value="http://localhost:9090<%= ctxPath%>/donation/donationStory.up?donseq=${donstoryPage[0].donseq}" class="form-control">
 	                        
 						</div> 
 					</c:if> 

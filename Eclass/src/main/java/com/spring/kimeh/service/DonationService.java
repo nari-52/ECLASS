@@ -25,8 +25,8 @@ public class DonationService implements InterDonationService {
 	
 	//후원리스트 보여주기 
 	@Override
-	public List<DonStoryVO> donationList() {
-		List<DonStoryVO> donstoryList = dao.donationList();
+	public List<DonStoryVO> donationList(HashMap<String, String> paraMap) {
+		List<DonStoryVO> donstoryList = dao.donationList(paraMap);
 		return donstoryList;
 	}
 	
@@ -70,5 +70,27 @@ public class DonationService implements InterDonationService {
 		List<DonStoryVO> donsupporterPage = dao.donationSupporter(donseq);
 		return donsupporterPage;
 	}
+
+	//총 페이지수 알아오기 
+	@Override
+	public int getTotalCount(HashMap<String, String> paraMap) {
+		int n = dao.getTotalCount(paraMap);
+		return n;
+	}
+
+	//검색어 자동완성 기능 
+	@Override
+	public List<String> wordSearchShow(HashMap<String, String> paraMap) {
+		List<String> wordList = dao.wordSearchShow(paraMap);
+		return wordList;
+	}
+
+	//더보기 페이징 처리 
+	@Override
+	public List<DonStoryVO> donationSupporterMoreJSON(HashMap<String, String> paraMap) {
+		List<DonStoryVO> donstoryPage = dao.donationSupporterMoreJSON(paraMap);
+		return donstoryPage;
+	}
+
 	
 }

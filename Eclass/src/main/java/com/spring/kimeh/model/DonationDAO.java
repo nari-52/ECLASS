@@ -21,8 +21,8 @@ public class DonationDAO implements InterDonationDAO{
 	
 	//후원리스트 보여주기 
 	@Override
-	public List<DonStoryVO> donationList() {
-		List<DonStoryVO> donstoryList = sqlsession.selectList("donation.donationList");
+	public List<DonStoryVO> donationList(HashMap<String, String> paraMap) {
+		List<DonStoryVO> donstoryList = sqlsession.selectList("donation.donationList", paraMap);
 		return donstoryList;
 	}
 	
@@ -60,6 +60,28 @@ public class DonationDAO implements InterDonationDAO{
 		List<DonStoryVO> donsupporterPage = sqlsession.selectList("donation.donationSupporter",donseq);
 		return donsupporterPage;
 	}
+	//리스트 총 페이지수 알아오기 
+	@Override
+	public int getTotalCount(HashMap<String, String> paraMap) {
+		int n = sqlsession.selectOne("donation.getTotalCount", paraMap);
+		return n;
+	}
+
+	//검색어 자동완성 기능 
+	@Override
+	public List<String> wordSearchShow(HashMap<String, String> paraMap) {
+		List<String> wordList = sqlsession.selectList("donation.wordSearchShow", paraMap);
+		return wordList;
+	}
+
+	//더보기 페이징처리 
+	@Override
+	public List<DonStoryVO> donationSupporterMoreJSON(HashMap<String, String> paraMap) {
+		List<DonStoryVO> donstoryPage = sqlsession.selectList("donation.donationSupporterMoreJSON", paraMap);
+		return donstoryPage;
+	}
+
+	
 
 	
 }

@@ -162,7 +162,13 @@
 		text-decoration: none !important;
         color: #00BCD4;
 	}	
-    
+    .moreProdInfo{
+		display : inline-block;
+		margin : 10px;
+		padding: 10px 0;
+        font-size: 13pt;  
+	}
+	
     
 </style>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
@@ -189,8 +195,139 @@
     		document.execCommand("copy"); //클립보드 복사 실행
     		alert('URL이 복사되었습니다');
     	})
+    	
+    	/////////////////////////////////////////////////////////////////
+    	// == 후원 서포터 페이지 (더보기 페이징 처리) ==
+    	
+    	$("#totalHITCount").hide();
+		$("#countHIT").hide();
+
+		// HIT상품 게시물을 더보기 위하여 "더보기.."버튼 클릭액션에 대한 초기값 호출하기 
+		// 즉, 맨처음에는 "더보기..."버튼을 클릭하지 않더라도 클릭한 것처럼 8개의  HIT상품을 게시해주어야 한다.
+		displayHIT("1");
+		
+		// HIT상품 게시물을 더보기 위하여 "더보기.."버튼 클릭액션의 이벤트 등록하기 
+		$("#btnMoreHIT").click(function(){
+			
+			if($(this).text() == "처음으로"){
+				$("#displayHIT").empty();
+				$("#end").empty();
+				displayHIT("1");
+				$(this).text("더보기...");
+			}
+			else{
+				displayHIT($(this).val()); // $("#btnMoreHIT").val(Number(start)+lenHIT);				
+			}
+			
+		});	//end of $("#btnMoreHIT").click(function(){} ------------------	
+    	
+				
     });//end of  $(document).ready(function(){}) ---------
 	
+    
+    var lenHIT = 3;
+	//HIT 상품 "더보기..."버튼을 클릭할 때 보여줄 상품의 갯수(단위)크기 
+	
+	//== 보여줄 HIT상품 정보 추가 요청하기(AJAX로 처리) == 
+	function displayHIT(start){ //start가 1이라면 1~8번까지 상품 8개를  보여준다 
+		
+		$.ajax({
+			url : "<%= ctxPath %>/donation/donationSupporterMoreJSON.up",
+			type : "GET",
+			data:{"donseq" : "${donsupporterPage[0].donseq}"
+				, "start" : start
+				, "len" : lenHIT},
+			dataType : "JSON",
+			success : function(json){
+					var html = "";
+					if(start=="1" && json.length == 0){					
+					// 처음부터 데이터가 존재하지 않는 경우
+		    		// if(json == null) 이 아님!!! if(json.length == 0) 으로 해야함!!
+		    		html += "후원자가 없습니다.";
+		    		
+		    		// HIT 상품 결과를 출력하기
+		    		$("#displayHIT").html(html);
+		    		
+		    		// 더보기... 버튼의 비활성화 처리
+		    		$("#btnMoreHIT").attr("disabled", true).css("cursor","not-allowed");
+						
+					}
+					else{
+						//데이터가 존재하는 경우 
+						$.each(json, function(index,item){
+							
+							html += "<div class='moreProdInfo'>"
+								  
+							if(item.noName=='1'){								
+							  	html += "익명님이 "								
+							}else{
+								html += (item.name) +"님이 "									
+							}
+							
+							if(item.noDonpmt=='1'){								
+							  	html += "후원하였습니다 "								
+							}else{
+								html += "<span style=\"color: skyblue;\">"+(item.sumPayment).toLocaleString('en')+"원 후원하였습니다 </span> "								
+							}
+					          
+							html += "<br/>"
+							
+							if(item.showDate<60){								
+							  	html += (item.showDate)+"분전";						
+							}
+							else if(60<item.showDate<1440){
+								html += Math.floor((item.showDate)/60)+"시간 전";									
+							}
+							else{
+								html += Math.floor((item.showDate)/1440)+"일 전";	
+							}
+							
+							
+							html +="</div>";
+					         
+							/* if( (index+1)%4 == 0){
+								html += "<br/>";
+							} */
+
+						});//end of $.each()-------	
+						
+						// HIT상품 결과를 출력하기 
+						$("#displayHIT").append(html);
+						
+						//>> (중요!!) 더보기... 버튼의 value속성에 값을 지정하기 <<//
+						$("#btnMoreHIT").val(Number(start)+lenHIT);	// 더보기... 버튼의 value 값이 9 로 변경된다.
+						
+			    		// == countHIT에 지금까지 출력된 상품의 갯수를 누적해서 기록하기 
+						$("#countHIT").text( Number($("#countHIT").text()) + json.length );
+						
+						// 더보기... 버튼을 계속해서 클릭하여 countHIT 값과 totalHITCount 값이 일치하는 경우 
+
+						if( $("#countHIT").text() == $("#totalHITCount").text() ){
+							$("#end").html("더이상 조회할 후원자가 없습니다");
+							$("#btnMoreHIT").text("처음으로");
+							$("#countHIT").text("0");
+						}
+						//header.jsp의 하단에 표시된 div content의 height값을 구해서 사이드인포에 주겠다 
+						func_height(); 
+					}
+				
+				},
+				error: function(request, status, error){
+					alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+				}
+
+			});
+		
+	}// end of function displayHIT(start) ----------
+    
+	function func_height(){
+		var content_height = $("div#content").height();	
+		// header.jsp하단에 표시된 div content의 height값 
+		
+		//컨텐츠의 높이를 알아봐서 사이드인포도 컨텐츠의 높이와 똑같이 해주는 것!		
+		$("div#sideinfo").height(content_height);			
+	}
+    
     //== 후원하기버튼
     function goPayment(donseq){
     	location.href = "<%= ctxPath%>/donation/donationPayment.up?donseq="+donseq;
@@ -217,6 +354,7 @@
 				<div class="info">
 					<div class="donSupport"> 
 						<h3 align="left" style="margin: 20px 0; border-bottom:solid 1.5px #ccc; padding-bottom:13px;" >현재 이 프로젝트에<br/>${donsupporterPage[0].totalSupporter}명의 참여가 이루어졌습니다</h3>
+                        
                         <div align="left" class="donSopportText">
                         <%-- 후원스토리가 없을 때  --%>
 						<c:if test="${empty donsupporterPage[0].donseq}">
@@ -260,6 +398,19 @@
                         </c:forEach>
                         </c:if>	
                         </div>
+                        
+                        
+                        <div>
+							<div id = "displayHIT"></div>
+							
+					        <div style="margin: 20px 0;">
+								<span id="end" style="font-size: 16pt; font-weight:bold; color:red;"> </span><br/>
+								<button type="button" id="btnMoreHIT" value="">더보기 ...</button>
+								<span id ="totalHITCount">{totalHITCount}</span>
+								<span id="countHIT">0</span>
+							</div>
+						</div>
+	
                     </div>
                     
                    
@@ -292,7 +443,7 @@
 					</dl>
                     <span class="btn_donation" onclick="goPayment('${donsupporterPage[0].donseq}')">후원하기</span>
                     <span class="btn_share" id="copy_btn">공유하기</span>
-	                <input type="hidden" id="copy_text_input" value="http://localhost:8080<%= ctxPath%>/donation/donationSupporter.up?donseq=${donsupporterPage[0].donseq}" class="form-control">
+	                <input type="hidden" id="copy_text_input" value="http://localhost:9090<%= ctxPath%>/donation/donationSupporter.up?donseq=${donsupporterPage[0].donseq}" class="form-control">
 	                
 	                </div>    
                     </c:if> 

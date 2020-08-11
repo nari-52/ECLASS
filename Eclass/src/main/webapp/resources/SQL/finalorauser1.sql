@@ -496,6 +496,27 @@ from donStory S left join donPayment I
 on S.donseq = I.fk_donSeq  
 where S.donseq = 4;
 
+-- 더보기 페이징 처리 
+select donseq, subject, content, listMainImg, storyImg, donDate, donDueDate, donStatus, targetAmount, 
+       totalPayment, totalSupporter,dDay, payment, name, point, noName, noDonpmt, sumPayment, paymentDate, showDate
+from
+(
+select row_number() over(order by paymentDate desc) as RNO,
+       S.donseq, S.subject, S.content, S.listMainImg, S.storyImg, S.donDate, S.donDueDate,
+       S.donStatus, S.targetAmount, S.totalPayment , S.totalSupporter,
+       ceil(S.donDueDate - S.donDate) as dDay,
+       I.payment, I.name, I.point, I.noName, I.noDonpmt,
+       (I.payment + I.point) as sumPayment,
+       to_char(I.paymentDate,'yyyy-mm-dd hh24:mi:ss') as paymentDate,
+       round(TO_NUMBER((SYSDATE - paymentDate) * (24 * 60)),0) as showDate 
+from donStory S left join donPayment I
+on S.donseq = I.fk_donSeq  
+where S.donseq = 4
+)V
+where V.RNO between 1 and 3;
+
+
+
 select sum(totalPayment)
 from donStory;
 
