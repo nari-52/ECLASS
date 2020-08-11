@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,9 +25,11 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.common.FileManager;
+import com.spring.common.MyUtil;
 import com.spring.kanghm.model.FreeCommentVO;
 import com.spring.kanghm.model.FreeboardVO;
 import com.spring.kanghm.service.InterEclassService;
+import com.spring.nari.model.MemberVO;
 
 //=== #30. 컨트롤러 선언 === 
 @Component
@@ -49,7 +52,6 @@ public class EclassController {
 		// 메인페이지 요청
 		@RequestMapping(value="/index.up")
 		public ModelAndView index(ModelAndView mav) {
-			
 			mav.setViewName("main/index.tiles1");
 			
 			return mav;
@@ -193,6 +195,16 @@ public class EclassController {
 		      
 		    mav.addObject("pageBar", pageBar);		        
 		    
+		    ////////////////////////////////
+		    String gobackURL = MyUtil.getCurrentURL(request);
+		    
+		    mav.addObject("gobackURL", gobackURL);    
+		    
+		    HttpSession session = request.getSession();
+		    session.setAttribute("readCountPermission", "yes");
+		    session.setAttribute("gobackURL", gobackURL);
+		    
+		    //////////////////////////////////////////
 		    
 		    mav.addObject("totalCount",totalCount);
 		    mav.addObject("freeboardList",freeboardList);
@@ -203,7 +215,7 @@ public class EclassController {
 		
 		// 자유게시판 글쓰기
 		@RequestMapping(value="/addfreeboard.up")
-		public ModelAndView addfreeboard(ModelAndView mav) {
+		public ModelAndView requiredLogin_addfreeboard(HttpServletRequest request, HttpServletResponse response,ModelAndView mav) {
 			
 			mav.setViewName("board/addfreeboard.tiles1");
 			
@@ -296,8 +308,32 @@ public class EclassController {
 			
 			String free_seq = request.getParameter("free_seq");
 
-			FreeboardVO freeboardvo = service.getFreeViewNoAdd(free_seq);
+			String gobackURL = request.getParameter("gobackURL");
+			mav.addObject("gobackURL",gobackURL);
 			
+			HttpSession session = request.getSession();
+			MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
+			
+			String userid = null;
+			
+			if(loginuser != null) {
+				userid = loginuser.getUserid();
+				// userid 는 로그인 되어진 사용자의 userid 이다.
+			}
+			
+			FreeboardVO freeboardvo = null;
+			
+			if("yes".equals(session.getAttribute("readCountPermission"))) {
+				
+				// 조회수 증가와 함께 글 조회
+				freeboardvo = service.getFreeView(free_seq,userid);
+				
+				session.removeAttribute("readCountPermission");
+			}
+			else {
+				freeboardvo = service.getFreeViewNoAdd(free_seq);
+			}
+					
 			mav.addObject("freeboardvo",freeboardvo);
 			mav.setViewName("board/freeboardview.tiles1");
 	
@@ -309,7 +345,7 @@ public class EclassController {
 		@RequestMapping(value="/download.up")
 		public void download(HttpServletRequest request, HttpServletResponse response) {
 			
-			String free_seq = request.getParameter("free_seq");
+			String free_seq = request.getParameter("free_seq");	
 			
 			FreeboardVO freeboardvo = service.getFreeViewNoAdd(free_seq);
 			
@@ -344,7 +380,109 @@ public class EclassController {
 		}// end of download()------------------------------------------------------------
 		
 		
+		// 자유게시판 글 삭제하기
+		@RequestMapping(value="/board/delfreeboard.up")
+		public ModelAndView requiredLogin_delfreeboard(HttpServletRequest request,HttpServletResponse response, ModelAndView mav) {
+			
+			// 삭제해야할 글번호를 받아온다.
+			String free_seq = request.getParameter("free_seq");
+			
+			FreeboardVO freeboardvo = service.getFreeViewNoAdd(free_seq);
+			
+			HttpSession session = request.getSession();
+			MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
+			
+			if( !loginuser.getUserid().equals(freeboardvo.getFk_userid()) ) {
+				String msg = "다른 사용자의 글은 삭제가 불가합니다.";
+				String loc = "javascript:history.back()";
+				
+				mav.addObject("msg", msg);
+				mav.addObject("loc", loc);
+				mav.setViewName("msg");			
+			}
+			else {
+				mav.addObject("free_seq", free_seq);
+				mav.setViewName("board/delfreeboard.tiles1");				
+			}
+			
+			return mav;
+		}
 		
+		
+		// 자유게시판 글 삭제 완료하기
+		@RequestMapping(value="/delFreeboardEnd.up", method= {RequestMethod.POST})
+		public ModelAndView delFreeboardEnd(HttpServletRequest request, ModelAndView mav) throws Throwable{
+			
+			String free_seq = request.getParameter("free_seq");
+			String password = request.getParameter("password");
+			
+			HashMap<String, String> paraMap = new HashMap<>();
+			paraMap.put("free_seq", free_seq);
+			paraMap.put("password", password);
+			
+			int n = service.delfreeboard(paraMap);
+			
+			if(n == 0) {
+				mav.addObject("msg", "암호가 일치하지 않아 글 삭제가 불가합니다.");
+				mav.addObject("loc", request.getContextPath()+"/freeboardview.up?free_seq="+free_seq);
+			}
+			else {
+				mav.addObject("msg", "글삭제 성공!!");
+				mav.addObject("loc", request.getContextPath()+"/freeboard.up"); 
+			}
+			
+			mav.setViewName("msg");
+			
+			return mav;
+		}
+		
+		// 자유게시판 글 수정하기 
+		@RequestMapping(value="/board/editfreeboard.up")
+		public ModelAndView requiredLogin_editfreeboard(HttpServletRequest request, HttpServletResponse response,ModelAndView mav) {
+			
+			// 글 수정해야할 글번호 가져오기 
+			String free_seq = request.getParameter("free_seq");
+			
+			FreeboardVO freeboardvo = service.getFreeViewNoAdd(free_seq);
+			
+			HttpSession session = request.getSession();
+			MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
+			
+			if( !loginuser.getUserid().equals(freeboardvo.getFk_userid()) ) {
+				String msg = "다른 사용자의 글은 수정이 불가합니다.";
+				String loc = "javascript:history.back()";
+				
+				mav.addObject("msg", msg);
+				mav.addObject("loc", loc);
+				mav.setViewName("msg");			
+			}
+			else {
+				mav.addObject("freeboardvo", freeboardvo);
+				mav.setViewName("board/editfreeboard.tiles1");				
+			}
+								
+			return mav;
+		}
+		
+		// 자유게시판 글 수정하기 완료하기
+		@RequestMapping(value="/editfreeboardEnd.up", method= {RequestMethod.POST})
+		public ModelAndView editfreeboardEnd(HttpServletRequest request, FreeboardVO freeboardvo, ModelAndView mav) {
+			
+			int n = service.editfreeboardEnd(freeboardvo);
+			
+			if(n == 0) {
+				mav.addObject("msg", "암호가 일치하지 않아 글 수정이 불가합니다.");
+			}
+			else {
+				mav.addObject("msg", "글수정 성공!!");
+			}
+			
+			mav.addObject("loc", request.getContextPath()+"/freeboard.up?free_seq="+freeboardvo.getFree_seq());
+			mav.setViewName("msg");
+			
+			return mav;
+		}
+
 		
 		// 자유게시판 댓글쓰기
 		@ResponseBody
