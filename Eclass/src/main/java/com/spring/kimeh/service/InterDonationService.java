@@ -1,19 +1,13 @@
 package com.spring.kimeh.service;
 
-<<<<<<< HEAD
 import java.util.HashMap;
 import java.util.List;
 
 import com.spring.kimeh.model.DonPaymentVO;
-=======
-import java.util.List;
-
->>>>>>> d6f3a283645de32233a1037ce7ee95befc2c84d3
 import com.spring.kimeh.model.DonStoryVO;
 
 public interface InterDonationService {
 
-<<<<<<< HEAD
 	List<DonStoryVO> donationList(HashMap<String, String> paraMap); //후원리스트 보여주기 
 
 	List<DonStoryVO> donationStory(String donseq); //후원 스토리 보여주기 
@@ -31,7 +25,4 @@ public interface InterDonationService {
 	List<DonStoryVO> donationSupporterMoreJSON(HashMap<String, String> paraMap); //서포터 더보기 페이징 
 
 	
-=======
-	List<DonStoryVO> donationList(); //후원리스트 보여주기 
->>>>>>> d6f3a283645de32233a1037ce7ee95befc2c84d3
 }

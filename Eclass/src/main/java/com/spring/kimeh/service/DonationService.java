@@ -1,14 +1,10 @@
 package com.spring.kimeh.service;
 
-<<<<<<< HEAD
 import java.util.HashMap;
-=======
->>>>>>> d6f3a283645de32233a1037ce7ee95befc2c84d3
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-<<<<<<< HEAD
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,11 +13,6 @@ import com.spring.kimeh.model.DonPaymentVO;
 import com.spring.kimeh.model.DonStoryVO;
 import com.spring.kimeh.model.InterDonationDAO;
 import com.spring.nari.model.MemberVO;
-=======
-
-import com.spring.kimeh.model.DonStoryVO;
-import com.spring.kimeh.model.InterDonationDAO;
->>>>>>> d6f3a283645de32233a1037ce7ee95befc2c84d3
 
 //=== #31. Service 선언 === 
 //트랜잭션 처리를 담당하는곳 , 업무를 처리하는 곳, 비지니스(Business)단
@@ -34,7 +25,6 @@ public class DonationService implements InterDonationService {
 	
 	//후원리스트 보여주기 
 	@Override
-<<<<<<< HEAD
 	public List<DonStoryVO> donationList(HashMap<String, String> paraMap) {
 		List<DonStoryVO> donstoryList = dao.donationList(paraMap);
 		return donstoryList;
@@ -103,10 +93,4 @@ public class DonationService implements InterDonationService {
 	}
 
 	
-=======
-	public List<DonStoryVO> donationList() {
-		List<DonStoryVO> donstoryList = dao.donationList();
-		return donstoryList;
-	}
->>>>>>> d6f3a283645de32233a1037ce7ee95befc2c84d3
 }

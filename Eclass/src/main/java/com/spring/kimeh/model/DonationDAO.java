@@ -1,9 +1,6 @@
 package com.spring.kimeh.model;
 
-<<<<<<< HEAD
 import java.util.HashMap;
-=======
->>>>>>> d6f3a283645de32233a1037ce7ee95befc2c84d3
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -11,11 +8,8 @@ import javax.annotation.Resource;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
-<<<<<<< HEAD
 import com.spring.nari.model.MemberVO;
 
-=======
->>>>>>> d6f3a283645de32233a1037ce7ee95befc2c84d3
 //=== #32. DAO 선언 ===
 @Repository  
 public class DonationDAO implements InterDonationDAO{
@@ -27,7 +21,6 @@ public class DonationDAO implements InterDonationDAO{
 	
 	//후원리스트 보여주기 
 	@Override
-<<<<<<< HEAD
 	public List<DonStoryVO> donationList(HashMap<String, String> paraMap) {
 		List<DonStoryVO> donstoryList = sqlsession.selectList("donation.donationList", paraMap);
 		return donstoryList;
@@ -91,10 +84,4 @@ public class DonationDAO implements InterDonationDAO{
 	
 
 	
-=======
-	public List<DonStoryVO> donationList() {
-		List<DonStoryVO> donstoryList = sqlsession.selectList("donation.donationList");
-		return donstoryList;
-	}
->>>>>>> d6f3a283645de32233a1037ce7ee95befc2c84d3
 }
