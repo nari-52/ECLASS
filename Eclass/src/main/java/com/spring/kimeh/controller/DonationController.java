@@ -266,6 +266,7 @@ public class DonationController {
 					jsonObj.put("noName", vo.getNoName()); //이름 비공개					
 					jsonObj.put("sumPayment", vo.getSumPayment()); //금액 공개
 					jsonObj.put("noDonpmt", vo.getNoDonpmt());     //금액 비공개
+					jsonObj.put("showDate", vo.getShowDate()); //결제시간 
 															
 					jsonArr.put(jsonObj);
 				}	
