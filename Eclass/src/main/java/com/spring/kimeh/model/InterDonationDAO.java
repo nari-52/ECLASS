@@ -1,5 +1,6 @@
 package com.spring.kimeh.model;
 
+<<<<<<< HEAD
 import java.util.HashMap;
 import java.util.List;
 
@@ -26,4 +27,11 @@ public interface InterDonationDAO {
 	List<DonStoryVO> donationSupporterMoreJSON(HashMap<String, String> paraMap); //더보기 페이징처리 
 
 	
+=======
+import java.util.List;
+
+public interface InterDonationDAO {
+
+	List<DonStoryVO> donationList(); //후원리스트 보여주기 
+>>>>>>> d6f3a283645de32233a1037ce7ee95befc2c84d3
 }

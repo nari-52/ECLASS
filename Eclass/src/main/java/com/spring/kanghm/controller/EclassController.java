@@ -14,7 +14,6 @@ import javax.servlet.http.HttpSession;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,6 +51,7 @@ public class EclassController {
 		// 메인페이지 요청
 		@RequestMapping(value="/index.up")
 		public ModelAndView index(ModelAndView mav) {
+			
 			mav.setViewName("main/index.tiles1");
 			
 			return mav;
@@ -339,7 +339,7 @@ public class EclassController {
 	
 			return mav;
 		}
-		
+			
 		
 		// 자유게시판 상세글의 첨부파일 다운로드
 		@RequestMapping(value="/download.up")
@@ -408,6 +408,34 @@ public class EclassController {
 			return mav;
 		}
 		
+		// 자유게시판 글 삭제하기
+		@RequestMapping(value="/board/delfreeboard.up")
+		public ModelAndView delfreeboard(HttpServletRequest request, ModelAndView mav) {
+			
+			// 삭제해야할 글번호를 받아온다.
+			String free_seq = request.getParameter("free_seq");
+			
+			FreeboardVO freeboardvo = service.getFreeViewNoAdd(free_seq);
+			
+			HttpSession session = request.getSession();
+			MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
+			
+			if( !loginuser.getUserid().equals(freeboardvo.getFk_userid()) ) {
+				String msg = "다른 사용자의 글은 삭제가 불가합니다.";
+				String loc = "javascript:history.back()";
+				
+				mav.addObject("msg", msg);
+				mav.addObject("loc", loc);
+				mav.setViewName("msg");			
+			}
+			else {
+				mav.addObject("free_seq", free_seq);
+				mav.setViewName("board/delfreeboard.tiles1");				
+			}
+			
+			return mav;
+		}
+		
 		
 		// 자유게시판 글 삭제 완료하기
 		@RequestMapping(value="/delFreeboardEnd.up", method= {RequestMethod.POST})
@@ -438,7 +466,7 @@ public class EclassController {
 		
 		// 자유게시판 글 수정하기 
 		@RequestMapping(value="/board/editfreeboard.up")
-		public ModelAndView requiredLogin_editfreeboard(HttpServletRequest request, HttpServletResponse response,ModelAndView mav) {
+		public ModelAndView editfreeboard(HttpServletRequest request, ModelAndView mav) {
 			
 			// 글 수정해야할 글번호 가져오기 
 			String free_seq = request.getParameter("free_seq");
@@ -482,6 +510,36 @@ public class EclassController {
 			
 			return mav;
 		}
+			
+		
+		// 자유게시판 글 수정하기 
+		@RequestMapping(value="/board/editfreeboard.up")
+		public ModelAndView requiredLogin_editfreeboard(HttpServletRequest request, HttpServletResponse response,ModelAndView mav) {
+			
+			// 글 수정해야할 글번호 가져오기 
+			String free_seq = request.getParameter("free_seq");
+			
+			FreeboardVO freeboardvo = service.getFreeViewNoAdd(free_seq);
+			
+			HttpSession session = request.getSession();
+			MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
+			
+			if( !loginuser.getUserid().equals(freeboardvo.getFk_userid()) ) {
+				String msg = "다른 사용자의 글은 수정이 불가합니다.";
+				String loc = "javascript:history.back()";
+				
+				mav.addObject("msg", msg);
+				mav.addObject("loc", loc);
+				mav.setViewName("msg");			
+			}
+			else {
+				mav.addObject("freeboardvo", freeboardvo);
+				mav.setViewName("board/editfreeboard.tiles1");				
+			}
+								
+			return mav;
+		}
+
 
 		
 		// 자유게시판 댓글쓰기

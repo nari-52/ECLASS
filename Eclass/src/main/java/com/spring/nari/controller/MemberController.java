@@ -594,8 +594,19 @@ public class MemberController {
 
 	}
 	
-	
-	
+	// 회원 탈퇴 페이지 보여주기
+	@RequestMapping (value="member/delMember.up")
+	public ModelAndView delMember(HttpServletRequest request, ModelAndView mav) {
+		
+		String pwd = request.getParameter("delPwd");
+		String userid = request.getParameter("delUserid");
+		
+		mav.addObject("pwd",pwd);
+		mav.addObject("userid",userid);
+		mav.setViewName("member/delMember.tiles1");
+		
+		return mav;
+	}
 	
 	
 	

@@ -7,4 +7,3 @@
 <tiles:insertAttribute name="content" />
 
 
-

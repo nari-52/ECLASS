@@ -106,11 +106,35 @@
 		var frm = document.addComment;
 		var contentVal = frm.content.value.trim();
 		if(contentVal ==""){
+
+			alert("댓글을 입력하세요!");
+
 			return;			
 		}
 		
 		var form_data = $("form[name=addComment]").serialize();
 		
+		$.ajax({
+			url:"<%=ctxPath%>/board/addFreeComment.up",
+			data: form_data,
+			type:"POST",
+			dataType:"JSON",
+			success:function(json){
+				if(json.n == 1) {
+					goViewComment("1"); // 페이징처리 한 댓글 읽어오기 
+				}
+				else {
+					alert("댓글쓰기 실패!!");
+				}
+				
+				frm.content.value = "";			
+			},
+			error: function(request, status, error){
+				alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+			}			
+		});
+		
+
 		var loginuser = $("#loginuser").val();
 		alert(loginuser);
 		
@@ -139,6 +163,7 @@
 				}			
 			});
 		}
+
 	}// end of function goaddComment() --------------------
 	
 	// 댓글 삭제하기
@@ -277,7 +302,6 @@
 			
 		}// end of makeCommentPageBar(currentShowPageNo) ------------------------
 	
-		
 </script>
 
 
@@ -347,6 +371,9 @@
 		<form name="addComment">
 		<table style="margin: 0 auto;">						
 			<tr>		
+				<input type="text" name="fk_userid" />아이디
+				<input type="text" name="parentSeq" value="${freeboardvo.free_seq}" />원글번호
+				<td><div style="float: left; margin:0 0 10px 25px;"><input type="text" name="name" /> 작성자</div><br>
 				<input type="text" name="fk_userid" value="${sessionScope.loginuser.userid}" id="loginuser" />아이디
 				<input type="text" name="parentSeq" value="${freeboardvo.free_seq}" />원글번호
 				<td><div style="float: left; margin:0 0 10px 25px;"><input type="text" name="name" value = "${sessionScope.loginuser.name}"/> 작성자</div><br>

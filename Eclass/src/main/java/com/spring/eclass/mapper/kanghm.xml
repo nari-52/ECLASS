@@ -128,7 +128,7 @@
 							 ,writedate = sysdate
 		where free_seq = #{free_seq} and password = #{password}
 	</update>
-	
+
 	<!-- 자유게시판 조회수 증가하며 글 조회하기 -->
 	<select id="getFreeView" parameterType="String" resultType="com.spring.kanghm.model.FreeboardVO">
 		select previousseq, previoussubject, free_seq, fk_userid, name, title, content, viewcount, writedate
@@ -153,6 +153,5 @@
 		update free_board set viewcount = viewcount + 1
 		where free_seq = #{free_seq}
 	</update>
-	
 	
 </mapper>
