@@ -179,7 +179,28 @@
 	}
 </style>        
    
+    <script>
+    	
+    	$(document).ready(function(){
+    		
+    		$("#searchWord").keydown(function(event){
+    			if(event.keyCode == 13){
+    				//엔터를 했을경우
+    				goSearch();
+    			}
+    		});
+    		
+    		
+    		function goSearch() {
+    			var frm = document.searchFrm;
+    			frm.method = "GET";
+    			frm.action = "<%= ctxPath%>/SubjectMatterList.up";
+    			frm.submit();
+    		 }// end of function goSearch()-------------------------
+    		
+    	});
     
+    </script>
    
     <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -248,7 +269,24 @@
            
            <hr style="border:solid 1px gray; width:100%; margin-top: 70px">
            
-           <div class="ctext" style="display:inline-block !important;">
+           <div class="ctext" style="display:inline-block !important;" >
+           
+           
+		           <%-- === #99. 글검색 폼 추가하기 : 글제목, 글쓴이로 검색을 하도록 한다. === --%> 
+			<form name="searchFrm" style="margin-top: -15px; margin-bottom: 15px; float:right;">
+				<select name="searchType" id="searchType" style="height: 26px;">
+					<option value="subject">과목명</option>
+				</select>
+				<input type="text" name="searchWord" id="searchWord" size="40" autocomplete="off" /> 
+				<button type="button" onclick="goSearch()">검색</button>
+			</form>
+			<%-- 
+			검색어 입력시 자동완성 하기
+			<div id="displayList" style="border:solid 1px gray; width:316px; height:100px; margin-left: 70px; margin-top:-1px; overflow:auto;">
+				
+			</div> --%>
+           
+           
            <div class="chart" >
                 <ul class="list_li" style="display:inline-block !important;">
                 <c:if test="${empty lmivList}">
@@ -260,7 +298,7 @@
                     	<c:forEach var="lmivList" items="${lmivList}" >
                     	<li class="igan" style="display:inline-block !important;  margin-bottom:60px;">
                         <div class="cimg" style="display:inline-block !important;">
-                            <a href='<%= ctxPath%>/SubjectMatterDetail.up?subseq=${lmivList.subseq}'><img style="width:278px; height:180px;" src="<%= ctxPath %>/resources/images/${lmivList.subImg}"/></a>
+                            <a href='<%= ctxPath%>/SubjectMatterDetail.up?subseq=${lmivList.subseq}'><img style="width:278px; height:180px;" src="<%= ctxPath%>/resources/files/${lmivList.saveSubImg}"/></a>
                         </div>
                         
                         <div class="nayong" style="display:inline-block !important;">
@@ -280,9 +318,19 @@
            
            </div>
            
-           <!-- <div class="pagebar" align="center";>
-            1 2 3 4 5 [다음]
-           </div> -->
+          <!-- // == #119.페이지바 만들기 == -->
+	
+	<div align="center" style="width:70%; margin:13px;">
+		${pageBar}
+	</div>
+	
+	
+	
+	 <!-- 돌아갈 페이지를 알려주기위해 현재 페이지 주소를 뷰단으로 넘겨준다 -->
+		<form name="goViewFrm">
+			<input type="hidden" name="seq"/>
+			<input type="hidden" name="gobackURL" value="${gobackURL}"/>
+		</form> 
            
         </div>
         

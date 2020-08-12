@@ -47,6 +47,13 @@
    		   alert("교과목 소개를 입력해주세요!!");
    		   return;
    	   }
+   	   
+     	var fileVal = $("#file").val().trim();
+	   if(fileVal == ""){
+		   
+		   alert("이미지를 첨부해 주세요!!");
+		   return;
+	   }
     	  
          //폼(form) 을 전송(submit)
    		var frm = document.lectureFm;
@@ -102,7 +109,7 @@
 		<td> <textarea name="subContent" id="subContent" rows="5" cols="60"></textarea></td>
    <tr>
       <td width="25%" class="prodInputName" style="color:white;">교과목이미지</td>
-  		<td> <input type="file" name="attach"/>
+  		<td> <input type="file" id="file" name="attach"/>
   		
    </tr>
    
@@ -116,7 +123,7 @@
    	<br/>
    	이곳은 로그인한 유저의 아이디 들어가는 값입니다.
    	<input type="text" name="fk_userid" value="${loginuser.userid}"/> <!-- 교수님 아이디 -->
-   	<input type="text" name="university" value="${loginuser.university}"/> <!-- 로근인한 유저의 대학명 -->
+   	<!--<input type="text" name="university" value="${loginuser.university}"/>  로근인한 유저의 대학명 -->
 		</td>
 	</tr>
   
