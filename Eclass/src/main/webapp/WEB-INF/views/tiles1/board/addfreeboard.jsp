@@ -17,14 +17,14 @@
 		background-color: #fafafa;
 	}
 	
-	tr,th,td{
+	table,tr,th,td{
 		border: solid 1px black;
 		border-collapse: collapse;
 		padding: 20px;
 	}
 	
 	th{
-		width: 200px;
+		width: 150px;
 	}
 </style>
 
