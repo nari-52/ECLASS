@@ -163,12 +163,24 @@
         color: #00BCD4;
 	}	
     .moreProdInfo{
-		display : inline-block;
-		margin : 10px;
 		padding: 10px 0;
         font-size: 13pt;  
+        border-bottom: solid 1px #ccc;
+        margin-bottom: 0px;
+        margin-top: 0px;
 	}
-	
+	#btnMoreHIT{
+		padding: 15px 0;
+		margin-top: 0px;
+		margin-bottom:100px;
+		font-size: 11pt;  
+		border-bottom: solid 1px #ccc;
+		width: 600px;
+		border-style: none;
+		color: #aaa;
+		background-color: #fafafa;
+		border-radius: 2px;
+	}
     
 </style>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
@@ -203,7 +215,6 @@
 		$("#countHIT").hide();
 
 		// HIT상품 게시물을 더보기 위하여 "더보기.."버튼 클릭액션에 대한 초기값 호출하기 
-		// 즉, 맨처음에는 "더보기..."버튼을 클릭하지 않더라도 클릭한 것처럼 8개의  HIT상품을 게시해주어야 한다.
 		displayHIT("1");
 		
 		// HIT상품 게시물을 더보기 위하여 "더보기.."버튼 클릭액션의 이벤트 등록하기 
@@ -221,7 +232,6 @@
 			
 		});	//end of $("#btnMoreHIT").click(function(){} ------------------	
     	
-				
     });//end of  $(document).ready(function(){}) ---------
 	
     
@@ -243,59 +253,61 @@
 					if(start=="1" && json.length == 0){					
 					// 처음부터 데이터가 존재하지 않는 경우
 		    		// if(json == null) 이 아님!!! if(json.length == 0) 으로 해야함!!
-		    		html += "후원자가 없습니다.";
-		    		
+		    				    		
+		    		html +="<span style='color:gray; font-size: 16px;'>후원 스토리 준비중입니다...<br/>조금만 기다려주세요 :)</span>"
+		    			
 		    		// HIT 상품 결과를 출력하기
-		    		$("#displayHIT").html(html);
+		    		//$("#displayHIT").html(html);
 		    		
 		    		// 더보기... 버튼의 비활성화 처리
 		    		$("#btnMoreHIT").attr("disabled", true).css("cursor","not-allowed");
-						
+		    		$("#btnMoreHIT").hide;	
 					}
 					else{
 						//데이터가 존재하는 경우 
 						$.each(json, function(index,item){
 							
-							html += "<div class='moreProdInfo'>"
-								  
-							if(item.noName=='1'){								
-							  	html += "익명님이 "								
+							html += "<div class='moreProdInfo' style='display:block; text-align:left; border-bottom:solid 1px #ccc'>"
+							 
+							if(item.noName==null){								
+								html +="<span style='color:gray; font-size:12pt;'>후원자가 없습니다..<br/>많은 관심 부탁드립니다 :)</span>"
+								$("#btnMoreHIT").html("");								
+								return;
 							}else{
-								html += (item.name) +"님이 "									
+								
+								if(item.noName=='1'){								
+								  	html += "익명님이 "								
+								}else{
+									html += (item.name) +"님이 "									
+								}
+								
+								if(item.noDonpmt=='1'){								
+								  	html += "후원하였습니다 "								
+								}else{
+									html += Number(item.sumPayment).toLocaleString('en')+"원 후원하였습니다 "								
+								}
+						          
+								html += "<br/>"
+								html += "<span style='text-align:left; font-size:10pt; color:#bbb;'> "
+								if(Number(item.showDate)<60){								
+								  	html += Number(item.showDate)+"분전</span>";						
+								}
+								else if(60<Number(item.showDate)<1440){
+									html += parseInt(Number(item.showDate)/60)+"시간 전</span>";									
+								}
+								else{
+									html += Math.floor(Number(item.showDate)/1440)+"일 전</span>";	
+								}								
 							}
-							
-							if(item.noDonpmt=='1'){								
-							  	html += "후원하였습니다 "								
-							}else{
-								html += "<span style=\"color: skyblue;\">"+(item.sumPayment).toLocaleString('en')+"원 후원하였습니다 </span> "								
-							}
-					          
-							html += "<br/>"
-							
-							if(item.showDate<60){								
-							  	html += (item.showDate)+"분전";						
-							}
-							else if(60<item.showDate<1440){
-								html += Math.floor((item.showDate)/60)+"시간 전";									
-							}
-							else{
-								html += Math.floor((item.showDate)/1440)+"일 전";	
-							}
-							
-							
 							html +="</div>";
-					         
-							/* if( (index+1)%4 == 0){
-								html += "<br/>";
-							} */
-
+					        
 						});//end of $.each()-------	
 						
 						// HIT상품 결과를 출력하기 
 						$("#displayHIT").append(html);
 						
 						//>> (중요!!) 더보기... 버튼의 value속성에 값을 지정하기 <<//
-						$("#btnMoreHIT").val(Number(start)+lenHIT);	// 더보기... 버튼의 value 값이 9 로 변경된다.
+						$("#btnMoreHIT").val(Number(start)+lenHIT);	
 						
 			    		// == countHIT에 지금까지 출력된 상품의 갯수를 누적해서 기록하기 
 						$("#countHIT").text( Number($("#countHIT").text()) + json.length );
@@ -307,8 +319,7 @@
 							$("#btnMoreHIT").text("처음으로");
 							$("#countHIT").text("0");
 						}
-						//header.jsp의 하단에 표시된 div content의 height값을 구해서 사이드인포에 주겠다 
-						func_height(); 
+						
 					}
 				
 				},
@@ -320,14 +331,7 @@
 		
 	}// end of function displayHIT(start) ----------
     
-	function func_height(){
-		var content_height = $("div#content").height();	
-		// header.jsp하단에 표시된 div content의 height값 
-		
-		//컨텐츠의 높이를 알아봐서 사이드인포도 컨텐츠의 높이와 똑같이 해주는 것!		
-		$("div#sideinfo").height(content_height);			
-	}
-    
+	
     //== 후원하기버튼
     function goPayment(donseq){
     	location.href = "<%= ctxPath%>/donation/donationPayment.up?donseq="+donseq;
@@ -363,8 +367,18 @@
 							</tr>
 						</c:if>
                         <c:if test="${not empty donsupporterPage[0].donseq}">
+                        <div>
+							<div id = "displayHIT"></div>
+							
+					        <div style="margin: 0;">
+								<span id="end" style="font-size: 12pt; font-weight:bold; color:gray;"> </span><br/>
+								<button type="button" id="btnMoreHIT" value="">더보기 ...</button>
+								<span id ="totalHITCount">{totalHITCount}</span>
+								<span id="countHIT">0</span>
+							</div>
+						</div>
                         <%-- 후원스토리 있고, 1. 후원자 없을 때, 2. 후원자 있을 때 --%>
-                        <c:forEach var="don" items="${donsupporterPage}" varStatus="status">
+                         <%--<c:forEach var="don" items="${donsupporterPage}" varStatus="status">
                         	<c:if test="${empty donsupporterPage[0].name}"> 
                         		<div class="donSopportName" style="color:gray; font-size:12pt;">후원자가 없습니다..<br/>많은 관심 부탁드립니다 :)</div>
                         	</c:if>
@@ -379,7 +393,7 @@
 		                        	<c:otherwise><fmt:formatNumber value="${don.sumPayment}" pattern="###,###"/>원 후원하였습니다.</c:otherwise>
 	                        	</c:choose>  	
 	                        	</div>
-	                        	<%-- 후원결제(분으로)==> 60을 넘으면 시간/ 1440이 넘으면 일로 나타게  --%> 
+	                        	후원결제(분으로)==> 60을 넘으면 시간/ 1440이 넘으면 일로 나타게  
 	                           	<div class="donSopportTime">
 	                            	
 	                           	<c:if test="${60>don.showDate}">
@@ -395,21 +409,11 @@
 	                           	</c:if>	                        
 	                           	</div>
                            	</c:if>
-                        </c:forEach>
+                        </c:forEach> --%>
                         </c:if>	
                         </div>
                         
-                        
-                        <div>
-							<div id = "displayHIT"></div>
-							
-					        <div style="margin: 20px 0;">
-								<span id="end" style="font-size: 16pt; font-weight:bold; color:red;"> </span><br/>
-								<button type="button" id="btnMoreHIT" value="">더보기 ...</button>
-								<span id ="totalHITCount">{totalHITCount}</span>
-								<span id="countHIT">0</span>
-							</div>
-						</div>
+                       
 	
                     </div>
                     
@@ -447,7 +451,6 @@
 	                
 	                </div>    
                     </c:if> 
-				                
                     
 				</div>
 				
