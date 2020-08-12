@@ -34,5 +34,20 @@ public interface InterEclassDAO {
 	// 자유게시판 댓글 삭제하기
 	int delFreeComment(String delseq);
 
+	// 자유게시판 글 삭제 완료하기
+	int delfreeboard(HashMap<String, String> paraMap);
+
+	// 자유게시판 글을 삭제하면 딸린 댓글도 같이 삭제하기
+	void delComment(HashMap<String, String> paraMap);
+
+	// 자유게시판 글 수정하기 완료하기
+	int editfreeboardEnd(FreeboardVO freeboardvo);
+
+	// 자유게시판 조회수 증가하며 글 조회하기
+	FreeboardVO getFreeView(String free_seq);
+
+	// 조회수 1증가 시키기
+	void addViewCount(String free_seq);
+
 
 }
