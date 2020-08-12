@@ -131,7 +131,7 @@
 		</aside>
 	
 		<article id="main_feed" >
-		<img style="width:290px; height:250px; margin:80px 0 0 80px;" class="khimg"src="<%= ctxPath %>/resources/images/${lmivOne.subImg}" />
+		<img style="width:290px; height:250px; margin:80px 0 0 80px;" class="khimg"src="<%= ctxPath%>/resources/files/${lmivOne.saveSubImg}"/>
 			<h3 style="margin-right:200px; text-align: right;">Eclass의 모든 것</h3>
 			<h2 style="margin-right:200px; text-align: right;">교과목명 : ${lmivOne.subName} </h2>
 			<button id="sugangBtn" class='sugangBtn'>수강신청 </button>
@@ -144,7 +144,7 @@
 		 
 		 <form name="sugangFm">
 		 	-교과목 시퀀스번호 넘길때 수강신청으로 넘길때 사용합니다-<input type="text" name="subseq" value="${lmivOne.subseq}"/> <br/>
-			 -로그인한 학생의 아이디가 들어갑니다- <input type="text" name="fk_userid" value="${loginuser.userid}"/>
+			 -로그인한 학생의 아이디가 들어갑니다- <input type="text" name="userid" value="${loginuser.userid}"/>
 		 </form> 
 			
 
