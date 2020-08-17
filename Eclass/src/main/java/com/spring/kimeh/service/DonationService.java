@@ -12,8 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.spring.kimeh.model.DonPaymentVO;
 import com.spring.kimeh.model.DonStoryVO;
 import com.spring.kimeh.model.InterDonationDAO;
-import com.spring.nari.model.MemberVO;
-
 //=== #31. Service 선언 === 
 //트랜잭션 처리를 담당하는곳 , 업무를 처리하는 곳, 비지니스(Business)단
 @Service  
@@ -90,6 +88,41 @@ public class DonationService implements InterDonationService {
 	public List<DonStoryVO> donationSupporterMoreJSON(HashMap<String, String> paraMap) {
 		List<DonStoryVO> donstoryPage = dao.donationSupporterMoreJSON(paraMap);
 		return donstoryPage;
+	}
+
+	//후원하기 글쓰기 등록 
+	@Override
+	public int donationStoryAdd(DonStoryVO donstoryvo) {
+		int n = dao.donationStoryAdd(donstoryvo);
+		return n;
+	}
+
+	//후원하기 글쓰기 등록(파일첨부 O)
+	@Override
+	public int donationStoryAdd_withFile(DonStoryVO donstoryvo) {
+		int n = dao.donationStoryAdd_withFile(donstoryvo);
+		return n;
+	}
+
+	//글 수정하기
+	@Override
+	public DonStoryVO donationStoryEdit(String donseq) {
+		DonStoryVO donstoryvo = dao.donationStoryEdit(donseq);
+		return donstoryvo;
+	}
+
+	//글 수정 완료하기 
+	@Override
+	public int donationStoryEditEnd(DonStoryVO donstoryvo) {
+		int n = dao.donationStoryEditEnd(donstoryvo);
+		return n;
+	}
+
+	//글 삭제하기 
+	@Override
+	public int donationStoryDel(String donseq) {
+		int n = dao.donationStoryDel(donseq);
+		return n;
 	}
 
 	

@@ -121,7 +121,6 @@ public class EclassService implements InterEclassService {
 		return n;
 	}
 
-
 	// 자유게시판 조회수 증가하며 글 조회하기
 	@Override
 	public FreeboardVO getFreeView(String free_seq,String userid) {

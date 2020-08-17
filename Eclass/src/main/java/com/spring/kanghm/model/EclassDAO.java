@@ -136,6 +136,5 @@ public class EclassDAO implements InterEclassDAO{
 		sqlsession.update("kanghm.addViewCount",free_seq);
 		
 	}
-
 	
 }

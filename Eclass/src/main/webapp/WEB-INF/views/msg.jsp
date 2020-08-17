@@ -3,11 +3,11 @@
 
 <script type="text/javascript">
 
-	if(${msg != null}) {
-		alert("${msg}");
-	}
-	if(${loc != null}) {
-		location.href="${loc}";
-	}
+   if(${msg != null}) {
+      alert("${msg}");
+   }
+   if(${loc != null}) {
+      location.href="${loc}";
+   }
 
 </script>

@@ -102,7 +102,7 @@
 		margin-top: 10px;
 		cursor: pointer;
 	}
-    .btn_share{
+    #copy_btn{
         display: inline-block;
 		width: 278px;
 		height: 52px;
@@ -212,11 +212,11 @@
         });
         
         //공유하기 버튼 클릭시 
-        $("#copy_btn").click(function(){
+        $("#copy_btn1").click(function(){
     		$('#copy_text_input').select(); //복사할 텍스트를 선택
     		document.execCommand("copy"); //클립보드 복사 실행
     		alert('URL이 복사되었습니다');
-    	})
+    	});
     	
     	/////////////////////////////////////////////////////////////////
     	// == 후원 서포터 페이지 (더보기 페이징 처리) ==
@@ -392,7 +392,7 @@
 							</div>
 						</div>
                         <%-- 후원스토리 있고, 1. 후원자 없을 때, 2. 후원자 있을 때 --%>
-                         <%--<c:forEach var="don" items="${donsupporterPage}" varStatus="status">
+                        <%-- <c:forEach var="don" items="${donsupporterPage}" varStatus="status">
                         	<c:if test="${empty donsupporterPage[0].name}"> 
                         		<div class="donSopportName" style="color:gray; font-size:12pt;">후원자가 없습니다..<br/>많은 관심 부탁드립니다 :)</div>
                         	</c:if>
@@ -425,30 +425,31 @@
                            	</c:if>
                         </c:forEach> --%>
                         </c:if>	
-                        </div>
-                        
-                       
-	
+                        </div>	
                     </div>
-                    
-                   
+                                 
                     <c:if test="${not empty donsupporterPage}">
                     <div class="donInfo-table">
                     <dl style="margin: 20px 0;">
-                       <c:if test="${(donsupporterPage[0].dDay-1)<0 && (donsupporterPage[0].totalPayment)>=(donsupporterPage[0].targetAmount)}">
-                       	<dt style="color:#00BCD4">후원 성공</dt>
-                       </c:if>
-                       <c:if test="${(ddonsupporterPage[0].dDay-1)<0 && (donsupporterPage[0].totalPayment)<(donsupporterPage[0].targetAmount)}">
-                       	<dt style="color:#00BCD4">후원 종료</dt>
-                       </c:if>
-                       <c:if test="${(donsupporterPage[0].dDay-1)==0}">
+                  
+                                   
+                    <c:choose>
+                       <c:when test="${(donsupporterPage[0].dDay-1)> 0}">
+						<dt style="color:#00BCD4">${donsupporterPage[0].dDay}일 남음 </dt>
+					   </c:when>
+					   <c:when test="${(donsupporterPage[0].dDay-1)==0}">
                        	<dt style="color:#00BCD4">오늘 종료</dt>
-                       </c:if>
-                       <c:if test="${(donsupporterPage[0].dDay-1)> 0}">
-						<dt style="color:#00BCD4">${donsupporterPage[0].dDay}일 남음</dt>
-					   </c:if>															
-						<div style="border-bottom: solid 4px #00BCD4; width: 120px; padding-bottom: 3px;"></div>
-                       </dl>
+                       </c:when>  
+					   <c:when test="${(ddonsupporterPage[0].dDay-1)<0}">
+                       	<dt style="color:#00BCD4">후원 종료</dt>
+                       </c:when>
+                       <%-- <c:when test="${(donsupporterPage[0].dDay-1)<0 && (donsupporterPage[0].totalPayment >= donsupporterPage[0].targetAmount) }">
+                       	<dt style="color:#00BCD4">후원 성공</dt>
+                       </c:when> --%>       
+                      </c:choose>
+                      <div style="border-bottom: solid 4px #00BCD4; width: 120px; padding-bottom: 3px;"></div>
+                    </dl>
+                    
                                               
 					<dl class="underLine">
 						<dt><fmt:formatNumber value="${(donsupporterPage[0].totalPayment)/donsupporterPage[0].targetAmount}" pattern="0.0%"/>달성</dt>
@@ -460,9 +461,31 @@
 						<dt>${donsupporterPage[0].totalSupporter}명의 후원자</dt>
 					</dl>
                     <span class="btn_donation" onclick="goPayment('${donsupporterPage[0].donseq}')">후원하기</span>
-                    <span class="btn_share" id="copy_btn">공유하기</span>
-	                <input type="hidden" id="copy_text_input" value="http://localhost:9090<%= ctxPath%>/donation/donationSupporter.up?donseq=${donsupporterPage[0].donseq}" class="form-control">
-	                
+                    
+                    
+                    <!-- modal 구동 버튼 (trigger) -->
+					<button type="button" id="copy_btn" class="btn btn-primary btn_share" data-toggle="modal" data-target="#myModal">
+					  공유하기
+					</button>
+					
+					<!-- Modal -->
+					<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+					  <div class="modal-dialog" role="document">
+					    <div class="modal-content">
+					      <div class="modal-header">
+					        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					        <h4 class="modal-title" id="myModalLabel">공유하기 URL</h4>
+					      </div>
+					      <div class="modal-body">
+      		                  <input type="text" id="copy_text_input" value="localhost:9090/eclass/donation/donationStory.up?donseq=${donsupporterPage[0].donseq}" class="form-control" />
+                      		  </div>
+					      <div class="modal-footer">
+					        <button type="button" class="btn btn-default" data-dismiss="modal" id="copy_btn1">복사하기</button>
+					      </div>
+					    </div>
+					  </div>
+					 </div>
+                    
 	                </div>    
                     </c:if> 
                     
