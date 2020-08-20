@@ -15,7 +15,7 @@
 	#wholeNotice{
 		width: 900px;
 		margin: 0 auto;
-		border : solid 1px #ccc;
+		border : solid 0px #ccc;
 	}
 	
 	#container table,tr,th,td{

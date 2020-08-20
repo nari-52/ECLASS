@@ -3,21 +3,26 @@ package com.spring.kimej.model;
 public class LectureVO {
 	
 	private String lecSeq;
+	private String lecNum;
 	private String fk_subSeq;
 	private String lecTitle;
 	private String lecLink;
 	private String lecStartday;
 	private String lecEndday;
 	
+	private String subName;
+	// 교과목 명
+	
 	public LectureVO() {}
 	
-	public LectureVO(String lecSeq, String fk_subSeq, String lecTitle, String lecLink, String lecStartday, String lecEndday) {
+	public LectureVO(String lecSeq, String fk_subSeq, String lecTitle, String lecLink, String lecStartday, String lecEndday, String subName, String lecNum) {
 		this.lecSeq = lecSeq;
 		this.fk_subSeq = fk_subSeq;
 		this.lecTitle = lecTitle;
 		this.lecLink = lecLink;
 		this.lecStartday = lecStartday;
 		this.lecEndday = lecEndday;
+		this.subName = subName;
 	}
 
 	public String getLecSeq() {
@@ -34,6 +39,14 @@ public class LectureVO {
 
 	public void setFk_subSeq(String fk_subSeq) {
 		this.fk_subSeq = fk_subSeq;
+	}
+
+	public String getLecNum() {
+		return lecNum;
+	}
+
+	public void setLecNum(String lecNum) {
+		this.lecNum = lecNum;
 	}
 
 	public String getLecTitle() {
@@ -67,7 +80,14 @@ public class LectureVO {
 	public void setLecEndday(String lecEndday) {
 		this.lecEndday = lecEndday;
 	}
-	
+
+	public String getSubName() {
+		return subName;
+	}
+
+	public void setSubName(String subName) {
+		this.subName = subName;
+	}
 	
 
 }

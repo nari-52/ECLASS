@@ -288,7 +288,7 @@
 					<td><textarea rows="15" cols="110" id="content" name="content" style="width:680px;">${donstoryvo.content}</textarea></td>
 				</tr>				
 			</table>
-				<input type="text" value="${donstoryvo.donseq}" name="donseq" />	
+				<input type="hidden" value="${donstoryvo.donseq}" name="donseq" />	
 		</form>
 		
 		</div>

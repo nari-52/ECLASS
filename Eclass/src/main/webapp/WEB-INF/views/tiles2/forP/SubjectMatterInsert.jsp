@@ -18,7 +18,10 @@
                     font-weight: bold; }                                                 
    
  
-   
+   #mySI {
+      color: white;
+      background-color: #00BCD4;
+   }
 </style>
 
 <script type="text/javascript">
@@ -27,20 +30,19 @@
           
       $("#btnRegister").click(function(){
            
+    	  var statusSelectVal = $(".statusSelect").val().trim();
+    	  if(statusSelectVal == ""){
+    	  alert("이수구분을 선택하세요!!")
+    	  return;
+      }
+    	  
     	  var subNameVal = $("#subName").val().trim();
    	   if(subNameVal == ""){
    					   
    		   alert("교과목명을 입력해주세요!!");
    		   return;
    	   }
-   	   
-   	   var subContentVal = $("#subContent").val().trim();
-   	   if(subContentVal == ""){
-   		   
-   		   alert("교과목 소개를 입력해주세요!!");
-   		   return;
-   	   }
-   	   
+   	
    	   var subContentVal = $("#subContent").val().trim();
    	   if(subContentVal == ""){
    		   
@@ -49,9 +51,22 @@
    	   }
    	   
      	var fileVal = $("#file").val().trim();
-	   if(fileVal == ""){
+     	
+     	
+	   if(fileVal != ""){
 		   
-		   alert("이미지를 첨부해 주세요!!");
+		   var ext = fileVal.slice(fileVal.lastIndexOf(".")+1).toLowerCase();
+		   
+		   if(!(ext == "gif" || ext == "jpg" || ext == "png")){
+			   alert("이미지파일 (.jpg, .png, .gif)인 확장자만 업로드 가능합니다");
+			   return false;
+		   }
+		   
+		   
+		   
+	   }else{
+		   alert("이미지를 첨부해주세요!!")
+		   
 		   return;
 	   }
     	  
@@ -72,9 +87,9 @@
    
 </script>
 
-<div style="margin-bottom: 20px; width:930px; float:right;">
+<div style="margin-bottom: 20px; width:700px; float:right; margin-right:100px; margin-top:20px;">
 
-<div align="center" style="border: solid green 2px; width: 300px; margin-top: 20px; margin-left:25%; padding-top: 10px; padding-bottom: 10px; border-left: hidden; border-right: hidden;">       
+<div align="center" style="border: solid green 2px; width: 300px; margin-top: 20px; margin-left:20%; padding-top: 10px; padding-bottom: 10px; border-left: hidden; border-right: hidden;">       
    <span style="font-size: 15pt; font-weight: bold;">교과목등록</span>   
 </div>
 <br/>
@@ -88,7 +103,7 @@
       <td width="25%"  class="prodInputName" style="padding-top: 10px; color:white;">이수구분</td>
       
       <td width="75%" align="left" style="padding-top: 1px;" >
-         <select name="status" class="infoData">
+         <select name="status" class="statusSelect">
             <option value="">:::필수입력:::</option>
                <option value="1">전공</option>
                <option value="2">교양</option>
@@ -100,8 +115,8 @@
 
    <tr style="line-height: 30px;">
       <td  class="prodInputName"  style="color:white;">교과목명</td>
-    	<td><input type="text" style="width: 300px;" name="subName" id="subName" class="box infoData" />
-    
+    	<td><input type="text" style="width:300px; " name="subName" id="subName" class="box infoData" />
+   
    </tr>
 
    <tr>
@@ -121,8 +136,8 @@
 		    
 		    	<br/>
    	<br/>
-   	이곳은 로그인한 유저의 아이디 들어가는 값입니다.
-   	<input type="text" name="fk_userid" value="${loginuser.userid}"/> <!-- 교수님 아이디 -->
+   	
+   	<input type="hidden" name="fk_userid" value="${loginuser.userid}"/> <!-- 교수님 아이디 -->
    	<!--<input type="text" name="university" value="${loginuser.university}"/>  로근인한 유저의 대학명 -->
 		</td>
 	</tr>

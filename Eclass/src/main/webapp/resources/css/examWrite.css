@@ -2,7 +2,7 @@
 
 #contentsWrap {
 	width: 1080px;
-	margin: 0 auto;	
+	margin: 0 auto;
 }
 
 #register-title {
@@ -16,8 +16,19 @@
 
 #buttons {
 	float: right;
+	margin-top: 30px;
 }
 
 .border-line-box {
     border-bottom: 1px solid #b5b5b5;
+}
+
+.question {
+	height: 40px;
+	width: 995px;
+}
+
+.answer {
+	height: 40px;
+	width: 995px;
 }

@@ -210,7 +210,7 @@
 	function goPayment(donseq){
 		var strdDay = ${donstoryPage[0].dDay};
 		console.log("strdDay"+strdDay);
-		if(strdDay < 0){
+		if(strdDay <= 0){
 			alert("후원 모집기간이 끝났습니다. 감사합니다");
 			return;
 		}
@@ -338,8 +338,8 @@
 					이 프로젝트는 펀딩 마감일까지 목표 금액이 100% 모이지 않으면 결제가 진행되지 않습니다.<br/>
                 </div>
                 
-                <div class="donInfo-div" style="border: solid 1px red; padding: 30px; color:gray" >
-                <div class="contentStoryImage" style="display: inline-block; border: solid 1px orange; margin-top:20px; width:1000px;">
+                <div class="donInfo-div" style="border: solid 0px red; padding: 30px; color:gray" >
+                <div class="contentStoryImage" style="display: inline-block; border: solid 0px orange; margin-top:20px; width:1000px;">
 					<c:if test="${empty donstoryPage}">
 						<tr> 
 							<td colspan = "3" style="color:gray; font-size: 16px;">후원 스토리 준비중입니다...조금만 기다려주세요 :)</td>
@@ -353,7 +353,7 @@
 							</c:if>	
 							<c:if test="${not empty don.donImg}">	
 														
-						 		<dt><img style="width:100%; height:100%; position: inherit; top:0; left: 0; overflow:auto" src="<%= ctxPath%>/resources/images/donation/${don.donImg}" /></dt>
+						 		<dt><img style="display:block; width:1000px; height:100%; position: inherit; top:0; left: 0; overflow:auto" src="<%= ctxPath%>/resources/images/donation/${don.donImg}" /></dt>
 							</c:if>	
 						</c:forEach>
 					</c:if>
@@ -361,7 +361,8 @@
 				
 				<c:if test="${not empty donstoryPage}">
 					<h3>${donstoryPage[0].content}</h3>
-					<!-- 후원은 교육을 이어나갈수 있는 동기가 되기도 합니다.
+					<!--
+					후원은 교육을 이어나갈수 있는 동기가 되기도 합니다.
 					후원은 희망교실 아이들에게 소중한 한 끼입니다.<br />3살이 채 안된 아이가 급식을 먹기 위해 
 					언니의 손을 잡고 학교에 오기도 합니다. 먼 거리를 걸어 희망교실에 오는 아이들은 <br />
 					친구들과 즐거운 시간을 보내기도 하고, 두 눈을 반짝이며 수업을 듣기도 하지만 제일 기다리는 것은 바로 학교 점심 시간입니다.<br />
@@ -376,7 +377,7 @@
 					잡힌 따뜻한 한 끼를 선물해 끼니 걱정 없이 <br />건강하게 공부할 수 있도록 아이들의 든든한 하루를 함께 응원해주세요.
 					다른 지원을 통해 더 큰 피해를 막고, 피해 지역 아동과 가정이 재난상황을  <br /> 하루빨리 극복할 수 있도록 많은 관심과 후원
 					부탁드립니다. 자라나는 아이들에게 균형 잡힌 따뜻한 한 끼를 선물해 끼니 걱정 없이 건강하게 공부할 수 있도록 <br />아이들의 든든한 하루를 함께 응원해주세요.<br /> <br /> 
-					-->
+					 -->
 				</div>
 				</c:if>	  
 				</div>
@@ -389,7 +390,7 @@
 					글삭제
 				</button>
 				<form name="delFrm">
-					<input type="text" name="donseq" value="${donstoryPage[0].donseq}"/>
+					<input type="hidden" name="donseq" value="${donstoryPage[0].donseq}"/>
 				</form>
 				</div>	
 			    </c:if>       

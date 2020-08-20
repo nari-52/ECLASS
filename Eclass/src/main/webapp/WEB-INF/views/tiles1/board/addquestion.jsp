@@ -7,24 +7,24 @@
 
 <style>
 	#container{
-		background-color: #fafafa;
+		/* background-color: #fafafa; */
 	}
 
 	#wholeNotice{
 		width: 1080px;
 		margin: 0 auto;
 		/* border: solid 1px black; */
-		background-color: #fafafa;
+		
 	}
 	
-	tr,th,td{
+	table,tr,th,td{
 		border: solid 1px black;
 		border-collapse: collapse;
 		padding: 20px;
 	}
 	
 	th{
-		width: 200px;
+		width: 150px;
 	}
 </style>
 
@@ -119,15 +119,23 @@
 	         // 폼(form) 을 전송(submit)
 	         var frm = document.addFrm;
 	         frm.method = "POST";
-	         frm.action = "<%= ctxPath%>/addQuestiondEnd.action";
+	         frm.action = "<%= ctxPath%>/board/addquestionboardEnd.up";
 	         frm.submit();
 	      });
-	   
-	   
-		
-		
-	});
+	  			
+	});// end of $(document).ready() -------------------
 
+	function secretChk(){
+		$("input:checkbox[id=secret]").is(":checked");	
+		/* alert($("input:checkbox[id=secret]").is(":checked")); */		
+		if($("input:checkbox[id=secret]").is(":checked")){
+			$(".secret").val("1");
+		}
+		else{
+			$(".secret").val("0");
+		}
+	}
+	
 </script>
 
 
@@ -135,7 +143,7 @@
 <div id ="container"><br>
 	<div id="wholeNotice">
 		<div style="text-align: center;">
-			<h3 style="color: #00BCD4; font-weight: bold;">Q&A</h3>
+			<h3 style=" font-weight: bold;">Q&A</h3>
 		</div>	
 		<br>
 			
@@ -144,17 +152,25 @@
 			<table id="table" style="margin: 0 auto; width: 1040px; background-color: white;">
 				<tr>
 					<th>제목</th>
-					<td><input type="text" size="40" id="title" name="title"/></td>
+					<td>
+						<input type="text" size="50" id="title" name="title"/>
+						<input type="checkbox" id="secret" onclick="secretChk();"><label for="secret">비밀글</label>
+						<input type="hidden" class="secret" name="secret" value="0"> 
+					</td>
 				</tr>
 				
 				<tr>
 					<th>작성자</th>
-					<td><input type="text"/></td>
+					<td><input type="text" name="name" value="${sessionScope.loginuser.name}"/></td>
 				</tr>
+				
+				
+				<input type="hidden" name="fk_userid" value="${sessionScope.loginuser.userid}"/></td>
+				
 				
 				<tr>
 					<th>첨부파일</th>
-					<td><input type="file"/></td>
+					<td><input type="file" name="attach"/></td>
 				</tr>
 				
 				<tr>
@@ -167,8 +183,14 @@
 					<td><input type="text" id="password" name="password"/></td>
 				</tr>
 				
+				<input type="hidden" name="fk_seq" value="${fk_seq}" />
+      			<input type="hidden" name="groupno" value="${groupno}" />
+     			<input type="hidden" name="depthno" value="${depthno}" />
+				
+							
 			</table>
 		</form>
+		
 		</div>
 		
 		<br>

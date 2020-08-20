@@ -7,7 +7,7 @@
 
 <style type="text/css">
 	div#signuptitle {
-		border: solid 1px gray;
+		/* border: solid 1px gray; */
 		max-width: 1080px;
 		height: 100px;
 		margin: 0 auto;
@@ -25,10 +25,10 @@
 	
 	/* 진행상황 시작 ------------------------------------------ */
 	
-	div#idFindcontent {
-		border: solid 1px red;
+	div#delMembercontent {
+		/* border: solid 1px red; */
 		width: 100%;
-		height: 1500px;
+		height: 650px;
 		background: #fafafa;
 		display: inline-block;
 		
@@ -36,30 +36,30 @@
 	
 	/* 메일 인증 ------------------------------------------------------------------ */
 	
-	div#idFind_content {
+	div#delMember_content {
 		/* border: solid 1px red; */
 		width: 100%;
-		height: 800px;
+		height: 400px;
 		background: #fafafa;
 		display: inline-block;
 		margin: 0 auto;
 	}
 	
 	/* 이메일 인증 배경 만들기 */
-	div#idFind_back {
+	div#delMember_back {
 		border: solid 1px #ddd;
 		width: 1080px;
-		height: 570px;
+		height: 400px;
 		background: white;
 		margin: 0 auto;
 		padding-top: 50px; /* form 태그 위에 padding 주기 */
 	}
 		
-	form#idFind_form {
+	form#delMember_form {
 		/* border: solid 1px gray; */
 		margin: 0 auto;
 		width: 620px;
-		height: 400px;
+		height: 300px;
 		background-color: white;	
 	}
 	
@@ -67,11 +67,12 @@
 		list-style: none;
 		padding: 0;
 		margin-bottom: 10px;
+		width: 620px;
 	}
 	
 	/* 가입하기 버튼 */
-	div#idfind {
-		border: solid 1px blue;
+	div#delMemberbtn {
+		/* border: solid 1px blue; */
 		margin: 0 auto;
 		width: 620px;
 		height: 40px;
@@ -85,7 +86,7 @@
 	
 	/* 메일 인증번호 받기 */
 	div#mailbtn {
-		border: solid 1px blue;
+		/* border: solid 1px blue; */
 		margin: 0 auto;
 		width: 140px;
 		height: 100px;
@@ -106,105 +107,50 @@
 <script type="text/javascript">
 
 	$(document).ready(function(){ 
-		
-		// AJAX로 메일 인증번호 받기
-		$("#mailbtn").click(function(){
-			
-			var nameVal = $("#name").val().trim();
-			var emailVal = $("#email").val().trim();
-			
-			// alert(nameVal);
 						
-			if(nameVal != "" && emailVal != "") {
-				// alert("이름, 이메일 작성 성공!")
-				alert(nameVal+ "님, 인증번호가 발송되었습니다. 입력하신 메일의 인증번호를 작성해주세요.");
- 				
-				$.ajax({
-					url: "<%=ctxPath%>/login/idFind_mail.up",
-					data: {"name" : nameVal,
-						   "email" : emailVal},
-					type: "POST",
-					dataType:"JSON",
-					success: function(json) {	
-						$("#mailmessage").val(json.mailmessage);
-						$("#namecheck").val(json.name);
-						$("#emailcheck").val(json.email);
-						$("#userid").val(json.userid);
-					},
-					error: function(request, status, error){
-						alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-					}
-				}); 
-			} 
+		// 회원 탈퇴하기 버튼 클릭 시 확인하기
+		$("#delMemberbtn").click(function(){ 
+			
+			// 1. 아이디와 비밀번호가 공란인지 확인한다. -------------------------------------------- 
+			var useridVal = $("#userid").val().trim();
+			var pwdVal = $("#pwd").val().trim();
+			
+			if (useridVal == "" || pwdVal == "") {
+				alert("아이디와 비밀번호를 다시한번 입력해주세요!");
+				return;
+			}
+
+			// 2. 로그인정보와 다시 입력한 정보가 일치하는지 확인한다. ---------------------------------------------
+			var useridcheckVal = $("#useridcheck").val().trim();
+			var pwdcheckVal = $("#pwdcheck").val().trim();
+			
+			if (useridVal == useridcheckVal && pwdVal == pwdcheckVal) {
+				godelMember(); // 회원 탈퇴하기
+			}
 			else {
-				alert("이름과 메일주소를 확인해주세요!");				
+				alert("로그인한 정보와 입력하신 정보가 일치하지 않습니다.");
+				return;
 			}
 
-		}); // end of  $("#mailbtn").click(function()-------------------------------
-		
-				
-		// 아이디찾기 버튼 클릭 시 확인하기
-		$("#idfindbtn").click(function(){ 
-			/* 
-			// 1. 이름과 메일주소가 공란인지 확인한다. -------------------------------------------- 
-			var nameVal = $("#name").val().trim();
-			var emailVal = $("#email").val().trim();
-			
-			if (nameVal == "" || emailVal == "") {
-				alert("이름과 이메일을 입력해주세요!");
-				return;
-			}
-			
-			// 2. 발송한 인증번호 일치 여부 확인한다. -----------------------------------------------
-			var mailmessageCheckVal = $("#mailmessageCheck").val().trim(); // 회원이 입력한 인증번호
-			var mailmessageVal = $("#mailmessage").val().trim(); // 메일 발송된 인증번호
-			
-			if(mailmessageVal == "") {
-				alert("메일 인증을 진행해주세요.");
-				return;
-			}
-			
-			if (mailmessageCheckVal != mailmessageVal) {
-				alert("인증번호가 일치하지 않습니다. \n인증번호를 확인해주세요.");
-				return;
-			}
-			
-			// 3. 인증받은 이름과 이메일이 동일한지 확인한다. ---------------------------------------------
-			var namecheckVal = $("#namecheck").val().trim();
-			var emailcheckVal = $("#emailcheck").val().trim();
-			
-			if (nameVal != namecheckVal) {
-				alert("메일인증 시 작성한 이름과 일치하지 않습니다.");
-				return;
-			}
-			if (emailVal != emailcheckVal) {
-				alert("메일인증 시 작성한 이메일과 일치하지 않습니다.");
-				return;
-			}
-			 */
-
-			 
-			 // alert("userid : " + userid);
-			 goidFind(); // 아이디찾기
-			
-			
-			
-		}); // end of $("#idfindbtn").click(function() ------------
+		}); // end of $("#delMemberbtn").click(function() ------------
 
 
 		
 	}); // end of $(document).ready(function() -----------
 
-	// 아이디찾기 클릭 함수		
-	function goidFind() {
-		
-		var frm = document.idFind_form;
-		
-		frm.method = "POST";
-		frm.action = "<%= ctxPath%>/login/idFind_end.up";
-		frm.submit();
-		
-	} // function goidFind()-------------------------------
+	// 회원 탈퇴하기 버튼 클릭	
+	function godelMember() {
+		if(confirm("정말 탈퇴하시겠습니까?") == true){
+			var frm = document.delMember_form;
+			
+			frm.method = "POST";
+			frm.action = "<%= ctxPath%>/member/delMember_end.up";
+			frm.submit();
+		}
+	    else{
+	         return;
+	    }
+	} // function godelMember()-------------------------------
 </script>
     
 <body>
@@ -217,38 +163,31 @@
 		</section>	
 	</div>
 	
-	<div id="idFindcontent">
+	<div id="delMembercontent">
 		<br/><br/><br/><br/>
-		<div id="idFind_content">
-			<div id="idFind_back">
-				<form name="idFind_form" id="idFind_form">
-					<h3 style="text-align: center;">아이디 비밀번호 재 입력</h3>
+		<div id="delMember_content">
+			<div id="delMember_back">
+				<form name="delMember_form" id="delMember_form">
+					<h3 style="text-align: center;">로그인 정보 재입력</h3>
 					<ul class="input_text">
 						<li>
-							<label for="name"></label>
-							<input type="text" name="name" id="name" value="${name}" class="input_text" required autofocus placeholder="이름을 입력해주세요." style="border: solid 1px #ddd; width: 450px; height: 50px; vertical-align: middle; padding-left: 10px; font-size: 11pt;"/>
+							<label for="userid"></label>
+							<input type="text" name="userid" id="userid" value="" class="input_text" required autofocus placeholder="아이디를 입력해주세요." style="border: solid 1px #ddd; width: 605px; height: 50px; vertical-align: middle; padding-left: 10px; font-size: 11pt;"/>
 						</li>
 						<li>
-							<label for="email"></label>
-							<input type="text" name="email" id="email" value="${email}" class="input_text" required placeholder="이메일을 입력해주세요." style="border: solid 1px #ddd; border-top:solid 0px;  width: 450px; height: 50px; vertical-align: middle; padding-left: 10px; font-size: 11pt;"/>
+							<label for="pwd"></label>
+							<input type="password" name="pwd" id="pwd" value="" class="input_text" required placeholder="비밀번호를 입력해주세요." style="border: solid 1px #ddd; border-top:solid 0px;  width: 605px; height: 50px; vertical-align: middle; padding-left: 10px; font-size: 11pt;"/>
 						</li>
 					</ul>
-					<%-- <input type="hidden" name="identity" id="identity" value="${identity}"/> --%>
-					<div id="mailbtn">인증번호 받기</div>
 					
-					<input type="hidden" id="namecheck" value="" />
-					<input type="hidden" id="emailcheck" value="" />
-					<input type="text" id="userid" name="userid" value="" />
-					
-					<label style="padding: 10px 50px 0px 40px; line-height: 50px">인증번호</label><input type="text" id="mailmessageCheck" name="mailmessageCheck" required placeholder="인증번호를 입력해주세요." style="border: solid 1px #ddd; width: 450px; height: 50px; vertical-align: middle; padding-left: 10px; font-size: 11pt; margin-top: 10px;"/>
-					<input type="text" id="mailmessage" name="mailmessage" value="${mailmessage}" />
-					
+					<input type="hidden" id="useridcheck" value="${sessionScope.loginuser.userid}" /> <!-- 로그인 세션에서 불러와도 될듯 -->
+					<input type="hidden" id="pwdcheck" value="${sessionScope.loginuser.pwd}" />
 
 					
-					<div id="idfindbtn" >아이디찾기</div>
+					<div id="delMemberbtn" style="margin-top: 30px; cursor: pointer;">회원 탈퇴하기</div>
 				
-					<div style="color: #888; margin-top: 30px;">※ 인증메일 발송에 약간의 시간이 소요됩니다.</div>
-					<div style="color: #888;">※ 회원가입시 사용하신 메일주소를 입력해주세요.</div>
+					<div style="color: #888; margin-top: 30px;">※ 회원 탈퇴 시 재가입이 어려울 수 있습니다.</div>
+					<div style="color: #888;">※ 안전한 회원탈퇴를 위해 로그인한 회원정보를 재확인합니다.</div>
 
 				</form>
 			</div>

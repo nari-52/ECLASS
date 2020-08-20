@@ -224,8 +224,12 @@
 				</select>
 				<input type="text" name="searchWord" id="searchWord" size="30" style="height: 25px; border-radius: 2px; border:solid 1px #ccc"autocomplete="off" /> 
 				<button type="button" style="height: 25px; border:solid 1px #ccc; color:gray; border-radius: 2px" onclick="goSearch()">검색</button>
+				
+				 <div id="displayList" style="position: relative; z-index:1; background-color:#fff; border:solid 1px #ccc; font-size:10pt; text-align: left; border-top:0px; width:242px; height:100%; margin-left:710px; overflow:auto;">
+            	 </div>
+				<%-- 노트북용 자동완성 맞는 길이 
 				<div id="displayList" style="position: relative; z-index:1; background-color:#fff; border:solid 1px #ccc; font-size:10pt; text-align: left; border-top:0px; width:230px; height:100%; margin-left:727px; overflow:auto;">
-				</div>
+				</div>--%> 
 			</form>
 			</div>
 				

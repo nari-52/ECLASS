@@ -1,11 +1,13 @@
 package com.spring.kimkh.controller;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.poi.util.SystemOutLogger;
@@ -20,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.common.FileManager;
 import com.spring.common.MyUtil;
+import com.spring.kimej.model.LectureVO;
 import com.spring.kimkh.model.LecutreMatterInsertVO;
 import com.spring.kimkh.service.InterKhService;
 import com.spring.nari.model.MemberVO;
@@ -35,8 +38,25 @@ public class KimkhController {
 
 	// 교과목 등록하는 페이지 입니다.
 	@RequestMapping(value = "/SubjectMatter_insert.up")
-	public ModelAndView SubjectMatter_insert(ModelAndView mav, HttpServletRequest request) {
+	public ModelAndView requiredLogin_SubjectMatter_insert(HttpServletRequest request, HttpServletResponse response , ModelAndView mav) {
 
+		HttpSession session = request.getSession();
+		
+		MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
+		
+		
+		if(loginuser.getUserid().equals("")) {
+			
+			String msg = "로그인 후 접속해주세요";
+			String loc = request.getContextPath()+"/index.up";
+			
+			mav.addObject("msg", msg);
+			mav.addObject("loc", loc);
+			
+			mav.setViewName("msg");
+			
+		}
+		
 		mav.setViewName("/forP/SubjectMatterInsert.tiles2");
 
 		return mav;
@@ -76,7 +96,7 @@ public class KimkhController {
 		 */	 
 		  
 		  //path가 첨부파일을 저장할 WAS(톰캣)의 폴더가 된다. 
-		  System.out.println("~~~~~ 확인용 path => " + path);
+		  //System.out.println("~~~~~ 확인용 path => " + path);
 		//~~~~~ 확인용 path => C:\springworkspace\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\Board\resources\files
 
 	  
@@ -96,8 +116,8 @@ public class KimkhController {
 		  // 예를 들어, 첨부한 파일이 "강아지.png"  이라면 
 		  // 이파일을 WAS(톰캣) 디스크에 저장시키기 위해 byte[] 타입으로 변경해서 올린다.
 		 
-		  System.out.println("bytes : "+bytes);
-		  System.out.println("attach.getOriginalFilename() :" + attach.getOriginalFilename());
+		  //System.out.println("bytes : "+bytes);
+		  //System.out.println("attach.getOriginalFilename() :" + attach.getOriginalFilename());
 		  newFilename = fileManager.doFileUpload(bytes, attach.getOriginalFilename(),path);
 		  
 		  //위의 것이 파일올리기를 해주는 것읻 
@@ -117,9 +137,9 @@ public class KimkhController {
 		  //진짜 파일명 강아지.png 게시판 페이지에서 첨부된 파일명(강아지.png)을 보여줄때 및
 		//사용자가 파일을 다운로드 할때 사용되어지는 파일명
 
-		  System.out.println("~~~~확인용 newFilename ==>"+ newFilename);
-		  System.out.println("----확인용 subImg :" + lmiv.getSubImg());
-		  System.out.println("----확인용 SaveSubImg :" + lmiv.getSaveSubImg());
+		 // System.out.println("~~~~확인용 newFilename ==>"+ newFilename);
+		 // System.out.println("----확인용 subImg :" + lmiv.getSubImg());
+		 // System.out.println("----확인용 SaveSubImg :" + lmiv.getSaveSubImg());
 		  
 		////////////////// 첨부파일 끝//////////////////////
 
@@ -138,12 +158,18 @@ public class KimkhController {
 		//교수마이페이지에 insert시키기	
 		int m = service.ForPInter(paraMap);
 		
+		String subseq = lmiv.getSubseq();
+		System.out.println("subseq : "+subseq);
+		
+		//LecutreMatterInsertVO subseq = service.selectOneMatterList();
 		if(m > 0 || n > 0) {
 
 			String msg = "교과목 등록이 완료되었습니다.";
 
-		 	String loc = request.getContextPath()+"/mypageMain.up";
 			
+			
+		 	//String loc = request.getContextPath()+"/SubjectMatterDetail.up?subseq="+subseq;
+			String loc = request.getContextPath()+"/SubjectMatterList.up";
 		 	request.setAttribute("msg", msg);
 			request.setAttribute("loc", loc);
 		 	
@@ -169,9 +195,15 @@ public class KimkhController {
 	@RequestMapping(value = "/SubjectMatterList.up")
 	public ModelAndView SubjectList(ModelAndView mav, HttpServletRequest request, LecutreMatterInsertVO lmiv) {
 
-		List<LecutreMatterInsertVO> lmivList = service.selectMatterList(lmiv);
+		List<LecutreMatterInsertVO> lmivList = null;
 
-		/*/////////////////페이징 처리///////////////////////
+		String status = request.getParameter("status1");
+		//System.out.println(status);
+		if(status == null || status.trim().isEmpty()) {
+			status = "";
+		}
+		
+		/////////////////페이징 처리///////////////////////
 		
 		String searchType = request.getParameter("searchType");
 		String searchWord = request.getParameter("searchWord");
@@ -188,9 +220,10 @@ public class KimkhController {
 		HashMap<String,String> paraMap = new HashMap<>();
 		paraMap.put("searchType", searchType);
 		paraMap.put("searchWord", searchWord);
+		paraMap.put("status", status);
 		
 		int totalCount = 0; //총 게시물 건수
-		int sizePerPage	= 10;//한 페이지당 보여줄 게시물 건수
+		int sizePerPage	= 6;//한 페이지당 보여줄 게시물 건수
 		int currentShowPageNo = 0;//현재 보여주는 페이지 번호로서, 초기치로는 1페이지로 설정한다
 		int totalPage = 0;//총 페이지 수(웹브라우저상에 보여줄 총 페이지 개수,페이지바)
 		
@@ -226,13 +259,13 @@ public class KimkhController {
 		}
 		// **** 가져올 게시글의 범위를 구한다.(공식임!!!) **** 
 		
-		     currentShowPageNo      startRno     endRno
+		  /*  currentShowPageNo      startRno     endRno
 		    --------------------------------------------
 		         1 page        ===>    1           10
 		         2 page        ===>    11          20
 		         3 page        ===>    21          30
 		         4 page        ===>    31          40
-		         ......                ...         ...
+		         ......                ...         ...*/
 		 
 		
 		startRno = ((currentShowPageNo - 1 ) * sizePerPage) + 1;
@@ -242,7 +275,8 @@ public class KimkhController {
 		paraMap.put("startRno",String.valueOf(startRno)); //startRno은 string타입이안맞기 때문에 올수없다(곱하기,빼기) String으로바꿔야한다
 		paraMap.put("endRno",String.valueOf(endRno));
 		
-		boardList = service.searchwWithPaging(paraMap);
+		lmivList = service.searchwWithPaging(paraMap);
+		//service.selectMatterList(lmiv)
 		// 페이징 처리한 글목록 가져오기(검색이 있든지, 검색이 없든지 모두 다 포함한것)
 		
 		if(!"".equals(searchWord)) {
@@ -251,59 +285,23 @@ public class KimkhController {
 		// == #119.페이지바 만들기 ==
 		String pageBar = "<ul style='list-style: none;'>";
 		
-		int blockSize = 10;
+		int blockSize = 5;
 		//blockSize 는 1개블럭(토막)당 보여지는 페이지번호의 개수이다.
 		
-		   1 2 3 4 5 6 7 8 9 10 다음 			 --1개블럭
+		  /* 1 2 3 4 5 6 7 8 9 10 다음 			 --1개블럭
 		 이전 11 12 13 14 15 16 17 18 19 20 다음 --1개블럭
-		 이전 21 22 23
+		 이전 21 22 23*/
 		 
 		
 		int loop = 1;
 		
-		 	loop는 1부터 증가하여 1개 블럭을 이루는 페이지번호의 개수[지금은 10개(==blockSize)까지만 증가하는 용도]
+		 	//loop는 1부터 증가하여 1개 블럭을 이루는 페이지번호의 개수[지금은 10개(==blockSize)까지만 증가하는 용도]
 		 
 		int pageNo = ((currentShowPageNo - 1)/blockSize) * blockSize + 1;
 		// *** !! 공식이다. !! *** //
-		
-	
-	    1  2  3  4  5  6  7  8  9  10  -- 첫번째 블럭의 페이지번호 시작값(pageNo)은 1 이다.
-	    11 12 13 14 15 16 17 18 19 20  -- 두번째 블럭의 페이지번호 시작값(pageNo)은 11 이다.
-	    21 22 23 24 25 26 27 28 29 30  -- 세번째 블럭의 페이지번호 시작값(pageNo)은 21 이다.
-	    
-	    currentShowPageNo         pageNo
-	   ----------------------------------
-	         1                      1 = ((1 - 1)/10) * 10 + 1
-	         2                      1 = ((2 - 1)/10) * 10 + 1
-	         3                      1 = ((3 - 1)/10) * 10 + 1
-	         4                      1
-	         5                      1
-	         6                      1
-	         7                      1 
-	         8                      1
-	         9                      1
-	         10                     1 = ((10 - 1)/10) * 10 + 1
-	        
-	         11                    11 = ((11 - 1)/10) * 10 + 1
-	         12                    11 = ((12 - 1)/10) * 10 + 1
-	         13                    11 = ((13 - 1)/10) * 10 + 1
-	         14                    11
-	         15                    11
-	         16                    11
-	         17                    11
-	         18                    11 
-	         19                    11 
-	         20                    11 = ((20 - 1)/10) * 10 + 1
-	         
-	         21                    21 = ((21 - 1)/10) * 10 + 1
-	         22                    21 = ((22 - 1)/10) * 10 + 1
-	         23                    21 = ((23 - 1)/10) * 10 + 1
-	         ..                    ..
-	         29                    21
-	         30                    21 = ((30 - 1)/10) * 10 + 1
 	
 		
-		String url = "list.action";//URL어느페이지로 가겠습니까? get방식이기때문에 뒤에?붙을수있다
+		String url = "SubjectMatterList.up";//URL어느페이지로 가겠습니까? get방식이기때문에 뒤에?붙을수있다
 		
 		// ===[이전] 만들기 ===
 		if(pageNo != 1) {//첫번째페이지가아니라 두번째페이지부터 이전을 만드렁라
@@ -339,7 +337,7 @@ public class KimkhController {
 		//System.out.println("~~~~~확인용 gobackURL:"+gobackURL);	
 		
 		////////////////페이징 처리 끝 /////////////////////
-*/		
+
 		
 		mav.addObject("lmivList", lmivList);
 
@@ -356,7 +354,10 @@ public class KimkhController {
 
 		LecutreMatterInsertVO lmivOne = service.selectOneMatterList(subseq);
 
+		List<LectureVO> lvoList = service.selectLectureList(subseq);
+		
 		mav.addObject("lmivOne", lmivOne);
+		mav.addObject("lvoList", lvoList);
 
 		mav.setViewName("subjectMatterList/SubjectMatterDetail.tiles1");
 
@@ -365,11 +366,15 @@ public class KimkhController {
 	
 	// 교과목 상세페이지에서 수강신청 버튼을 클릭시 학생마이페이지로 insert 시키기
 	@RequestMapping(value = "/sugangInsert.up")
-	public ModelAndView sugangInsert(ModelAndView mav,HttpServletRequest request) {
+	public ModelAndView requiredLogin_sugangInsert(HttpServletRequest request, HttpServletResponse response , ModelAndView mav) {
 
 		HttpSession session = request.getSession();
+		
 		MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
+		
 		String userid = loginuser.getUserid();
+		
+		//if(userid != null) {
 		
 		String fk_subSeq = request.getParameter("subseq");
 	
@@ -378,23 +383,162 @@ public class KimkhController {
 		paraMap.put("fk_subSeq", fk_subSeq);
 		paraMap.put("userid", userid);
 
-		
-		 service.sugangInsert(paraMap); 
+		 //if() {
+		try {
+		 int n = service.sugangInsert(paraMap); 
 		 
+		
+		 
+		 if(n > 0) {
+		 
+			for(int i=1; i<11; i++) {
+				paraMap.put("i", String.valueOf(i));
+				
+				service.insertAttand(paraMap);
+			}
+			 
 		 	String msg = "수강신청이 완료되었습니다.";
 
 		 	String loc = request.getContextPath()+"/mypageMain.up";
-
 		 	
-			mav.addObject("msg",msg);
+		 	mav.addObject("msg",msg);
 			mav.addObject("loc", loc);
 			
 			mav.setViewName("msg");
-		//mav.addObject(attributeName, attributeValue)
-		//mav.setViewName("forS/main.tiles2");
-		
+		 }else {
+			 String msg = "수강신청이 실패하였습니다 다시 시도하여 주십시오.";
+
+			 	String loc = request.getContextPath()+"login/login.up";
+			 	
+			 	mav.addObject("msg",msg);
+				mav.addObject("loc", loc);
+				
+				mav.setViewName("msg");
+		 }
+		 
+		 //}
+
 		return mav;
 		
-	}
+		}catch(Exception e){
+			String msg = "수강신청은 1회만 할수있습니다.";
 
+		 	String loc = request.getContextPath()+"/SubjectMatterList.up";
+		 	
+		 	mav.addObject("msg",msg);
+			mav.addObject("loc", loc);
+			
+			mav.setViewName("msg");
+			
+		}
+		return mav;
+	}
+	
+
+	//교과목 수정하기
+		@RequestMapping(value = "/SubjectMatterModify.up")
+		public ModelAndView requiredLogin_SubjectMatterModify(HttpServletRequest request, HttpServletResponse response , ModelAndView mav) {
+			//같은교수만 삭제할수있게
+			String subseq = request.getParameter("subseq");
+	
+			
+			//System.out.println("userid : "+fk_userid); null
+			LecutreMatterInsertVO lmiv = service.getViewWithNoAddCount(subseq);
+			
+			HttpSession session1 = request.getSession();
+			MemberVO loginuser = (MemberVO) session1.getAttribute("loginuser");
+			//String userid = loginuser.getUserid();
+			//System.out.println("유저알아보기 :"+loginuser.getUserid()); 
+			//System.out.println("유저알아보기 :"+lmiv.getFk_userid());
+			if( !loginuser.getUserid().equals(lmiv.getFk_userid())) {
+				//글쓴사람의 아이디와 글쓰려고하는 사람의 아이디가 같지 않다면
+					String msg = "본인이 등록한 교과목만 수정이 가능합니다";
+					String loc = "javascript:history.back()";
+					
+					mav.addObject("msg",msg);
+					mav.addObject("loc",loc);
+					
+					mav.setViewName("msg");//우선순위 2번째
+				}
+				else {
+					// 자신의 글을 수정할 경우
+					// 가져온 1개글을 글수정할 폼이 있는 view 단으로 보내준다.
+					
+					mav.addObject("lmiv",lmiv);
+					
+					mav.setViewName("subjectMatterList/SubjectModify.tiles1");
+				}
+			
+			return mav;
+		}
+		
+		//글 수정하기 요청
+		@RequestMapping(value="/SubjectMatterModifyEnd.up", method= {RequestMethod.POST})
+		public String editEnd(HttpServletRequest request,LecutreMatterInsertVO lmiv) { //form태그에 있는 vo에있는 필드명과 같으면 request.getparameter할 필요없다
+			
+			
+			
+			int n = service.edit(lmiv);
+			
+			
+					
+		
+				request.setAttribute("msg","글 수정이 완료되었습니다");
+			
+				request.setAttribute("loc", request.getContextPath()+"/SubjectMatterList.up?subseq="+lmiv.getSubseq());
+			
+			
+			return "msg";
+		}
+		
+		@RequestMapping(value="/SubjectMatterDelete.up")
+		public String requiredLogin_DeleteSubject(HttpServletRequest request, HttpServletResponse response) {
+
+			
+			String subseq = request.getParameter("subseq");
+			String fk_userid = request.getParameter("fk_userid");
+
+				HttpSession session = request.getSession();
+				
+				MemberVO loginuser = (MemberVO)session.getAttribute("loginuser");
+				
+				//String userid = loginuser.getUserid();
+				//System.out.println("유저알아보기 :"+loginuser.getUserid()); 
+				//System.out.println("유저알아보기 :"+fk_userid);	
+			
+				//List<LecutreMatterInsertVO> lmivList = service.searchwWithPaging();
+				//LecutreMatterInsertVO subjectDelete = service.viewDeleteLecutre(subseq);
+				
+				if(!loginuser.getUserid().equals(fk_userid)) {
+					
+					String msg = "다른 사용자의 글은 삭제할수 없습니다";
+					String loc = "javascript:history.back()";
+					
+					request.setAttribute("msg",msg);
+					request.setAttribute("loc",loc);
+	
+					return "msg";
+			    }else {
+		
+					
+					//System.out.println("subseq"+subseq);
+					int n = service.DeleteSubject(subseq);
+					
+					String msg = "교과목 삭제가 완료되었습니다.";
+					String loc = request.getContextPath()+"/SubjectMatterList.up";
+					
+					request.setAttribute("msg",msg);
+					request.setAttribute("loc",loc);
+					
+					return "msg";
+			  //  }
+			
+		
+			
+			
+		}
+		
+		}
 }
+
+		

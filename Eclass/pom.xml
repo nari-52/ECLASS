@@ -22,6 +22,8 @@
             <url>https://code.lds.org/nexus/content/groups/main-repo</url>
 		</repository>
 		
+		
+		
 		<!-- ===== 네이버 스마트 에디터에서 사진첨부 관련하여 이미지의 크기를 구하기위한 라이브러리 다운받는곳 =====  -->
 		<repository>
 		    <id>osgeo</id>
@@ -51,6 +53,7 @@
 			<artifactId>spring-webmvc</artifactId>
 			<version>${org.springframework-version}</version>
 		</dependency>
+				
 				
 		<!-- AspectJ -->
 		<dependency>
@@ -382,6 +385,7 @@
 	        <artifactId>javaSDK</artifactId>
 	        <version>2.2</version>
 	    </dependency>
+	    
 	    
 	</dependencies>
     <build>

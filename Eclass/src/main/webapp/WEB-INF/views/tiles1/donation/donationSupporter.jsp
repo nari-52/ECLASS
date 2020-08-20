@@ -221,8 +221,14 @@
     	/////////////////////////////////////////////////////////////////
     	// == 후원 서포터 페이지 (더보기 페이징 처리) ==
     	
-    	$("#totalHITCount").hide();
-		$("#countHIT").hide();
+    	//$("#totalHITCount").hide();
+		//$("#countHIT").hide();
+		
+		let totalHITCount = document.getElementById('totalHITCount');
+		let countHIT = document.getElementById('countHIT');
+		
+		totalHITCount.style.display = 'none';
+		countHIT.style.display = 'none';
 
 		// HIT상품 게시물을 더보기 위하여 "더보기.."버튼 클릭액션에 대한 초기값 호출하기 
 		displayHIT("1");
@@ -343,14 +349,18 @@
 		
 	}// end of function displayHIT(start) ----------
     
+	// == 후원종료시 버튼 클릭 안되게 하기
+	function goPayment(donseq){
+		var sDay = ${(donsupporterPage[0].dDay-1)>0};
+		//console.log(${(donsupporterPage[0].dDay-1)==0})
+		console.log("strdDay"+sDay); //후원종료시 false
+		if(!sDay){ //false
+			alert("후원 모집기간이 끝났습니다. 감사합니다");
+			return;
+		}
+		location.href = "<%= ctxPath%>/donation/donationPayment.up?donseq="+donseq;
+	};
 	
-    //== 후원하기버튼
-    function goPayment(donseq){
-    	location.href = "<%= ctxPath%>/donation/donationPayment.up?donseq="+donseq;
-    }
-    
-    //더보기페이징처리 (후원참여)
-    //공유하기버튼 
     
 </script>
 </head>
@@ -387,8 +397,8 @@
 								<c:if test="${not empty donsupporterPage[0].name}">
 								<button type="button" id="btnMoreHIT" value="">더보기 ...</button>
 								</c:if>
-								<span id ="totalHITCount">${donsupporterPage[0].totalSupporter}</span>
-								<span id="countHIT">0</span>
+								<span id ="totalHITCount" style="display:none;">${donsupporterPage[0].totalSupporter}</span>
+								<span id="countHIT" style="display:none;">0</span>
 							</div>
 						</div>
                         <%-- 후원스토리 있고, 1. 후원자 없을 때, 2. 후원자 있을 때 --%>
@@ -443,9 +453,6 @@
 					   <c:when test="${(ddonsupporterPage[0].dDay-1)<0}">
                        	<dt style="color:#00BCD4">후원 종료</dt>
                        </c:when>
-                       <%-- <c:when test="${(donsupporterPage[0].dDay-1)<0 && (donsupporterPage[0].totalPayment >= donsupporterPage[0].targetAmount) }">
-                       	<dt style="color:#00BCD4">후원 성공</dt>
-                       </c:when> --%>       
                       </c:choose>
                       <div style="border-bottom: solid 4px #00BCD4; width: 120px; padding-bottom: 3px;"></div>
                     </dl>

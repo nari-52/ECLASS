@@ -234,4 +234,18 @@ public class MemberVO {
 	public void setRequirePwdChange(boolean requirePwdChange) {
 		this.requirePwdChange = requirePwdChange;
 	}
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
 }
